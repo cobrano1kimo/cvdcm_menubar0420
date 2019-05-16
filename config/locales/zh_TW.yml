@@ -1,0 +1,77 @@
+zh_TW:
+  views:
+    pagination:
+      first: "首頁"
+      last: "尾頁"
+      previous: "上頁"
+      next: "下頁"
+      truncate: "&hellip;"
+
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "No %{entry_name} found"
+          one: "Displaying <b>1</b> %{entry_name}"
+          other: "Displaying <b>all %{count}</b> %{entry_name}"
+      more_pages:
+        display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+    submit:
+      create: "新增"
+      update: "更新"
+  errors:
+    # The default format to use in full error messages.
+    format: "%{attribute} %{message}"
+
+    # The values :model, :attribute and :value are always available for interpolation
+    # The value :count is available when applicable. Can be used for pluralization.
+    messages:
+      model_invalid: "資料驗證失敗: %{errors}"
+      inclusion: "輸入資料不包含在清單列中"
+      exclusion: "輸入資料已保留"
+      invalid: "輸入資料無效"
+      confirmation: "兩次輸入資料並不相同 %{attribute}"
+      accepted: "必須輸入同意"
+      empty: "輸入資料不可空值"
+      blank: "欄位不可空白"
+      present: "欄位必須空白"
+      too_long:
+        one: "輸入字數太長 (最多輸入 1 個字數)"
+        other: "輸入字數太長 (最多輸入 %{count} 個字數)"
+      too_short:
+        one: "輸入字數太短 (最少輸入 1 個字數)"
+        other: "輸入字數太短 (最少輸入 %{count} 個字中數)"
+      wrong_length:
+        one: "輸入資料長度錯誤 (只能輸入 1 個字數)"
+        other: "輸入資料長度錯誤 (只能輸入 %{count} 個字數)"
+      not_a_number: "輸入非數值型態資料"
+      not_an_integer: "輸入資料必須為整數"
+      greater_than: "輸入數值必須大於 %{count}"
+      greater_than_or_equal_to: "輸入數值必須大於或等於 %{count}"
+      equal_to: "輸入數值必須等於 %{count}"
+      less_than: "輸入數值必須小於 %{count}"
+      less_than_or_equal_to: "輸入數值必須小於或等於 %{count}"
+      other_than: "must be other than %{count}"
+      odd: "輸入數值必須為奇數"
+      even: "輸入數值必須為偶數"
+
+# 按鈕名稱
+  buttons:
+    new: "新增"
+    edit: "編輯"
+    delete: "刪除"
+    submit: "確認"
+    reset: "取消"
+    query: "查詢"
+    print: "列印"
+    barcode: "條碼列印"
+    confirm_delete: "確認刪除"
+
+#選單作業
+  menubars:
+    menu_id: "選單編號"
+    menu_name: "選單名稱"
+    parent_menu_id: "父層選單編號"
+    menu_sn: "顯示順序"
+    program_id: "程式編號"
+    process_status: "處理"

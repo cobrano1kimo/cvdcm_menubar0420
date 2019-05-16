@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh_TW">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>海灣文件倉儲管理系統</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row content">
+        <%= yield :menu %>
+        <%= yield :toolbar %>
+        <div class="col-sm-4 sidenav">
+          <%= yield :gridview %>
+        </div>
+
+        <div class="col-sm-8">
+          <%= yield :single_form %>
+          <%= yield :single_form_message %>
+        </div>
+        <%= yield %>
+        <%= yield :footer %>
+      </div>
+    </div>
+  </body>
+</html>

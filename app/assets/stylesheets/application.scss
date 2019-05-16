@@ -1,0 +1,13 @@
+ // Custom bootstrap variables must be set or imported *before* bootstrap.
+ @import "bootstrap";
+ @import "font-awesome";
+ @import "menubars.scss";
+
+ .row {
+   margin-bottom: 10px;
+ }
+
+
+ /*
+  *= require font-awesome
+  */

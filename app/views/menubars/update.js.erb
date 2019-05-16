@@ -1,0 +1,31 @@
+
+// 更新 GridView 名稱
+// $('#gridview-<%= @menubar.menu_id %>').find('td').eq(2).text('<%= @menubar.menu_name %>');
+
+<% if @menubar.errors.size > 1 %>
+  $('#dialog').modal('toggle');
+
+  // Add the dialog title
+  $('#dialog h3').html("Menubar Error Messages");
+
+  // Render the edit form
+  $('.modal-body').html('<% @menubar.errors.full_messages.each do |msg| %>'+
+                          '<li><%= msg %></li>'+
+                          '<% end %>');
+
+  // Show the dynamic dialog
+  $('#dialog').modal("show");
+
+  // Set focus to the first element
+  $('#dialog').on('shown.bs.modal', function () {
+	  $('#close').focus();
+  });
+
+  $("#close").click(function(){
+    location.reload();
+  });
+<% else %>
+  location.reload();
+  // $('#gridview-'+<%= @current_menu_id %>).find('td').click()
+  // $( "#foo" ).trigger( "click" );
+<% end %>

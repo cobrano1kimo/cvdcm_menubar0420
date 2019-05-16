@@ -1,0 +1,50 @@
+// Place all the styles related to the menubars controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.row {
+  margin: 10px;
+  padding: 10px;
+}
+
+// .row.content {
+//   height: 500px;
+// }
+
+.sidenav {
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+.footer {
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+
+@media screen and (max-width: 1024px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+  .row.content {height: auto;}
+}
+
+.table, .td, .th {
+  border: 0px solid black;
+}
+
+.table {
+  border-collapse: collapse;
+  width: auto;
+}
+
+// .th {
+//   bgcolor: lightblue;
+// }
+
+.td {
+  width: 50px;
+  height: 50px;
+  vertical-align: bottom;
+}

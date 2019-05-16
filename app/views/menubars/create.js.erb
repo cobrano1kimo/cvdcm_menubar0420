@@ -1,0 +1,38 @@
+// 將產生新的記錄回寫到 GridView 做處理
+// $('table td:nth-child(1)').removeClass('fa fa-play');
+// var tmpText = "";
+// tmpText = tmpText + '<tr id="gridview-<%= @menubar.menu_id %>">';
+// tmpText = tmpText + '<td class="fa fa-play" style="font-size: 1em; color: darkblue;"></td>';
+// tmpText = tmpText + '<td><%= @menubar.menu_id %></td>';
+// tmpText = tmpText + '<td><%= @menubar.menu_name %></td>';
+// tmpText = tmpText + '<td style="display: none;"><a class="edit-button btn btn-primary btn-sm" data-disable-with="Data Processing..." style="display: none;" data-remote="true" href="/zh_TW/menubars/<%= @menubar.menu_id %>/edit">編輯</a></td>';
+// tmpText = tmpText + '<td style="display: none;"><a data-confirm="選單編號：<%= @menubar.menu_id %>-<%= @menubar.menu_name %>，確認刪除?" class="delete-button btn btn-primary btn-sm" style="display: none;" data-remote="true" rel="nofollow" data-method="delete" href="/zh_TW/menubars/<%= @menubar.menu_id %>">刪除</a></td>';
+// tmpText = tmpText + '</tr>';
+// $('#gridview > tbody:last-child').before(tmpText);
+// $('#menubars tr:first').before('<tr id="#gridview-<%= @menubar.menu_id %>"><td></td><td><%= @menubar.menu_id %></td><td><%= @menubar.menu_name %></td></tr>');
+
+<% if @menubar.errors.size > 1 %>
+  $('#dialog').modal('toggle');
+
+  // Add the dialog title
+  $('#dialog h3').html("Menubar Error Messages");
+
+  // Render the edit form
+  $('.modal-body').html('<% @menubar.errors.full_messages.each do |msg| %>'+
+                          '<li><%= msg %></li>'+
+                          '<% end %>');
+
+  // Show the dynamic dialog
+  $('#dialog').modal("show");
+
+  // Set focus to the first element
+  $('#dialog').on('shown.bs.modal', function () {
+	  $('#close').focus();
+  });
+
+  $("#close").click(function(){
+    location.reload();
+  });
+<% else %>
+  location.reload();
+<% end %>

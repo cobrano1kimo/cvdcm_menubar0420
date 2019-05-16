@@ -1,0 +1,31 @@
+<%= paginate @menubars, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>
+<table id="gridview" class="table table-bordered table-hover table-sm">
+  <thread>
+    <tr bgcolor="CornflowerBlue">
+      <td align="justify" style="width:10%;"></td>
+      <td style="width:26%;"><%= I18n.t :menu_id, scope: [ :menubars ] %></td>
+      <td style="width:66%;"><%= I18n.t :menu_name, scope: [ :menubars ] %></td>
+      <td style="width:0%; display: none;">修改</td>
+      <td style="width:0%; display: none;">刪除</td>
+    </tr>
+  </thread>
+  <tbody id="menubars">
+    <% @menubars.each do |menubar| %>
+      <tr id='<%= "gridview-#{menubar.menu_id}" %>' >
+        <td style="font-size: 1em; color: darkblue;"></td>
+        <td><%= menubar.menu_id %></td>
+        <td><%= menubar.menu_name %></td>
+        <td style="display: none;"><%= link_to (I18n.t :edit, scope: [ :buttons ]),
+                edit_menubar_path(menubar), remote: true,
+                class: "edit-button btn btn-primary btn-sm",
+                data: { :disable_with => 'Data Processing...' },
+                style: "display: none;" %></td>
+        <td style="display: none;"><%= link_to (I18n.t :delete, scope: [ :buttons ]),
+                menubar, method: :delete, remote: true,
+                data: { confirm: "選單編號：#{menubar.menu_id}-#{menubar.menu_name}，確認刪除?" },
+                class: "delete-button btn btn-primary btn-sm",
+                style: "display: none;" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
