@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190509022638) do
+ActiveRecord::Schema.define(version: 20190516040205) do
 
   create_table "CDF", primary_key: "CDF00", id: :char, limit: 3, default: nil, force: :cascade do |t|
     t.varchar "CDF01", limit: 120
@@ -31,6 +31,43 @@ ActiveRecord::Schema.define(version: 20190509022638) do
     t.string "description", limit: 120
     t.string "created_staff", limit: 20
     t.string "updated_staff", limit: 20
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ldap_departments", primary_key: "usncreated", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "whencreated"
+    t.datetime "whenchanged"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ldap_roles", primary_key: "usncreated", force: :cascade do |t|
+    t.string "name"
+    t.string "department"
+    t.string "mail"
+    t.datetime "whencreated"
+    t.string "whenchanged"
+    t.string "datetime"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ldap_users", primary_key: "usncreated", force: :cascade do |t|
+    t.string "samaccountname"
+    t.string "name"
+    t.string "department"
+    t.string "title"
+    t.string "mail"
+    t.string "info"
+    t.string "description"
+    t.string "telephonenumber"
+    t.string "facsimiletelephonenumber"
+    t.datetime "whencreated"
+    t.datetime "whenchanged"
+    t.datetime "accountexpires"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  usncreated: 
+  samaccountname: MyString
+  name: MyString
+  department: MyString
+  title: MyString
+  mail: MyString
+  info: MyString
+  description: MyString
+  facsimiletelephonenumber: MyString
+  telephonenumber: MyString
+  whencreated: 2019-05-16 12:02:05
+  whenchanged: 2019-05-16 12:02:05
+  accountexpires: 2019-05-16 12:02:05
+
+two:
+  usncreated: 
+  samaccountname: MyString
+  name: MyString
+  department: MyString
+  title: MyString
+  mail: MyString
+  info: MyString
+  description: MyString
+  facsimiletelephonenumber: MyString
+  telephonenumber: MyString
+  whencreated: 2019-05-16 12:02:05
+  whenchanged: 2019-05-16 12:02:05
+  accountexpires: 2019-05-16 12:02:05

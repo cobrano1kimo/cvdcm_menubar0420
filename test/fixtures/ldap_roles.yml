@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  usncreated: 
+  name: MyString
+  department: MyString
+  mail: MyString
+  whencreated: 2019-05-16 11:55:48
+  whenchanged: MyString
+  datetime: MyString
+
+two:
+  usncreated: 
+  name: MyString
+  department: MyString
+  mail: MyString
+  whencreated: 2019-05-16 11:55:48
+  whenchanged: MyString
+  datetime: MyString

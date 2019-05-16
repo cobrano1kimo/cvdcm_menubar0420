@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  usncreated: 1
+  name: MyString
+  description: MyString
+  whencreated: 2019-05-16 11:51:11
+  whenchanged: 2019-05-16 11:51:11
+
+two:
+  usncreated: 1
+  name: MyString
+  description: MyString
+  whencreated: 2019-05-16 11:51:11
+  whenchanged: 2019-05-16 11:51:11

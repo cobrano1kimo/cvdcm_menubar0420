@@ -1,0 +1,2 @@
+class LdapDepartment < ApplicationRecord
+end
