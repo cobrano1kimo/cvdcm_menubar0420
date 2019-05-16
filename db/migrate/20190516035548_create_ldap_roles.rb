@@ -6,8 +6,7 @@ class CreateLdapRoles < ActiveRecord::Migration[5.1]
       t.string :department
       t.string :mail
       t.datetime :whencreated
-      t.string :whenchanged
-      t.string :datetime
+      t.datetime :whenchanged
 
       t.timestamps
     end

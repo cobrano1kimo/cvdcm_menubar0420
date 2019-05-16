@@ -49,8 +49,7 @@ ActiveRecord::Schema.define(version: 20190516040205) do
     t.string "department"
     t.string "mail"
     t.datetime "whencreated"
-    t.string "whenchanged"
-    t.string "datetime"
+    t.datetime "whenchanged"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
