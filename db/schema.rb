@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190516040205) do
+ActiveRecord::Schema.define(version: 20190517035038) do
 
   create_table "CDF", primary_key: "CDF00", id: :char, limit: 3, default: nil, force: :cascade do |t|
     t.varchar "CDF01", limit: 120
@@ -37,11 +37,22 @@ ActiveRecord::Schema.define(version: 20190516040205) do
 
   create_table "ldap_departments", primary_key: "usncreated", force: :cascade do |t|
     t.string "name"
-    t.string "description"
     t.datetime "whencreated"
     t.datetime "whenchanged"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ldap_role_users", id: false, force: :cascade do |t|
+    t.integer "department_id"
+    t.integer "role_id"
+    t.integer "user_id"
+    t.string "department"
+    t.string "role"
+    t.string "user"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["department", "role", "user"], name: "index_ldap_role_users_on_department_and_role_and_user", unique: true
   end
 
   create_table "ldap_roles", primary_key: "usncreated", force: :cascade do |t|
@@ -67,6 +78,9 @@ ActiveRecord::Schema.define(version: 20190516040205) do
     t.datetime "whencreated"
     t.datetime "whenchanged"
     t.datetime "accountexpires"
+    t.boolean "is_disable_account", default: false
+    t.boolean "is_left_job", default: false
+    t.boolean "is_retired", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

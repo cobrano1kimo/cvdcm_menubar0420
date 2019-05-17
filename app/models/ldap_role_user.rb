@@ -1,0 +1,2 @@
+class LdapRoleUser < ApplicationRecord
+end

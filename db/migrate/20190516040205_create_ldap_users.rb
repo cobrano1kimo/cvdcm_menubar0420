@@ -14,6 +14,9 @@ class CreateLdapUsers < ActiveRecord::Migration[5.1]
       t.datetime :whencreated
       t.datetime :whenchanged
       t.datetime :accountexpires
+      t.boolean :is_disable_account, :default => false
+      t.boolean :is_left_job, :default => false
+      t.boolean :is_retired, :default => false
 
       t.timestamps
     end
