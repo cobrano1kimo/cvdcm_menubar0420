@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+
+
+<table class="table table-hover">
+
+  <thead >
+    <tr >
+      <td>項次</td>
+      <td>客戶編號</td>
+      <td>客戶類別名稱</td>
+      <td align="center" valign="center">類　別</td>
+      <td align="center" valign="center">單　　號</td>
+      <td align="center" valign="center">月/年</td>
+      <td align="center" valign="center">客戶名稱</td>
+      <td align="center" valign="center">費用</td>
+      <td align="center" valign="center">備註</td>
+
+        <td>處理      </td>
+          <td>    </td>
+    </tr>
+  </thead>
+  <tbody >
+　　
+    <% @accounts.each_with_index do |account,index| %>
+      <tr>
+        <td ><%= index+1 %></td>
+        <td style="display:none;"><input name="account[id]" id ="input" value=<%= account.id %>></td>
+
+        <td> <input class="box border-0 form-control" size="3"  type="text"  id="input0" onfocus="this.blur()" value=<%=account.cust_id %>> </td>
+        <td> <input class="box border-0 form-control" size="4" type="text" id="input1" onfocus="this.blur()" value=<%=account.cust_type %>> </td>
+        <td> <input class="box border-0 form-control" size="2" type="text" id="input2" onfocus="this.blur()"  value=<%=account.acc_kind %>> </td>
+        <td> <input class="box border-0 form-control" size="3"  type="text"  id="input3" onfocus="this.blur()" value=<%=account.acc_no %>> </td>
+        <td> <input class="box border-0 form-control"  size="3" type="text"   id="input4" onfocus="this.blur()" value=<%= rocTime(account.acc_date) %>> </td>
+        <td> <input class="box border-0 form-control" size="12"  type="text"　 id="input5" onfocus="this.blur()" value=<%=account.customer.cust_name %> > </td>
+        <td> <input class="box border-0 form-control" size="6"  type="text" style="text-align:right"  id="input6" onfocus="this.blur()" value=<%=account.acc_cost %> ></td>
+        <td> <input  class="box border-0 form-control" size="20" type="text"   id="input7" onfocus="this.blur()" value=<%=account.acc_note %> ></td>
+
+
+        <td>
+            <button id="edit_acc" class="btn btn-primary" remote="true"　>修改</button>
+        </td>
+         <td id ='yesOrNo'style="display:none;">
+           <%= link_to '確定', acinvoices_path( id: account.id ,  cust_type: account.cust_type,  acc_no: account.acc_no  ,  acc_cost: account.acc_cost,
+              acc_note: account.acc_note) ,:id=>"acc_check", :class =>"submit_button btn btn-success btn-sm"%>
+          <button id="check_reset" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+          </td>
+       <td>
+      <%= link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary"%>
+      </td>
+
+      </tr>
+
+    <% end %>
+
+  </tbody>
+
+</table>
+  <%= paginate @accounts, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>

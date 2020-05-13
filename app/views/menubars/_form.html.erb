@@ -4,36 +4,42 @@
   <%#= @current_menu_id %>
   <%#= f.input :original_updated_at, :as => :hidden %>
   <div class="row">
+
     <div class="col-sm-4 col-md-2 col-lg-2 col-xl-2">
       <%= f.label :menu_id, label: (I18n.t :menu_id, scope: [ :menubars ]) %>
     </div>
     <div class="col-sm-8 col-md-10 col-lg-10 col-xl-10">
       <%= f.input_field :menu_id, class: "form-control form-control-sm", readonly: if @form_state=='browse' || @form_state.blank? then true else false end %>
     </div>
+
     <div class="col-sm-4 col-md-2 col-lg-2 col-xl-2">
       <%= f.label :menu_name, label: (I18n.t :menu_name, scope: [ :menubars ]) %>
     </div>
     <div class="col-sm-8 col-md-10 col-lg-10 col-xl-10">
       <%= f.input_field :menu_name, class: "form-control form-control-sm", readonly: if @form_state=='browse' || @form_state.blank? then true else false end %>
     </div>
+
     <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
       <%= f.label :parent_menu_id, label: (I18n.t :parent_menu_id, scope: [ :menubars ]) %>
     </div>
     <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
-      <%= f.input_field :parent_menu_id, class: "form-control form-control-sm", readonly: if @form_state=='browse' || @form_state.blank? then true else false end %>
+      <%= f.input :parent_menu_id, collection: @parent_menu, label: '', label_method: :menu_name, value_method: :menu_id, class: "form-control form-control-sm", readonly: if @form_state=='browse' || @form_state.blank? then true else false end  %>
     </div>
+
     <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
       <%= f.label :menu_sn, label: (I18n.t :menu_sn, scope: [ :menubars ]) %>
     </div>
     <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
       <%= f.input_field :menu_sn, class: "form-control form-control-sm", readonly: if @form_state=='browse' || @form_state.blank? then true else false end %>
     </div>
+
     <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
       <%= f.label :program_id, label: (I18n.t :program_id, scope: [ :menubars ]) %>
     </div>
     <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
       <%= f.input_field :program_id, class: "form-control form-control-sm", readonly: if @form_state=='browse' || @form_state.blank? then true else false end %>
     </div>
+
   </div>
   <div class="row">
     <div class="col-sm-12 col-lg-12">

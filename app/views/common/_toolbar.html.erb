@@ -6,6 +6,6 @@
 <button type="button" class="print_button btn btn-info btn-sm"><%= (I18n.t :print, scope: [ :buttons ]) %></button>
 <button type="button" class="barcode_button btn btn-dark btn-sm"><%= (I18n.t :barcode, scope: [ :buttons ]) %></button>
 <% else %>
-<button type="button" class="submit_button btn btn-success btn-sm"><%= (I18n.t :submit, scope: [ :buttons ]) %></button>
+<button type="button" class="submit_button btn btn-success btn-sm" onclick='TestFun();'><%= (I18n.t :submit, scope: [ :buttons ]) %></button>
 <%= button_to (I18n.t :reset, scope: [ :buttons ]), reset_menubars_path(), remote: true, class: "reset_button btn btn-danger btn-sm" %>
 <% end %>

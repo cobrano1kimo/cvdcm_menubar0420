@@ -36,7 +36,7 @@ $(document).on "click", ".submit_button", (event) ->
   return false
 
 
-# 觸發 '刪除' 按鈕'
+# 觸發 '刪除' 按鈕
 $(document).on "click", ".delete_button", (event) ->
   event.preventDefault()
   menu_id = $('#menubar_menu_id').val()
@@ -44,9 +44,29 @@ $(document).on "click", ".delete_button", (event) ->
   return false
 
 
-# 觸發 '修改' 按鈕'
+# 觸發 '修改' 按鈕
 $(document).on "click", ".edit_button", (event) ->
   event.preventDefault()
   menu_id = $('#menubar_menu_id').val()
   $('#gridview-'+menu_id).find('td').eq(3).find('a')[0].click()                       # 觸發 a link 的 click (rails link_to)
   return false
+
+# 觸發 '列印條碼' 按鈕
+# $(document).on "click", ".barcode_button", (event) ->
+#   event.preventDefault()
+#   if window.ActiveXObject
+#     TestFun ->
+#       TSCObj = undefined
+#       TSCObj = new ActiveXObject('TSCActiveX.TSCLIB')
+#       TSCObj.ActiveXopenport 'TSC TTP-246M Pro'
+#       TSCObj.ActiveXsendcommand 'SIZE 60 mm, 27 mm'
+#       TSCObj.ActiveXsendcommand 'SPEED 4'
+#       TSCObj.ActiveXsendcommand 'DENSITY 12'
+#       TSCObj.ActiveXsendcommand 'DIRECTION 1'
+#       TSCObj.ActiveXsendcommand 'SET TEAR ON'
+#       TSCObj.ActiveXclearbuffer()
+#       TSCObj.ActiveXbarcode '134', '25', '128M', '100', '0', '0', '2', '4', 'CP508012'
+#       TSCObj.ActiveXwindowsfont 56, 115, 120, 0, 2, 0, 'Arial Narrow', 'CP508012'
+#       TSCObj.ActiveXprintlabel '1', '1'
+#       TSCObj.ActiveXcloseport()
+#       return false

@@ -10,24 +10,96 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190517035038) do
+ActiveRecord::Schema.define(version: 20200421095835) do
 
-  create_table "CDF", primary_key: "CDF00", id: :char, limit: 3, default: nil, force: :cascade do |t|
-    t.varchar "CDF01", limit: 120
-    t.varchar "CRE_USERID", limit: 10
-    t.char "CRE_DTIME", limit: 14
-    t.varchar "UPD_USERID", limit: 10
-    t.char "UPD_DTIME", limit: 14
+  create_table "CompanyTax", primary_key: "tax_id", id: :integer, force: :cascade do |t|
+    t.char "cust_id", limit: 5
+    t.varchar "cust_taxid", limit: 10
+    t.varchar "tax_name", limit: 50
+    t.varchar "tax_note", limit: 225
+    t.varchar "note_mix", limit: 275
   end
 
-  create_table "articles", force: :cascade do |t|
+  create_table "History", primary_key: "his_no", id: :integer, force: :cascade do |t|
+    t.char "acc_kind", limit: 2
+    t.char "acc_no", limit: 4
+    t.char "acc_date", limit: 6
+    t.decimal "cost_bef", precision: 12, scale: 0
+    t.decimal "cost_aft", precision: 12, scale: 0
+    t.char "cust_id", limit: 4
+    t.char "mark", limit: 1
+    t.varchar "user_id", limit: 20
+    t.varchar "type_bef", limit: 25
+    t.varchar "type_aft", limit: 25
+    t.varchar "note_bef", limit: 225
+    t.varchar "note_aft", limit: 225
+    t.datetime "bef_date"
+    t.datetime "rev_date"
+  end
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "acc_kind"
+    t.string "acc_no"
+    t.string "acc_date"
+    t.integer "acc_cost"
+    t.string "cust_id", limit: 5
+    t.string "cust_type"
+    t.datetime "cre_date"
+    t.string "acc_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "articles", id: false, force: :cascade do |t|
+    t.bigint "id", null: false
     t.string "title"
     t.text "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "large_classifications", primary_key: "large_classification_id", id: :string, limit: 3, default: nil, force: :cascade do |t|
+  create_table "customers", primary_key: "cust_id", id: :string, limit: 5, default: "", force: :cascade do |t|
+    t.string "cust_name"
+    t.string "cust_nick"
+    t.string "cust_stat"
+    t.string "won_staff"
+    t.string "cust_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "excel", id: false, force: :cascade do |t|
+    t.varchar "cust_id", limit: 50
+    t.varchar "cust_type", limit: 50
+    t.varchar "acc_kind", limit: 50
+    t.varchar "job_no", limit: 50
+    t.varchar "acc_date", limit: 50
+    t.varchar "cust_name", limit: 50
+    t.varchar "acc_cost", limit: 50
+    t.varchar "cust_taxid", limit: 50
+    t.varchar "tax_name", limit: 50
+    t.varchar "cust_stat", limit: 50
+    t.varchar "note_all", limit: 50
+    t.varchar "won_staff", limit: 50
+  end
+
+  create_table "excel_data", id: false, force: :cascade do |t|
+    t.varchar "cust_id", limit: 50
+    t.varchar "cust_type", limit: 50
+    t.varchar "acc_kind", limit: 50
+    t.varchar "job_no", limit: 50
+    t.varchar "acc_date", limit: 50
+    t.varchar "cust_name", limit: 50
+    t.varchar "acc_cost", limit: 50
+    t.varchar "cust_taxid", limit: 50
+    t.varchar "tax_name", limit: 120
+    t.varchar "cust_stat", limit: 50
+    t.varchar "note_all", limit: 50
+    t.varchar "won_staff", limit: 50
+  end
+
+  create_table "large_classifications", id: false, force: :cascade do |t|
+    t.string "large_classification_id", limit: 3, null: false
     t.string "description", limit: 120
     t.string "created_staff", limit: 20
     t.string "updated_staff", limit: 20
@@ -35,7 +107,8 @@ ActiveRecord::Schema.define(version: 20190517035038) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ldap_departments", primary_key: "usncreated", force: :cascade do |t|
+  create_table "ldap_departments", id: false, force: :cascade do |t|
+    t.bigint "usncreated", null: false
     t.string "name"
     t.datetime "whencreated"
     t.datetime "whenchanged"
@@ -52,10 +125,10 @@ ActiveRecord::Schema.define(version: 20190517035038) do
     t.string "user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["department", "role", "user"], name: "index_ldap_role_users_on_department_and_role_and_user", unique: true
   end
 
-  create_table "ldap_roles", primary_key: "usncreated", force: :cascade do |t|
+  create_table "ldap_roles", id: false, force: :cascade do |t|
+    t.bigint "usncreated", null: false
     t.string "name"
     t.string "department"
     t.string "mail"
@@ -65,7 +138,8 @@ ActiveRecord::Schema.define(version: 20190517035038) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "ldap_users", primary_key: "usncreated", force: :cascade do |t|
+  create_table "ldap_users", id: false, force: :cascade do |t|
+    t.bigint "usncreated", null: false
     t.string "samaccountname"
     t.string "name"
     t.string "department"
@@ -78,38 +152,25 @@ ActiveRecord::Schema.define(version: 20190517035038) do
     t.datetime "whencreated"
     t.datetime "whenchanged"
     t.datetime "accountexpires"
-    t.boolean "is_disable_account", default: false
-    t.boolean "is_left_job", default: false
-    t.boolean "is_retired", default: false
+    t.boolean "is_disable_account"
+    t.boolean "is_left_job"
+    t.boolean "is_retired"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "medium_classifications", primary_key: ["large_classification_id", "medium_classification_id"], force: :cascade do |t|
-    t.string "large_classification_id", limit: 3, null: false
-    t.string "medium_classification_id", limit: 3, null: false
-    t.string "description", limit: 120
-    t.float "value_1"
-    t.float "value_2"
-    t.string "remark", limit: 240
-    t.string "created_staff", limit: 20
-    t.string "updated_staff", limit: 20
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "menubars", primary_key: "menu_id", id: :string, limit: 8, default: "", force: :cascade do |t|
-    t.string "menu_name", limit: 40, default: ""
-    t.string "parent_menu_id", limit: 6, default: ""
-    t.integer "menu_sn", default: 0
-    t.string "program_id", default: ""
-    t.string "program_url", default: ""
+  create_table "menubars", primary_key: "menu_id", id: :string, limit: 8, default: nil, force: :cascade do |t|
+    t.string "menu_name", limit: 40
+    t.string "parent_menu_id", limit: 6
+    t.integer "menu_sn"
+    t.string "program_id"
+    t.string "program_url"
     t.integer "lock_version", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "small_classifications", primary_key: ["large_classification_id", "medium_classification_id", "small_classification_id"], force: :cascade do |t|
+  create_table "small_classifications", id: false, force: :cascade do |t|
     t.string "large_classification_id", limit: 3, null: false
     t.string "medium_classification_id", limit: 3, null: false
     t.string "small_classification_id", limit: 3, null: false
@@ -121,20 +182,33 @@ ActiveRecord::Schema.define(version: 20190517035038) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "login", default: "", null: false
+  create_table "user_gropus", force: :cascade do |t|
+    t.string "login"
+    t.string "group"
+    t.string "won_staff"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_groups", force: :cascade do |t|
+    t.string "login"
+    t.string "group"
+    t.string "won_staff"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", id: :bigint, default: nil, force: :cascade do |t|
+    t.string "login", null: false
     t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
+    t.integer "sign_in_count", null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["login"], name: "index_users_on_login", unique: true
   end
 
-  add_foreign_key "medium_classifications", "large_classifications", primary_key: "large_classification_id", name: "fk_medium_classification"
-  add_foreign_key "small_classifications", "medium_classifications", column: "large_classification_id", primary_key: "large_classification_id", name: "fk_small_classification"
-  add_foreign_key "small_classifications", "medium_classifications", primary_key: "medium_classification_id", name: "fk_small_classification"
+  add_foreign_key "accounts", "customers", column: "cust_id", primary_key: "cust_id", name: "FK__accounts__cust_i__6B24EA82"
 end

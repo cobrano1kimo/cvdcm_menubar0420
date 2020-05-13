@@ -1,6 +1,7 @@
 class MenubarsController < ApplicationController
+
   before_action :find_menubar, only: [:form, :edit, :update, :destroy]
-  before_action :find_parent_menubar, only: [:create]
+  before_action :find_parent_menubar, only: [:new, :edit]
 
   attr_accessor :current_menu_id
 
@@ -154,7 +155,7 @@ class MenubarsController < ApplicationController
   end
 
   def find_parent_menubar
-    @parent_menu = Menubar.select("menu_id, menu_name").where.not(parent_menu_id: '').order(:parent_menu_id)
+    @parent_menu = Menubar.select("menu_id, menu_name").where(parent_menu_id: '').order(:parent_menu_id)
   end
 
 end

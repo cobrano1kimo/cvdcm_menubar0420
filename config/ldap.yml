@@ -33,7 +33,7 @@ development:
   attribute: cn
   base: ou=department,dc=crownvantw,dc=com
   admin_user: cn=Administrator,ou=department,dc=crownvantw,dc=com
-  admin_password: 8_E0_vu8_
+  admin_password: XJ/^20#g^10_
   ssl: false
   # <<: *AUTHORIZATIONS
 
@@ -43,7 +43,7 @@ test:
   attribute: cn
   base: ou=department,dc=crownvantw,dc=com
   admin_user: cn=Administrator,ou=department,dc=crownvantw,dc=com
-  admin_password: 8_E0_vu8_
+  admin_password: XJ/^20#g^10_
   ssl: simple_tls
   # <<: *AUTHORIZATIONS
 
