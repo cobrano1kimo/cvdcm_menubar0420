@@ -17,6 +17,7 @@
       <td align="center" valign="center">備註</td>
 
         <td>處理      </td>
+      
           <td>    </td>
     </tr>
   </thead>
@@ -36,15 +37,14 @@
         <td> <input class="box border-0 form-control" size="6"  type="text" style="text-align:right"  id="input6" onfocus="this.blur()" value=<%=account.acc_cost %> ></td>
         <td> <input  class="box border-0 form-control" size="20" type="text"   id="input7" onfocus="this.blur()" value=<%=account.acc_note %> ></td>
 
-
         <td>
-            <button id="edit_acc" class="btn btn-primary" remote="true"　>修改</button>
+            <button id="edit_acc" class="btn btn-primary" remote="true">修改</button>
         </td>
          <td id ='yesOrNo'style="display:none;">
-           <%= link_to '確定', acinvoices_path( id: account.id ,  cust_type: account.cust_type,  acc_no: account.acc_no  ,  acc_cost: account.acc_cost,
-              acc_note: account.acc_note) ,:id=>"acc_check", :class =>"submit_button btn btn-success btn-sm"%>
+           <%= link_to '確定', account ,:id=>"acc_check", :class =>"submit_button btn btn-success btn-sm"%>
           <button id="check_reset" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
-          </td>
+        　</td>
+
        <td>
       <%= link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary"%>
       </td>

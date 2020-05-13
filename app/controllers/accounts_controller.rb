@@ -37,9 +37,8 @@ class AccountsController < ApplicationController
        @accounts=Account.where(cust_id: @cust_id,acc_date: @acc_date).joins(:customer).where(customers: {cust_id: custid}).page(params[:page]).per(10)
     end
 
-    @accounts.each do |a|
-      puts a.cust_id
-    end
+
+
 
   end
     # p "#{custid['cust_id']}"
@@ -56,27 +55,6 @@ class AccountsController < ApplicationController
   end
 
   # GET /accounts/1/edit
-  def edit
-
-
-    puts "XXXXXX"
-  
-
-
-     #@account.update(cust_type: params[:cust_type],acc_note: params[:acc_note],acc_no: params[:acc_no] )
-
-
-     #User.update_all "max_login_attempts = 3, must_change_password = 'true'"
-    #account=Account.find_by(id: params[:id])
-    #account.update(account_params)
-    #  respond_to do |format|
-    #    format.html { render :index ,@account notice: 'Account was successfully destroyed.'}
-    #    format.js { head :no_content }
-    #end_
-
-    #account=Account.find_by(id: params[:id])
-  end
-
   # POST /accounts
   # POST /accounts.json
   def user_group
@@ -87,7 +65,7 @@ class AccountsController < ApplicationController
   end
 
 
-    #  puts  u.login+u.won_staff+u.group
+    # puts  u.login+u.won_staff+u.group
 
   end
 
@@ -105,11 +83,13 @@ class AccountsController < ApplicationController
     end
   end
 
+  def edit
+       @account=Account.find_by(id: params[:id])
+       @account.update(cust_type: params[:cust_type],acc_cost: params[:acc_cost],acc_note: params[:acc_note],acc_no: params[:acc_no] )
+  end
   # PATCH/PUT /accounts/1
   # PATCH/PUT /accounts/1.json
-  def update
 
-  end
 
   # DELETE /accounts/1
   # DELETE /accounts/1.json
