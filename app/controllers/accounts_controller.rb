@@ -25,18 +25,7 @@ class AccountsController < ApplicationController
 
   # GET /accounts/1$('
   # GET /accounts/1.json
-  def show
-    custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
-
-    if params[:id].size == 6
-       @acc_date=params[:id]
-       @accounts=Account.where(acc_date: @acc_date).joins(:customer).where(customers: {cust_id: custid}).page(params[:page]).per(10)
-    else
-       @acc_date=params[:id][5,6]
-       @cust_id= params[:id][0,5]
-       @accounts=Account.where(cust_id: @cust_id,acc_date: @acc_date).joins(:customer).where(customers: {cust_id: custid}).page(params[:page]).per(10)
-    end
-
+  def queryform
 
 
 
@@ -51,7 +40,14 @@ class AccountsController < ApplicationController
 
   # GET /accounts/new
   def new
-    @account = Account.new
+
+    @account = Account.create(cust_id: params[:cust_id],
+                              acc_date: params[:acc_date],
+                              acc_kind: params[:acc_kind],
+                              cust_type: params[:cust_type],
+                              acc_cost: params[:acc_cost],
+                              acc_note: params[:acc_note],
+                              acc_no: params[:acc_no])
   end
 
   # GET /accounts/1/edit

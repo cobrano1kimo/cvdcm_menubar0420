@@ -46,7 +46,8 @@
  </div>
 
 </div>
-<td><%= link_to '修改', @account, method: :show,:remote =>true, :id=>"query_button",:class =>"btn btn-primary"%></td>
-<button id="reset_button" type="button" class="reset_button btn btn-outline-secondary "><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+
+<button id="query_button" type="button" class="btn btn-primary"><%= (I18n.t :query, scope: [ :buttons ]) %></button>
+<button id="reset_button" type="button" class="btn btn-primary"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
 
 <% end %>
