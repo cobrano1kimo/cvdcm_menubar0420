@@ -11,15 +11,17 @@ Rails.application.routes.draw do
     get 'accounts', :to => "accounts#edit", as: "invoices"
     post 'accounts', :to =>"accounts#edit" , as: "acinvoices"
   end
+
   scope :controller => "accounts", :path => "/new" do
 
     get 'accounts', :to => "accounts#new", as: "ninvoices"
     post 'accounts', :to =>"accounts#new" , as: "nacinvoices"
   end
+
   scope :controller => "accounts", :path => "/query" do
 
-    get 'accounts', :to => "accounts#queryform", as: "finvoices"
-    post 'accounts', :to =>"accounts#queryform" , as: "facinvoices"
+    get 'accounts', :to => "accounts#query", as: "finvoices"
+    post 'accounts', :to =>"accounts#query" , as: "facinvoices"
   end
 
   scope "(:locale)", locale: /zh_TW|en/ do

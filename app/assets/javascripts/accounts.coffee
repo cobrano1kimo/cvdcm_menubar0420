@@ -28,17 +28,14 @@ $(document).on "click", ".table tr", (event) ->
 # 觸發 '查詢' 按鈕
 $(document).on "click", "#query_button", (event) ->
   event.preventDefault()
-  cust_id = $("#account_cust_id").val()
-  if cust_id=="nil"
-    id= [$("#actyy").val()+$("#actmm").val()]
-  else
-    id= [$("#account_cust_id").val()+$("#actyy").val()+$("#actmm").val()]
-  alert(cust_id + id)
+  cust_id = $("#input0").val()
+  acc_date= $("#date_yy").val()+$("#date_mm").val()
+  acc_url="/query/accounts?cust_id="+cust_id+"&;acc_date="+acc_date+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
    if @readyState == 4 and @status == 200
-     $(".myform").html(@responseText)
-  xhttp.open "GET", "accounts/"+id, true
+     $(".show").html(@responseText)
+  xhttp.open "GET", acc_url, true
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
   return false
@@ -251,8 +248,9 @@ $(document).on "click", "#acc_checkC", (event) ->
   $td = $(this).parents("tr").children("td")
   index=($td.eq(0).text())
   $(this).closest('tr').find("#yesOrNoC").hide()
+  #開啓REUQEST指向ACTION
   $(this).closest('a').removeAttr("href")
-  acc_url="/new/accounts?acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;locale=zh_TW"
+  acc_url="/new/accounts?id="+id+"&;acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;locale=zh_TW"
   switch index
       when "1"
           $("#2").fadeIn()
@@ -354,7 +352,6 @@ $(document).on "click", "#acc_checkC", (event) ->
           $("#8").fadeIn()
           $("#9").fadeIn()
           $("#1").fadeIn()
-  #開啓REUQEST指向ACTION
 
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
@@ -372,6 +369,10 @@ $(document).on "click", "#check_resetE", (event) ->
   location.reload();
   return false
 $(document).on "click", "#check_resetC", (event) ->
+  event.preventDefault()
+  location.reload();
+  return false
+$(document).on "click", "#reset_button", (event) ->
   event.preventDefault()
   location.reload();
   return false

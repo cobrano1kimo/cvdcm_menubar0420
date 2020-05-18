@@ -1,6 +1,11 @@
+
+
+
 <p id="notice"><%= notice %></p>
 
-總金額 = <%= timeRoc("01/20")%>
+  <%= paginate @accounts, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>
+
+ 使用者：<%= @wonstaff %>　總金額<%=@sumcost%>
 <table class="table table-hover">
 
   <thead >
@@ -47,7 +52,8 @@
           <button id="check_resetE" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
         　</td>
         <td id ='yesOrNoC'style="display:none;">
-          <%= link_to '確定', account ,:id=>"acc_checkC", :class =>"submit_button btn btn-success btn-sm"%>
+            <%= link_to '確定', account ,:id=>"acc_checkC", :class =>"submit_button btn btn-success btn-sm"%>
+          <%#= link_to '確定', account ,:id=>"acc_checkC", :class =>"submit_button btn btn-success btn-sm"%>
          <button id="check_resetC" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
        　</td>
        <td>
@@ -62,4 +68,3 @@
   </tbody>
 
 </table>
-  <%= paginate @accounts, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>
