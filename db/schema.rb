@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200421095835) do
+ActiveRecord::Schema.define(version: 20200522021311) do
 
   create_table "CompanyTax", primary_key: "tax_id", id: :integer, force: :cascade do |t|
     t.char "cust_id", limit: 5
@@ -18,23 +18,6 @@ ActiveRecord::Schema.define(version: 20200421095835) do
     t.varchar "tax_name", limit: 50
     t.varchar "tax_note", limit: 225
     t.varchar "note_mix", limit: 275
-  end
-
-  create_table "History", primary_key: "his_no", id: :integer, force: :cascade do |t|
-    t.char "acc_kind", limit: 2
-    t.char "acc_no", limit: 4
-    t.char "acc_date", limit: 6
-    t.decimal "cost_bef", precision: 12, scale: 0
-    t.decimal "cost_aft", precision: 12, scale: 0
-    t.char "cust_id", limit: 4
-    t.char "mark", limit: 1
-    t.varchar "user_id", limit: 20
-    t.varchar "type_bef", limit: 25
-    t.varchar "type_aft", limit: 25
-    t.varchar "note_bef", limit: 225
-    t.varchar "note_aft", limit: 225
-    t.datetime "bef_date"
-    t.datetime "rev_date"
   end
 
   create_table "accounts", force: :cascade do |t|
@@ -96,6 +79,24 @@ ActiveRecord::Schema.define(version: 20200421095835) do
     t.varchar "cust_stat", limit: 50
     t.varchar "note_all", limit: 50
     t.varchar "won_staff", limit: 50
+  end
+
+  create_table "histories", force: :cascade do |t|
+    t.string "acc_kind"
+    t.string "no_bef"
+    t.string "no_aft"
+    t.string "acc_date"
+    t.integer "cost_bef"
+    t.integer "cost_aft"
+    t.string "cust_id"
+    t.string "mark"
+    t.string "user_id"
+    t.string "type_bef"
+    t.string "type_aft"
+    t.string "note_bef"
+    t.string "note_aft"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "large_classifications", id: false, force: :cascade do |t|
@@ -178,14 +179,6 @@ ActiveRecord::Schema.define(version: 20200421095835) do
     t.string "remark", limit: 240
     t.string "created_staff", limit: 20
     t.string "updated_staff", limit: 20
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "user_gropus", force: :cascade do |t|
-    t.string "login"
-    t.string "group"
-    t.string "won_staff"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

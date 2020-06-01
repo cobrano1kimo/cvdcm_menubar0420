@@ -26,7 +26,7 @@ $(document).on "click", ".table tr", (event) ->
 
 
 # 觸發 '查詢' 按鈕
-$(document).on "click", "#query_button", (event) ->
+$(document).on "click", "#query_acc", (event) ->
   event.preventDefault()
   cust_id = $("#input0").val()
   acc_date= $("#date_yy").val()+$("#date_mm").val()
@@ -45,127 +45,14 @@ $(document).on "click", "#query_button", (event) ->
 # 觸發 '新增' 或 '修改' 的確認按鈕
 $(document).on "click", "#create_acc", (event) ->
   event.preventDefault()
-  $(this).closest('tr').find('#input0').val("")
-  $(this).closest('tr').find('#input1').val("")
-  $(this).closest('tr').find('#input3').val("")
-  $(this).closest('tr').find('#input5').val("")
-  $(this).closest('tr').find('#input6').val("")
-  $(this).closest('tr').find('#input7').val("")
-  $(this).closest('tr').find('#input0').removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $(this).closest('tr').find('#input1').removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $(this).closest('tr').find("#input3").removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $(this).closest('tr').find("#input6").removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $(this).closest('tr').find("#input7").removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $('table td:nth-child(11)').hide()
-  $('table td:nth-child(12)').hide()
-  $('table td:nth-child(15)').hide()
-  $(this).closest('tr').find("#yesOrNoC").show()
-  $td = $(this).parents("tr").children("td")
-  index=($td.eq(0).text())
-  #$td.eq(0).hide()
-
-
-  switch index
-      when "1"
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#9").fadeOut()
-          $("#10").fadeOut()
-      when "2"
-          $("#1").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#9").fadeOut()
-          $("#10").fadeOut()
-      when "3"
-          $("#1").fadeOut()
-          $("#2").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#9").fadeOut()
-          $("#10").fadeOut()
-      when "4"
-          $("#1").fadeOut()
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#9").fadeOut()
-          $("#10").fadeOut()
-      when "5"
-          $("#1").fadeOut()
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#9").fadeOut()
-          $("#10").fadeOut()
-      when "6"
-          $("#1").fadeOut()
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#9").fadeOut()
-          $("#10").fadeOut()
-      when "7"
-          $("#1").fadeOut()
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#9").fadeOut()
-          $("#8").fadeOut()
-          $("#10").fadeOut()
-      when "8"
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#1").fadeOut()
-          $("#9").fadeOut()
-          $("#10").fadeOut()
-      when "9"
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#1").fadeOut()
-          $("#10").fadeOut()
-      when "10"
-          $("#2").fadeOut()
-          $("#3").fadeOut()
-          $("#4").fadeOut()
-          $("#5").fadeOut()
-          $("#6").fadeOut()
-          $("#7").fadeOut()
-          $("#8").fadeOut()
-          $("#9").fadeOut()
-          $("#1").fadeOut()
+  acc_createurl="/new/accounts"
+  xhttp = new XMLHttpRequest
+  xhttp.onreadystatechange = ->
+   if @readyState == 4 and @status == 200
+     $(".show").html(@responseText)
+  xhttp.open "GET", acc_createurl, true
+  # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
+  xhttp.send()
   return false
 
 
@@ -182,10 +69,10 @@ $(document).on "click", "#delete_acc", (event) ->
 $(document).on "click", "#edit_acc", (event) ->
   event.preventDefault()
 
-  $(this).closest('tr').find('#input1').removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $(this).closest('tr').find("#input3").removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $(this).closest('tr').find("#input6").removeAttr("onfocus").removeClass("border-0").addClass("border-4")
-  $(this).closest('tr').find("#input7").removeAttr("onfocus").removeClass("border-0").addClass("border-4")
+  $(this).closest('tr').find('#input1').removeAttr("onfocus").removeClass("border-0").addClass("round1")
+  $(this).closest('tr').find("#input3").removeAttr("onfocus").removeClass("border-0").addClass("round1")
+  $(this).closest('tr').find("#input6").removeAttr("onfocus").removeClass("border-0").addClass("round1")
+  $(this).closest('tr').find("#input7").removeAttr("onfocus").removeClass("border-0").addClass("round1")
   $('table td:nth-child(11)').hide()
   $('table td:nth-child(12)').hide()
   $('table td:nth-child(15)').hide()
@@ -207,7 +94,7 @@ $(document).on "click", "#acc_checkE", (event) ->
   $(this).closest('tr').find("#input3").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
   $(this).closest('tr').find("#input6").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
   $(this).closest('tr').find("#input7").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  $('table td:nth-child(11)').show()
+  
   $('table td:nth-child(15)').show()
   $('table td:nth-child(12)').show()
   $(this).closest('tr').find("#yesOrNoE").hide()
@@ -231,127 +118,26 @@ $(document).on "click", "#acc_checkC", (event) ->
   acc_cost=$(this).closest('tr').find('#input6').val()
   acc_note=$(this).closest('tr').find('#input7').val()
   acc_kind=$(this).closest('tr').find('#input2').val()
-  acc_year=$(this).closest('tr').find('#input4').val().substr 3,2 #acc_date 之年
-  acc_month=$(this).closest('tr').find('#input4').val().substr 0,2#acc_date 之月
-  acc_date="20"+acc_year+acc_month　#轉換成資料庫格式YYYYMM
+  acc_year=$(this).closest('tr').find('#date_yy').val() #acc_date 之年
+  acc_month=$(this).closest('tr').find('#date_mm').val()#acc_date 之月
+  acc_date=acc_year+acc_month　#轉換成資料庫格式YYYYMM
 
 　　#畫面控制邊框
-  $(this).closest('tr').find('#input1').attr("onfocus","this.blur()").removeClass("border-4").addClass("border-0")
-  $(this).closest('tr').find("#input3").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  $(this).closest('tr').find("#input6").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  $(this).closest('tr').find("#input7").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  $(this).closest('tr').find("#input0").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
+  #$(this).closest('tr').find('#input1').attr("onfocus","this.blur()").removeClass("border-4").addClass("border-0")
+  #$(this).closest('tr').find("#input3").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
+  #$(this).closest('tr').find("#input6").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
+  #$(this).closest('tr').find("#input7").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
+  #$(this).closest('tr').find("#input0").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
 　　#按鈕控制 顥示
-  $('table td:nth-child(11)').show()
-  $('table td:nth-child(15)').show()
-  $('table td:nth-child(12)').show()
-  $td = $(this).parents("tr").children("td")
-  index=($td.eq(0).text())
-  $(this).closest('tr').find("#yesOrNoC").hide()
+  #$('table td:nth-child(11)').show()
+  #$('table td:nth-child(15)').show()
+  #$('table td:nth-child(12)').show()
+  #$td = $(this).parents("tr").children("td")
+  #index=($td.eq(0).text())
+  #$(this).closest('tr').find("#yesOrNoC").hide()
   #開啓REUQEST指向ACTION
   $(this).closest('a').removeAttr("href")
-  acc_url="/new/accounts?id="+id+"&;acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;locale=zh_TW"
-  switch index
-      when "1"
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#9").fadeIn()
-          $("#10").fadeIn()
-      when "2"
-          $("#1").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#9").fadeIn()
-          $("#10").fadeIn()
-      when "3"
-          $("#1").fadeIn()
-          $("#2").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#9").fadeIn()
-          $("#10").fadeIn()
-      when "4"
-          $("#1").fadeIn()
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#9").fadeIn()
-          $("#10").fadeIn()
-      when "5"
-          $("#1").fadeIn()
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#9").fadeIn()
-          $("#10").fadeIn()
-      when "6"
-          $("#1").fadeIn()
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#9").fadeIn()
-          $("#10").fadeIn()
-      when "7"
-          $("#1").fadeIn()
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#9").fadeIn()
-          $("#8").fadeIn()
-          $("#10").fadeIn()
-      when "8"
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#1").fadeIn()
-          $("#9").fadeIn()
-          $("#10").fadeIn()
-      when "9"
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#1").fadeIn()
-          $("#10").fadeIn()
-      when "10"
-          $("#2").fadeIn()
-          $("#3").fadeIn()
-          $("#4").fadeIn()
-          $("#5").fadeIn()
-          $("#6").fadeIn()
-          $("#7").fadeIn()
-          $("#8").fadeIn()
-          $("#9").fadeIn()
-          $("#1").fadeIn()
+  acc_url="/create/accounts?id="+id+"&;acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;locale=zh_TW"
 
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->

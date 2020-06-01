@@ -1,0 +1,16 @@
+
+
+<h1>客戶資料維護</h1>
+
+<div class="d-flex flex-row  align-items-center">
+客戶編號：
+<input class="box form-control col-lg-1" size="9"  type="text"  id="inputquery" >
+
+
+ </div>
+
+ <div>
+ <button id="query_cust" type="button" class="btn btn-primary" ><%= (I18n.t :query, scope: [ :buttons ]) %></button>
+ <button id="reset_button" type="button" class="btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="create_cust" class="btn btn-primary" >新增</button>
+ </div>

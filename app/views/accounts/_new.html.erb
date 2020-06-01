@@ -1,0 +1,113 @@
+
+
+
+<p style="display:none;" id="notice"><%= notice %></p>
+<p </p>
+<p </p>
+
+
+<table class="table table-hover">
+
+  <thead >
+    <style>
+    input.normal {
+      border: 2px solid red;
+    }
+
+    input.round1 {
+      border: 3px solid grey;
+      border-radius: 5px;
+    }
+
+    input.round2 {
+      border: 4px solid red;
+      border-radius: 111px;
+    }
+
+    input.round3 {
+      border: 2px solid red;
+      border-radius: 12px;
+    }
+    </style>
+
+    <tr >
+
+      <td>客戶編號</td>
+      <td>客戶類別名稱</td>
+      <td align="center" valign="center">類　別</td>
+      <td align="center" valign="center">單　　號</td>
+      <td align="center" valign="center">年份</td>
+      <td align="center" valign="center">月份</td>
+         <td style="display:none;"> </td>
+      <td align="center" valign="center">費用</td>
+      <td align="center" valign="center">備註</td>
+
+        <td>處理      </td>
+           <td> </td>
+
+    </tr>
+  </thead>
+  <tbody id="bodyrow">
+　
+
+      <tr >
+
+        <td style="display:none;"><input name="account[id]" id ="input" ></td>
+        <td> <input class="col box round1 form-control" size="3"  type="text"  id="input0"  > </td>
+        <td> <input class="col box round1 form-control" size="4" type="text" id="input1" > </td>
+        <td> <input class="col box border-0 form-control" size="2" type="text" id="input2"  value="WR"  > </td>
+        <td> <input class="col box round1 form-control" size="3"  type="text"  id="input3"  > </td>
+        <td>
+          <select id="date_yy" class="custom-select col-lg-15" required>
+           <option value="2020">2020 </option>
+           <option value="2021">2021 </option>
+           <option value="2022">2022 </option>
+           <option value="2023">2023 </option>
+           <option value="2024">2024 </option>
+           <option value="2025">2025 </option>
+           <option value="2026">2026 </option>
+           <option value="2027">2027 </option>
+           <option value="2028">2028 </option>
+           <option value="2029">2029 </option>
+           <option value="2030">2030 </option>
+
+         </select>     </td>
+         <td>
+           <select id="date_mm" class=" custom-select col-lg-15" required>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select></td>
+
+
+
+        <td style="display:none;"> <input class="box border-0 form-control" size="19"  type="text"　 id="input5"  > </td>
+        <td> <input class="col box round1 form-control" size="6"  type="text" style="text-align:right"  id="input6" ></td>
+        <td> <input class="col box round1 form-control" size="20" type="text"   id="input7" ></td>
+        <td style="display:none;">    </td>
+        <td style="display:none;">    </td>
+        <td id ='yesOrNoC'>
+        <button id="acc_checkC" class="btn btn-primary" remote="true">確定</button>
+         <button id="check_resetC" class="reset_button btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+       　</td>
+       <td>
+
+      </td>
+
+      </tr>
+
+
+
+
+  </tbody>
+
+</table>

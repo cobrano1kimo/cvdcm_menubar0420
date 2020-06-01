@@ -47,7 +47,9 @@
 
  </div>
 
+ <div style="padding:13px;">
+ <button id="query_acc" type="button" class="btn btn-primary" ><%= (I18n.t :query, scope: [ :buttons ]) %></button>
 
-
-<button id="query_button" type="button" class="btn btn-primary" ><%= (I18n.t :query, scope: [ :buttons ]) %></button>
-<button id="reset_button" type="button" class="btn btn-primary"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+ <button id="reset_button" type="button" class="btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="create_acc" class="btn btn-primary" >新增</button>
+ </div>

@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :histories
   resources :user_groups
-  resources :customers
+  resources :customers, only: [:index,:destroy]
   resources :accounts, only: [:index,:destroy]
   devise_for :users, only: [:sessions]
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+   #account
   scope :controller => "accounts", :path => "/accounts" do
 
     get 'accounts', :to => "accounts#edit", as: "invoices"
@@ -17,12 +19,45 @@ Rails.application.routes.draw do
     get 'accounts', :to => "accounts#new", as: "ninvoices"
     post 'accounts', :to =>"accounts#new" , as: "nacinvoices"
   end
+  scope :controller => "accounts", :path => "/create" do
+
+    get 'accounts', :to => "accounts#create", as: "cinvoices"
+    post 'accounts', :to =>"accounts#create" , as: "cacinvoices"
+  end
 
   scope :controller => "accounts", :path => "/query" do
 
-    get 'accounts', :to => "accounts#query", as: "finvoices"
-    post 'accounts', :to =>"accounts#query" , as: "facinvoices"
+    get 'accounts', :to => "accounts#query" ,as: "qinvoices"
+    post 'accounts', :to =>"accounts#query" ,as: "qacinvoices"
   end
+  #customer
+  scope :controller => "customers", :path => "/customers" do
+
+    get 'customers', :to => "customers#edit",as:"mantaincust"
+    post 'customers', :to =>"customers#edit",as:"mpantaincust"
+  end
+
+  scope :controller => "customers", :path => "/new" do
+
+    get 'customers', :to => "customers#new",as:"nmantaincust"
+    post 'customers', :to =>"customers#new",as:"npantaincust"
+  end
+  scope :controller => "customers", :path => "/create" do
+
+    get 'customers', :to => "customers#create",as:"cnmantaincust"
+    post 'customers', :to =>"customers#create",as:"cnpantaincust"
+  end
+  scope :controller => "customers", :path => "/query" do
+
+    get 'customers', :to => "customers#query",as:"qnmantaincust"
+    post 'customers', :to =>"customers#query",as:"qnpantaincust"
+  end
+  scope :controller => "histories", :path => "/query" do
+
+    get 'histories', :to => "histories#query",as:"gquery_history"
+    post 'histories', :to =>"histories#query",as:"pquery_history"
+  end
+
 
   scope "(:locale)", locale: /zh_TW|en/ do
     root "menubars#show_menu"

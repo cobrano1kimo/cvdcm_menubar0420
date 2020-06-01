@@ -13,7 +13,7 @@
                   <div class="form-label-group">
                     <%= f.input :password, autocomplete: "off", class: "form-control" %>
                   </div>
-                  <div class="custom-control custom-checkbox mb-3">
+                  <div style="display:none;" class="custom-control custom-checkbox mb-3">
                     <%= f.input :remember_me, class: "custom-control-input", as: :boolean if devise_mapping.rememberable? %>
                   </div>
                   <div class="row">

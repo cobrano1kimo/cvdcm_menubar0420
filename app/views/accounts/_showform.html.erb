@@ -1,14 +1,38 @@
 
 
 
-<p id="notice"><%= notice %></p>
+<p style="display:none;" id="notice"><%= notice %></p>
+<p </p>
+<p </p>
 
+  <div>
   <%= paginate @accounts, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>
 
- 使用者：<%= @wonstaff %>　總金額<%=@sumcost%>
+  </div>
 <table class="table table-hover">
-
+使用者：<%= @wonstaff %>　總金額：$ <%=@sumcost%> 總筆數： <%=@rowsum%>
   <thead >
+    <style>
+    input.normal {
+      border: 2px solid red;
+    }
+
+    input.round1 {
+      border: 3px solid grey;
+      border-radius: 5px;
+    }
+
+    input.round2 {
+      border: 4px solid red;
+      border-radius: 111px;
+    }
+
+    input.round3 {
+      border: 2px solid red;
+      border-radius: 12px;
+    }
+    </style>
+
     <tr >
       <td>項次</td>
       <td>客戶編號</td>
@@ -31,16 +55,15 @@
       <tr  id=<%= index+1 %>>
         <td ><%= index+1 %></td>
         <td style="display:none;"><input name="account[id]" id ="input" value=<%= account.id %>></td>
-
         <td> <input class="box border-0 form-control" size="3"  type="text"  id="input0" onfocus="this.blur()" value=<%=account.cust_id %>> </td>
         <td> <input class="box border-0 form-control" size="4" type="text" id="input1" onfocus="this.blur()" value=<%=account.cust_type %>> </td>
         <td> <input class="box border-0 form-control" size="2" type="text" id="input2" onfocus="this.blur()"  value=<%=account.acc_kind %>> </td>
         <td> <input class="box border-0 form-control" size="3"  type="text"  id="input3" onfocus="this.blur()" value=<%=account.acc_no %>> </td>
         <td> <input class="box border-0 form-control"  size="3" type="text"   id="input4" onfocus="this.blur()" value=<%= rocTime(account.acc_date) %>> </td>
-        <td> <input class="box border-0 form-control" size="12"  type="text"　 id="input5" onfocus="this.blur()" value=<%=account.customer.cust_name %> > </td>
+        <td> <input class="box border-0 form-control" size="19"  type="text"　 id="input5" onfocus="this.blur()" value=<%=account.customer.cust_name %> > </td>
         <td> <input class="box border-0 form-control" size="6"  type="text" style="text-align:right"  id="input6" onfocus="this.blur()" value=<%=account.acc_cost %> ></td>
         <td> <input class="box border-0 form-control" size="20" type="text"   id="input7" onfocus="this.blur()" value=<%=account.acc_note %> ></td>
-        <td>
+        <td style="display:none;">
             <button id="create_acc" class="btn btn-primary" remote="true">新增</button>
         </td>
         <td>

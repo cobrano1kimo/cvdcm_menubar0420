@@ -1,0 +1,79 @@
+
+
+
+<p style="display:none;" id="notice"><%= notice %></p>
+<p </p>
+<p </p>
+
+
+<table class="table table-hover">
+
+  <thead >
+    <style>
+    input.normal {
+      border: 2px solid red;
+    }
+
+    input.round1 {
+      border: 3px solid grey;
+      border-radius: 5px;
+    }
+
+    input.round2 {
+      border: 4px solid red;
+      border-radius: 111px;
+    }
+
+    input.round3 {
+      border: 2px solid red;
+      border-radius: 12px;
+    }
+    </style>
+
+    <tr >
+         <td  style="display:none;"></td>
+      <td>客戶編號</td>
+      <td>客戶名稱</td>
+      <td align="center" valign="center">狀態</td>
+      <td align="center" valign="center">業務人員</td>
+      <td align="center" valign="center">備註</td>
+
+        <td>處理      </td>
+           <td> </td>
+
+    </tr>
+  </thead>
+  <tbody id="bodyrow">
+　
+
+      <tr >
+           <td  style="display:none;"></td>
+
+        <td> <input class="col box round1 form-control" size="5"  type="text"  id="input0"  > </td>
+        <td> <input class="col box round1 form-control" size="5" type="text" id="input1" > </td>
+        <td><select id="input2" class="custom-select col-lg-12" required>
+
+        <option id="op1"  value="">合約中</option>
+        <option id="op2"  value="P">己結算</option>
+        <option id="op3"  value="Y" >己解約</option>
+
+      </select>  </td>
+        <td> <input class="col box border-0 form-control" onfocus="this.blur()" size="3"  type="text"  id="input3" value=<%=@wonstaff%> > </td>
+        <td> <input class="col box round1 form-control" size="19"  type="text"　 id="input4"  > </td>
+
+        <td id ='yesOrNoC'>
+        <button id="cust_checkC" class="btn btn-primary" remote="true">確定</button>
+         <button id="check_resetC" class="reset_button btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+       　</td>
+       <td>
+
+      </td>
+
+      </tr>
+
+
+
+
+  </tbody>
+
+</table>

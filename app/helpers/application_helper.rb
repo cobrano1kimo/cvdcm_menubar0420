@@ -1,4 +1,6 @@
 module ApplicationHelper
+  #next month
+
 #將年月YYYYMM改成MMYY
   def rocTime(date)
     if date.nil?
@@ -14,20 +16,15 @@ module ApplicationHelper
      date= "20"+date[3,2]+date[0,2]
     end
   end
-
-
-  def subdate(id)
-      if id.nil?
-        id=id
-      else
-       id=id[5,6]
-      end
-  end
-  def subcustid(id)
-  if id.nil?
-    id=id
-  else
-      id=id[0,5]
+  #show cust_stat
+  def statShow(stats)
+    if stats.nil? || stats.empty?
+      stats ="合約中"
+    elsif stats =="Y"
+      stats ="己解約"
+    elsif stats =="P"
+      stats ="己結算"
     end
   end
-end
+
+ end
