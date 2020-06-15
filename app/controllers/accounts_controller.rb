@@ -10,13 +10,14 @@ class AccountsController < ApplicationController
     @pagestat=="N"
     custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
     @sumcost=Account.all.joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost)
-    #@accounts=Account.new
+    @accounts=Account.new
     # p "#{custid['cust_id']}"
     @accounts=Account.all.joins(:customer).where(customers: {cust_id: custid}).page(params[:page]).per(10)
     @rowsum= @accounts.count()
     @menubars = Menubar.all
     @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
+    render :query
     # if @current_page != params[:page] || @current_menu_id.blank? then
     #   @current_menu_id = @menubar.menu_id
     #   @current_page = params[:page]
@@ -26,12 +27,9 @@ class AccountsController < ApplicationController
   # GET /accounts/1$('
   # GET /accounts/1.json
   def query
-
-
-
+    @stats= "query"
     #@accounts=Account.new
     # p "#{custid['cust_id']}"
-
     @menubars = Menubar.all
     @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
@@ -39,31 +37,49 @@ class AccountsController < ApplicationController
     #   @current_menu_id = @menubar.menu_id
     #   @current_page = params[:page]
     # end
-
     usemakedate= nextMonth(params[:acc_date])
-
     #accout add
     if params[:cust_id].empty?
       puts "empty"
        custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
        @accounts=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
+
+               puts @stats
+       if  params[:page]==""
+         @page="nochange"
+
+
+       end
        @rowsum=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
        @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost)
+       #沒資訊自動帶上個月
+
        Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT acc_kind, acc_no,acc_date="+params[:acc_date]+",acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at FROM accounts a WHERE a.acc_date="+usemakedate+" and (select COUNT(*) from accounts where acc_date="+params[:acc_date]+")< 1")
     else
        custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id],won_staff: @wonstaff)
+       @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
+       firstpage2 = @accounts.current_page
+       puts "firstpage2=" +firstpage2.to_s
+       if firstpage2 != 1 and params[:page]==""
+         params[:page]= 1
+           @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
+       end
        @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
        @rowsum=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
        @sumcost=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost)
        puts "noempty"
     end
 
-    puts params[:page].to_i
-   if params[:page].to_i > 0
+       puts params[:page]
+   if params[:page].to_i == 1
     @page="change"
-   elsif params[:page].to_i >= 0
-      params[:page]= "1"
+    puts "change1"
+  elsif params[:page].to_i == 0
+     puts "nochange"
     @page="nochange"
+  else
+    @page="change"
+    puts "change2"
    end
 
   end
@@ -252,7 +268,8 @@ end
       :cust_type,
         :cre_date,
       :acc_note,
-     :cust_name
+     :cust_name,
+     :pagebar
     )
   end
 

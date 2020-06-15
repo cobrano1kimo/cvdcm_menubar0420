@@ -13,6 +13,7 @@ class CustomersController < ApplicationController
     @menubars = Menubar.all
     @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
+    render :query
     # if @current_page != params[:page] || @current_menu_id.blank? then
     #   @current_menu_id = @menubar.menu_id
     #   @current_page = params[:page]

@@ -1,11 +1,104 @@
 
+<h3>月報表管理系統</h3>
 
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <!-- Dropdown -->
+
+    <% last_parent_menu_id = '' %>
+    <% last_menu_id = '' %>
+    <% @menus.each do |menubar| %>
+        <% if last_menu_id.present? && menubar.menu_id[0,6] != last_menu_id[0,6] %>
+          </div>
+        </li>
+        <% end %>
+      <% if menubar.parent_menu_id.present? && menubar.parent_menu_id == menubar.menu_id[0,6] %>
+        <% if menubar.program_url.present? %>
+          <a class="dropdown-item" href="<%= menubar.program_url %>"><%= menubar.menu_name.strip %></a>
+        <% else %>
+          <a class="dropdown-item" href="#"><%= menubar.menu_name.strip %></a>
+        <% end %>
+      <% else %>
+      <% if menubar.parent_menu_id.blank? && menubar.menu_id.present? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" id="navbardrop" data-toggle="dropdown">
+            <%= menubar.menu_name.strip %>
+          </a>
+          <div class="dropdown-menu">
+      <% end %>
+      <% end %>
+      <% last_parent_menu_id = menubar.parent_menu_id %>
+      <% last_menu_id = menubar.menu_id  %>
+    <% end %>
+          </div>
+        </li>
+  </ul>
+
+  <ul class="navbar-nav">
+    <%= link_to "登出", destroy_user_session_path, method: :delete, :class => "btn btn-info btn-sm" %>
+  </ul>
+</nav>
+
+<h1>INVOICE單</h1>
+
+<div class="d-flex flex-row  align-items-center">
+客戶編號：
+<input class="box form-control col-lg-1" size="9"  type="text"  id="input0" >
+
+
+
+
+   <div class="d-flex flex-row justify-content-between align-items-center" >
+      年：
+     <select id="date_yy" class="custom-select col-lg-6" required>
+
+       <option value="2020">2020 </option>
+       <option value="2021">2021 </option>
+       <option value="2022">2022 </option>
+       <option value="2023">2023 </option>
+       <option value="2024">2024 </option>
+       <option value="2025">2025 </option>
+       <option value="2026">2026 </option>
+       <option value="2027">2027 </option>
+       <option value="2028">2028 </option>
+       <option value="2029">2029 </option>
+       <option value="2030">2030 </option>
+
+     </select>
+月：
+     <select id="date_mm" class="custom-select col-lg-5" required>
+
+
+       <option value="01">01</option>
+       <option value="02">02</option>
+       <option value="03">03</option>
+       <option value="04">04</option>
+       <option value="05">05</option>
+       <option value="06">06</option>
+       <option value="07">07</option>
+       <option value="08">08</option>
+       <option value="09">09</option>
+       <option value="10">10</option>
+       <option value="11">11</option>
+       <option value="12">12</option>
+     </select>
+   </div>
+
+ </div>
+
+ <div style="padding:13px;">
+ <button id="query_acc" type="button" class="btn btn-primary" ><%= (I18n.t :query, scope: [ :buttons ]) %></button>
+
+ <button id="reset_button" type="button" class="btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="create_acc" class="btn btn-primary" >新增</button>
+ </div>
 
 <p style="display:none;" id="notice"><%= notice %></p>
 <p </p>
 <p </p>
 
-  <div>
+  <div id ="pageinate">
   <%= paginate @accounts, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>
 
   </div>

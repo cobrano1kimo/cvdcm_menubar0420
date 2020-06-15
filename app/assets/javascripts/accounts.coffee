@@ -94,7 +94,7 @@ $(document).on "click", "#acc_checkE", (event) ->
   $(this).closest('tr').find("#input3").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
   $(this).closest('tr').find("#input6").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
   $(this).closest('tr').find("#input7").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  
+
   $('table td:nth-child(15)').show()
   $('table td:nth-child(12)').show()
   $(this).closest('tr').find("#yesOrNoE").hide()
