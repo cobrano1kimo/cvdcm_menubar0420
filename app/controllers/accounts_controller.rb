@@ -270,7 +270,7 @@ end
 
    # ----------------------------------------------------------------------------------------------------------------------
 
- def resulte　
+ def resulte
    send_file $dlurl[2],
           type: "application/xlsx",
           streaming: "true",
@@ -285,12 +285,13 @@ end
 
  end
 
-def resultp1　
-  puts "reusltp1"
+def resultp1
+
   send_file $dlurl[1],
          type: "application/pdf",
          streaming: "true",
          buffer_size: "4096"
+
 end
    private
 
