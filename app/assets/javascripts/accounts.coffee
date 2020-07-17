@@ -166,8 +166,21 @@ $(document).on "click", "#printP", (event) ->
   acc_url="/printp/accounts?acc_date="+acc_date+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
+  xhttp.responseType = "blob"
+  xhttp.overrideMimeType("application/pdf; charset=utf-8")
+  xhttp.onload = ->
    if @readyState == 4 and @status == 200
-     $(".show").html(@responseText)
+     blob = xhttp.response
+     a = document.createElement('a')
+     a.style = 'display: none'
+     document.body.appendChild a
+     url = window.URL.createObjectURL(blob)
+     a.href = url
+     contentDispo = decodeURIComponent(escape(@getResponseHeader('Content-Disposition')))
+     fileName = (contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1]).replace(/"/g,'')
+     a.download = fileName
+     a.click()
+     window.URL.revokeObjectURL url
   xhttp.open "GET", acc_url, true
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()

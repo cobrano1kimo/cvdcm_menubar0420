@@ -263,8 +263,12 @@ end
    @dlfilenamep1=$dlurl[1].last(17)
    @dlfilenamee=$dlurl[2].last(16)
 
+   send_file $dlurl[0],
+            type: "application/pdf",
+            streaming: "true",
+            buffer_size: "4096"
 
-   render :resultp
+   #render :resultp
  end
    # ----------------------------------------------------------------------------------------------------------------------
 
