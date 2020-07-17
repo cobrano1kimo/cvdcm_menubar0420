@@ -243,10 +243,7 @@ end
   #    format.json { head :no_content }
   #  end
   end
- def printe
-
-    render :resulte
- end
+  #列印的ACTION
  def printp
 
    @menubars = Menubar.all
@@ -254,40 +251,42 @@ end
    @menus = Menubar.order(:menu_sn)
 
    acc_yyyy_mm = params[:acc_date]
-
    yyyy_mm = (acc_yyyy_mm[0..3].to_i-1911).to_s+"年"+(acc_yyyy_mm[4..5])+'月'
-
    user_name = @wonstaff
    # acc_total = 0
-   $dlurl=["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf"]
+
+   $dlurl=["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"]
 
    generate_pdf(yyyy_mm,acc_yyyy_mm,user_name)
 
    @dlfilenamep=$dlurl[0].last(15)
    @dlfilenamep1=$dlurl[1].last(17)
-    render :resultp
+   @dlfilenamee=$dlurl[2].last(16)
 
 
+   render :resultp
  end
    # ----------------------------------------------------------------------------------------------------------------------
 
    # ----------------------------------------------------------------------------------------------------------------------
 
- def resulte
-
+ def resulte　
+   send_file $dlurl[2],
+          type: "application/xlsx",
+          streaming: "true",
+          buffer_size: "4096"
  end
- #月報
+
  def resultp
-
    send_file $dlurl[0],
             type: "application/pdf",
             streaming: "true",
             buffer_size: "4096"
 
  end
- #小計
-def resultp1
 
+def resultp1　
+  puts "reusltp1"
   send_file $dlurl[1],
          type: "application/pdf",
          streaming: "true",
@@ -311,7 +310,7 @@ end
      # 産生「倉儲費用報表」
 
     if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
-        File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
+       File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
     end
 
      info = {
@@ -547,7 +546,211 @@ end
      end
 
  end
-  return ["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf"]
+ if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
+    File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
+ end
+ workbook = WriteXLSX.new("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
+
+ # Add a worksheet
+ worksheet = workbook.add_worksheet
+ # worksheet1 = workbook.add_worksheet('Named colors')
+
+ # Add and define a format
+ # format = workbook.add_format # Add a format
+ # format.set_bold
+ # format.set_color('red')
+ # format.set_align('center')
+
+ # Some common formats
+ center  = workbook.add_format(:align => 'center')
+ # heading = workbook.add_format(:align => 'center', :bold => 1)
+ # bold = workbook.add_format( :bold => 1 )
+
+ # Write a hyperlink
+ # hyperlink_format = workbook.add_format(
+ #                      :color     => 'blue',
+ #                      :underline => 1
+ #                                       )
+
+ # Formats used in the workbook.
+ # percent_format = workbook.add_format(:num_format => '0.0%'
+ # date_format = workbook.add_format(:num_format => 'dd/mm/yyyy')
+ # chart       = workbook.add_chart(:type => 'stock', :embedded => 1)
+
+
+ # colors = {
+ #                 0x08 => 'black',
+ #                 0x0C => 'blue',
+ #                 0x10 => 'brown',
+ #                 0x0F => 'cyan',
+ #                 0x17 => 'gray',
+ #                 0x11 => 'green',
+ #                 0x0B => 'lime',
+ #                 0x0E => 'magenta',
+ #                 0x12 => 'navy',
+ #                 0x35 => 'orange',
+ #                 0x21 => 'pink',
+ #                 0x14 => 'purple',
+ #                 0x0A => 'red',
+ #                 0x16 => 'silver',
+ #                 0x09 => 'white',
+ #                 0x0D => 'yellow',
+ #         }
+
+
+
+ # order.each do |index|
+ #   format = workbook.add_format(
+ #       :fg_color => colors[index],
+ #       :pattern  => 1,
+ #       :border   => 1
+ #   )
+
+
+ # (8..63).each do |i|
+ #   format = workbook.add_format(
+ #       :fg_color => i,
+ #       :pattern  => 1,
+ #       :border   => 1
+ #   )
+
+ # text_wrap  = workbook.add_format( :text_wrap => 1, :valign => 'top' )
+
+ # Light red fill with dark red text.
+ # format1 = workbook.add_format(
+ #     :bg_color => '#FFC7CE',
+ #     :color    => '#9C0006'
+ # )
+
+ # Green fill with dark green text.
+ # format2 = workbook.add_format(
+ #     :bg_color => '#C6EFCE',
+ #     :color    => '#006100'
+ # )
+
+
+ # heading = workbook.add_format(
+ #     :bold  => 1,
+ #     :color => 'blue',
+ #     :size  => 16,
+ #     :merge => 1,
+ #     :align => 'vcenter'
+ # )
+ #
+ # hyperlink_format = workbook.add_format(
+ #     :color => 'blue',
+ #     :underline => 1
+ # )
+
+
+ #######################################################################
+ #
+ # Some text examples
+ #
+ # text_format = workbook.add_format(
+ #     :bold   => 1,
+ #     :italic => 1,
+ #     :color  => 'red',
+ #     :size   => 18,
+ #     :font   => 'Lucida Calligraphy'
+ # )
+
+ #######################################################################
+ #
+ # Some numeric examples
+ #
+ # num1_format = workbook.add_format(:num_format => '$#,##0.00')
+ # num2_format = workbook.add_format(:num_format => ' d mmmm yyy')
+
+ # format1 = workbook.add_format(:diag_type => 1)
+ # format2 = workbook.add_format(:diag_type => 2)
+ # format3 = workbook.add_format(:diag_type => 3)
+ #
+ # format4 = workbook.add_format(
+ #     :diag_type   => 3,
+ #     :diag_border => 7,
+ #     :diag_color  => 'red'
+ # )
+
+
+ # worksheet.set_column(0, 0, 60)
+ #
+ # format = workbook.add_format
+ # format.set_bold
+ # format.set_size(14)
+ # format.set_color('blue')
+ # format.set_align('center')
+ #
+ # format2 = workbook.add_format
+ # format2.set_bold
+ # format2.set_color('blue')
+ #
+ # format3 = workbook.add_format(
+ #                               :color     => 'blue',
+ #                               :underline => 1,
+ #                              )
+
+ # format = workbook.add_format(
+ #                              :bg_color => color,
+ #                              :pattern  => 1,
+ #                              :border   => 1
+ #                             )
+
+ # Create a merged format
+ # format = workbook.add_format(
+ #     :center_across => 1,
+ #     :bold          => 1,
+ #     :size          => 15,
+ #     :pattern       => 1,
+ #     :border        => 6,
+ #     :color         => 'white',
+ #     :fg_color      => 'green',
+ #     :border_color  => 'yellow',
+ #     :align         => 'vcenter'
+ # )
+
+
+ # Write a formatted and unformatted string, row and column notation.
+ item = 0
+ worksheet.write(item, 0, "項次")
+ worksheet.write(item, 1, "客戶編號")
+ worksheet.write(item, 2, "客戶名稱")
+ worksheet.write(item, 3, "帳單名稱")
+ worksheet.write(item, 4, "帳單類別")
+ worksheet.write(item, 5, "帳單編號")
+ worksheet.write(item, 6, "帳單金額")
+ worksheet.write(item, 7, "其他說明")
+
+
+ worksheet.autofilter( 'A1:G1' )
+
+ # worksheet.write(row, col, "Hi Excel!", format)
+ # worksheet.write(1,   col, "Hi Excel!")
+
+ # Write a number and a formula using A1 notation
+ # worksheet.write('A3', 1.2345)
+ # worksheet.write('A4', '=SIN(PI()/4)')
+
+
+ #
+ Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm}).order("cust_id ASC, cust_type ASC").each { |row|
+
+   item = item + 1
+   worksheet.write(item, 0, item)
+   worksheet.write(item, 1, "#{row['cust_id']}")
+   worksheet.write(item, 2, "#{row['cust_name']}")
+   worksheet.write(item, 3, "#{row['cust_type']}")
+   worksheet.write(item, 4, "#{row['acc_kind']}")
+   worksheet.write(item, 5, "#{row['acc_no']}")
+   worksheet.write(item, 6, "#{row['acc_cost']}")
+   worksheet.write(item, 7, "#{row['acc_note']}")
+
+   # puts "#{row['id']}"" #{row['acc_kind']} #{row['acc_no']}"
+ }
+
+ workbook.close
+
+  return ["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"]
  end
 
     #依查詢加上個月的資料
