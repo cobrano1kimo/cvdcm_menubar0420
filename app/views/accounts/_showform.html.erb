@@ -92,8 +92,14 @@
 
  <button id="reset_button" type="button" class="btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="create_acc" class="btn btn-primary" >新增</button>
- </div>
 
+
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="printE" class="btn btn-primary" >滙出EXCEL檔 </button>
+
+
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button  data-turbolinks=false id="printP" class = "btn btn-primary" >滙出PDF檔</button>
+<%= button_to "滙出PDF檔2", pinvoices_path, :class => "barcode_button btn btn-dark btn-sm", :method => :get, data: {turbolinks: false} %>
+<a href="/home/benson/cvdcm_menubar0420/public/109年2月倉儲費用.pdf" download>Download Receipt</a> </div>
 <p style="display:none;" id="notice"><%= notice %></p>
 <p </p>
 <p </p>

@@ -1,0 +1,19 @@
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">下載檔案名稱</th>
+        </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+    <td><%= link_to @dlfilenamep, rpinvoices_path , :class => "barcode_button btn btn-dark btn-sm", :method => :get, data: {turbolinks: false} %>    </td>
+        </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>  <%= render "resultp1"%></td>
+      </tr>
+    </tbody>
+</table>

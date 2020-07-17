@@ -37,6 +37,10 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 
+
+gem 'prawn'
+gem 'prawn-table'
+gem 'write_xlsx'
 # 使用 tiny_tds 介面連結 SQLServer 2016 資料庫
 gem 'tiny_tds'
 

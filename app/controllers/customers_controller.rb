@@ -39,7 +39,7 @@ class CustomersController < ApplicationController
       puts "empty"
        @customers=Customer.all.where(won_staff: @wonstaff).page(params[:page]).per(10)
     else
-       @customers=Customer.all.where(cust_id: params[:cust_id]).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
+       @customers=Customer.all.where(cust_id: params[:cust_id],won_staff: @wonstaff).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
       puts "noempty"
     end
 

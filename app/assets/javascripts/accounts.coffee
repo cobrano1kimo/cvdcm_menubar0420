@@ -147,7 +147,31 @@ $(document).on "click", "#acc_checkC", (event) ->
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
   return false
+  #print
+$(document).on "click", "#printE", (event) ->
+  event.preventDefault()
+  acc_date= $("#date_yy").val()+$("#date_mm").val()
+  acc_url="/printe/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+  xhttp = new XMLHttpRequest
+  xhttp.onreadystatechange = ->
+   if @readyState == 4 and @status == 200
+     $(".show").html(@responseText)
+  xhttp.open "GET", acc_url, true
+  # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
+  xhttp.send()
+  return false
+$(document).on "click", "#printP", (event) ->
 
+  acc_date= $("#date_yy").val()+$("#date_mm").val()
+  acc_url="/printp/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+  xhttp = new XMLHttpRequest
+  xhttp.onreadystatechange = ->
+   if @readyState == 4 and @status == 200
+     $(".show").html(@responseText)
+  xhttp.open "GET", acc_url, true
+  # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
+  xhttp.send()
+  return false
 
   # 觸發 '修改取消' 按鈕
 $(document).on "click", "#check_resetE", (event) ->

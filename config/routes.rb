@@ -30,6 +30,32 @@ Rails.application.routes.draw do
     get 'accounts', :to => "accounts#query" ,as: "qinvoices"
     post 'accounts', :to =>"accounts#query" ,as: "qacinvoices"
   end
+  scope :controller => "accounts", :path => "/printe" do
+
+    get 'accounts', :to => "accounts#printe" ,as: "einvoices"
+    post 'accounts', :to =>"accounts#printe" ,as: "eacinvoices"
+  end
+  scope :controller => "accounts", :path => "/printp" do
+
+    get 'accounts', :to => "accounts#printp" ,as: "pinvoices"
+    post 'accounts', :to =>"accounts#printp" ,as: "pacinvoices"
+
+  end
+  scope :controller => "accounts", :path => "/resultp" do
+
+    get 'accounts', :to => "accounts#resultp" ,as: "rpinvoices"
+    post 'accounts', :to =>"accounts#resultp" ,as: "rpacinvoices"
+  end
+  scope :controller => "accounts", :path => "/resulte" do
+
+    get 'accounts', :to => "accounts#resulte" ,as: "reinvoices"
+    post 'accounts', :to =>"accounts#resulte" ,as: "reacinvoices"
+  end
+  scope :controller => "accounts", :path => "/resultp1" do
+
+    get 'accounts', :to => "accounts#resultp1" ,as: "rp1invoices"
+    post 'accounts', :to =>"accounts#resultp1" ,as: "rp1cinvoices"
+  end
   #customer
   scope :controller => "customers", :path => "/customers" do
 
@@ -71,7 +97,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
 
   # bar_meeting GET   /foo/meetings/:id(.:format) events#show
   # bar_meetings POST /foo/meetings(.:format)     events#create
