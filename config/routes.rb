@@ -56,6 +56,11 @@ Rails.application.routes.draw do
     get 'accounts', :to => "accounts#resultp1" ,as: "rp1invoices"
     post 'accounts', :to =>"accounts#resultp1" ,as: "rp1cinvoices"
   end
+  scope :controller => "accounts", :path => "/printp1" do
+
+    get 'accounts', :to => "accounts#printp1" ,as: "p1invoices"
+    post 'accounts', :to =>"accounts#printp1" ,as: "p1cinvoices"
+  end
   #customer
   scope :controller => "customers", :path => "/customers" do
 
@@ -83,6 +88,11 @@ Rails.application.routes.draw do
     get 'histories', :to => "histories#query",as:"gquery_history"
     post 'histories', :to =>"histories#query",as:"pquery_history"
   end
+
+
+  # scope :controller => "accounts", :path => "/download" do
+  #   post 'accounts', :to =>"accounts#download_pdf",as: "dpacinvoices"
+  # end
 
 
   scope "(:locale)", locale: /zh_TW|en/ do

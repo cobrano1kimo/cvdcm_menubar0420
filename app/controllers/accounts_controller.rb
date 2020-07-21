@@ -253,18 +253,31 @@ end
    acc_yyyy_mm = params[:acc_date]
    yyyy_mm = (acc_yyyy_mm[0..3].to_i-1911).to_s+"年"+(acc_yyyy_mm[4..5])+'月'
    user_name = @wonstaff
-   # acc_total = 0
+   group = @group
+   # $dlurl=["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"]
 
-   $dlurl=["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"]
-
-   generate_pdf(yyyy_mm,acc_yyyy_mm,user_name)
-
-   @dlfilenamep=$dlurl[0].last(15)
-   @dlfilenamep1=$dlurl[1].last(17)
-   @dlfilenamee=$dlurl[2].last(16)
-
-   send_file $dlurl[0],
+   send_file printp_pdf(yyyy_mm,acc_yyyy_mm,user_name),
             type: "application/pdf",
+            streaming: "true",
+            buffer_size: "4096"
+
+   #render :resultp
+ end
+
+ def printe
+
+   @menubars = Menubar.all
+   @menubar = @menubars.first
+   @menus = Menubar.order(:menu_sn)
+
+   acc_yyyy_mm = params[:acc_date]
+   yyyy_mm = (acc_yyyy_mm[0..3].to_i-1911).to_s+"年"+(acc_yyyy_mm[4..5])+'月'
+   user_name = @wonstaff
+   group = @group
+   # $dlurl=["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"]
+
+   send_file printe_xlsx(yyyy_mm,acc_yyyy_mm,user_name),
+            type: "application/xlsx",
             streaming: "true",
             buffer_size: "4096"
 
@@ -274,46 +287,28 @@ end
 
    # ----------------------------------------------------------------------------------------------------------------------
 
- def resulte
-   send_file $dlurl[2],
-          type: "application/xlsx",
-          streaming: "true",
-          buffer_size: "4096"
- end
+ def printp1
 
- def resultp
-   send_file $dlurl[0],
+   acc_yyyy_mm = params[:acc_date]
+   yyyy_mm = (acc_yyyy_mm[0..3].to_i-1911).to_s+"年"+(acc_yyyy_mm[4..5])+'月'
+   user_name = @wonstaff
+   group = @group
+   # $dlurl=["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"]
+
+   send_file printp1_pdf(yyyy_mm,acc_yyyy_mm,user_name),
             type: "application/pdf",
             streaming: "true",
             buffer_size: "4096"
-
  end
-
-def resultp1
-
-  send_file $dlurl[1],
-         type: "application/pdf",
-         streaming: "true",
-         buffer_size: "4096"
-
-end
    private
 
     # Use callbacks to share common setup or constraints between actions.
     # def set_account
     # end
 
-  def generate_pdf(yyyy_mm,acc_yyyy_mm,user_name)
+  def printp_pdf(yyyy_mm,acc_yyyy_mm,user_name)
 
-   # if File.exists?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
-   #   File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
-   # end
-
-
-
-   # Prawn::Document.generate("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf") do
      # 産生「倉儲費用報表」
-
     if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
        File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
     end
@@ -441,12 +436,12 @@ end
 
        end
      end
-   # end
+       return "#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf"
+    end
 
 
    # 産生「倉儲費用小計報表」
-
-
+def printp1_pdf(yyyy_mm,acc_yyyy_mm,user_name)
    if File.exist?(yyyy_mm+"倉儲費用小計.pdf")
      File.delete(yyyy_mm+"倉儲費用小計.pdf")
    end
@@ -551,6 +546,10 @@ end
      end
 
  end
+  return "#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf"
+end
+
+def printe_xlsx(yyyy_mm,acc_yyyy_mm,user_name)
  if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
     File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
  end
@@ -755,7 +754,7 @@ end
 
  workbook.close
 
-  return ["#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf","#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"]
+  return "#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx"
  end
 
     #依查詢加上個月的資料

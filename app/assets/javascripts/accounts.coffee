@@ -149,19 +149,33 @@ $(document).on "click", "#acc_checkC", (event) ->
   return false
   #print
 $(document).on "click", "#printE", (event) ->
-  event.preventDefault()
-  acc_date= $("#date_yy").val()+$("#date_mm").val()
-  acc_url="/printe/accounts?acc_date="+acc_date+"&;locale=zh_TW"
-  xhttp = new XMLHttpRequest
-  xhttp.onreadystatechange = ->
-   if @readyState == 4 and @status == 200
-     $(".show").html(@responseText)
-  xhttp.open "GET", acc_url, true
-  # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
-  xhttp.send()
-  return false
+    acc_date= $("#date_yy").val()+$("#date_mm").val()
+    acc_url="/printe/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+    xhttp = new XMLHttpRequest
+    xhttp.onreadystatechange = ->
+    xhttp.responseType = "blob"
+    xhttp.overrideMimeType("application/pdf; charset=utf-8")
+    xhttp.onload = ->
+     if @readyState == 4 and @status == 200
+       blob = xhttp.response
+       a = document.createElement('a')
+       a.style = 'display: none'
+       document.body.appendChild a
+       url = window.URL.createObjectURL(blob)
+       a.href = url
+       contentDispo = decodeURIComponent(escape(@getResponseHeader('Content-Disposition')))
+       fileName = (contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1]).replace(/"/g,'')
+       a.download = fileName
+       a.click()
+       setTimeout (->
+         window.URL.revokeObjectURL url
+         return
+       ), 100
+    xhttp.open "GET", acc_url, true
+    # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
+    xhttp.send()
+    return false
 $(document).on "click", "#printP", (event) ->
-
   acc_date= $("#date_yy").val()+$("#date_mm").val()
   acc_url="/printp/accounts?acc_date="+acc_date+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
@@ -180,12 +194,41 @@ $(document).on "click", "#printP", (event) ->
      fileName = (contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1]).replace(/"/g,'')
      a.download = fileName
      a.click()
-     window.URL.revokeObjectURL url
+     setTimeout (->
+       window.URL.revokeObjectURL url
+       return
+     ), 100
   xhttp.open "GET", acc_url, true
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
   return false
-
+$(document).on "click", "#printP1", (event) ->
+  acc_date= $("#date_yy").val()+$("#date_mm").val()
+  acc_url="/printp1/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+  xhttp = new XMLHttpRequest
+  xhttp.onreadystatechange = ->
+  xhttp.responseType = "blob"
+  xhttp.overrideMimeType("application/pdf; charset=utf-8")
+  xhttp.onload = ->
+   if @readyState == 4 and @status == 200
+     blob = xhttp.response
+     a = document.createElement('a')
+     a.style = 'display: none'
+     document.body.appendChild a
+     url = window.URL.createObjectURL(blob)
+     a.href = url
+     contentDispo = decodeURIComponent(escape(@getResponseHeader('Content-Disposition')))
+     fileName = (contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1]).replace(/"/g,'')
+     a.download = fileName
+     a.click()
+     setTimeout (->
+       window.URL.revokeObjectURL url
+       return
+     ), 100
+  xhttp.open "GET", acc_url, true
+  # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
+  xhttp.send()
+  return false
   # 觸發 '修改取消' 按鈕
 $(document).on "click", "#check_resetE", (event) ->
   event.preventDefault()
