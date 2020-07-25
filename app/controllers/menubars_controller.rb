@@ -1,10 +1,16 @@
 class MenubarsController < ApplicationController
-
+  before_action :user_group
   before_action :find_menubar, only: [:form, :edit, :update, :destroy]
   before_action :find_parent_menubar, only: [:new, :edit]
 
   attr_accessor :current_menu_id
-
+  def user_group
+    staff = UserGroup.select("won_staff","group").where(login: authenticate_user![:login])  #authenticate_user![:login]
+    staff.each do |variable|
+      @wonstaff =variable.won_staff
+      @group =variable.group
+    end
+  end
   def index
     @form_state  = 'browse'
     @menubars = Menubar.page(params[:page]).per(10)

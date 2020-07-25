@@ -1,9 +1,13 @@
 <div class="row menu">
 <%= render "common/menu" %>
 </div>
-<div class="query">
-<%= render "queryform" %>
-</div>
-<div class="show">
 
+<div class="query">
+
+<% if @group=="3"%>
+<%= render "queryform" %>
+<% end %>
+</div>
+
+<div class="show">
 </div>

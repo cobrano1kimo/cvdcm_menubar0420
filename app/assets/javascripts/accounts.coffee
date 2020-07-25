@@ -30,7 +30,12 @@ $(document).on "click", "#query_acc", (event) ->
   event.preventDefault()
   cust_id = $("#input0").val()
   acc_date= $("#date_yy").val()+$("#date_mm").val()
-  acc_url="/query/accounts?cust_id="+cust_id+"&;acc_date="+acc_date+"&;locale=zh_TW"
+  won_staff=$("#​​nwonstaff").val()
+
+  if won_staff==""
+    acc_url="/query/accounts?cust_id="+cust_id+"&;acc_date="+acc_date+"&;locale=zh_TW"
+  else
+    acc_url="/query/accounts?cust_id="+cust_id+"&;acc_date="+acc_date+"&;won_staff="+won_staff+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
    if @readyState == 4 and @status == 200
