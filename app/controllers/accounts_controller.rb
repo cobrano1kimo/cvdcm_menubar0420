@@ -58,7 +58,7 @@ class AccountsController < ApplicationController
 
        end
        @rowsum=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
-       @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost)
+       @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
        #沒資訊自動帶上個月
 
        Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT acc_kind, acc_no,acc_date="+params[:acc_date]+",acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at FROM accounts a WHERE a.acc_date="+usemakedate+" and (select COUNT(*) from accounts where acc_date="+params[:acc_date]+")< 1")
@@ -73,7 +73,7 @@ class AccountsController < ApplicationController
        end
        @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
        @rowsum=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
-       @sumcost=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost)
+       @sumcost=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
        puts "noempty"
     end
 
@@ -102,6 +102,10 @@ def create
     @current_page = params[:page]
   end
   puts "create"
+  puts @wonstaff
+  if @group=="3" then
+  @wonstaff=params[:won_staff]
+  end
   custid = Customer.select(:cust_id).where(cust_id: params[:cust_id],won_staff: @wonstaff)
   if custid.size !=0 then
     @acc_count=Account.select(:cust_id).where(cust_id: params[:cust_id],
@@ -120,6 +124,7 @@ def create
                             acc_cost: params[:acc_cost],
                             acc_note: params[:acc_note],
                             acc_no: params[:acc_no])
+            if @group=="3" then
               @history =History.create(cust_id: @account.cust_id,
                      acc_date: @account.acc_date,
                      acc_kind: @account.acc_kind,
@@ -130,8 +135,24 @@ def create
                      note_aft: "",
                      no_bef:  @account.acc_no,
                      no_aft:  "",
+                     user_id: @itstaff,
+
+                     mark: "C" )
+              else
+              @history =History.create(cust_id: @account.cust_id,
+                     acc_date: @account.acc_date,
+                     acc_kind: @account.acc_kind,
+                     type_bef: @account.cust_type,
+                     cost_bef: @account.acc_cost,
+                     cost_aft: "",
+                     note_bef: @account.acc_note,
+                     note_aft: "",
+                     no_bef:  @account.acc_no,
+                     no_aft:  "",
+
                      user_id: @wonstaff,
                      mark: "C" )
+                   end
           end
   else
 
@@ -139,6 +160,7 @@ def create
 
       puts"ffffff"
   end
+  render :index
       #@accounts=Account.new
       # p "#{custid['cust_id']}"
 end
@@ -157,6 +179,12 @@ end
       @current_menu_id = @menubar.menu_id
       @current_page = params[:page]
     end
+    if @group=="3" then
+    @wonstaff=  params[:won_staff]
+    puts @wonstaff
+    end
+
+
 =begin
     @acc_count=Account.select(:cust_id).where(cust_id: params[:cust_id],
                               acc_date: params[:acc_date],
@@ -188,7 +216,7 @@ end
     staff.each do |variable|
       @wonstaff =variable.won_staff
       @group =variable.group
-
+      @itstaff =variable.won_staff
   end
 
 

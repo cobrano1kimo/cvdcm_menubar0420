@@ -50,7 +50,12 @@ $(document).on "click", "#query_acc", (event) ->
 # 觸發 '新增' 或 '修改' 的確認按鈕
 $(document).on "click", "#create_acc", (event) ->
   event.preventDefault()
-  acc_createurl="/new/accounts"
+  won_staff=$("#​​nwonstaff").val()
+
+  if won_staff==''
+    acc_createurl="/new/accounts"
+  else
+    acc_createurl="/new/accounts?won_staff="+won_staff+"&amp;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
    if @readyState == 4 and @status == 200
@@ -126,6 +131,7 @@ $(document).on "click", "#acc_checkC", (event) ->
   acc_year=$(this).closest('tr').find('#date_yy').val() #acc_date 之年
   acc_month=$(this).closest('tr').find('#date_mm').val()#acc_date 之月
   acc_date=acc_year+acc_month　#轉換成資料庫格式YYYYMM
+  won_staff=$("#wonstaff").text()
 
 　　#畫面控制邊框
   #$(this).closest('tr').find('#input1').attr("onfocus","this.blur()").removeClass("border-4").addClass("border-0")
@@ -142,8 +148,10 @@ $(document).on "click", "#acc_checkC", (event) ->
   #$(this).closest('tr').find("#yesOrNoC").hide()
   #開啓REUQEST指向ACTION
   $(this).closest('a').removeAttr("href")
-  acc_url="/create/accounts?id="+id+"&;acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;locale=zh_TW"
-
+  if won_staff==''
+   acc_url="/create/accounts?id="+id+"&;acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;locale=zh_TW"
+  else
+   acc_url="/create/accounts?id="+id+"&;acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;won_staff="+won_staff+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
    if @readyState == 4 and @status == 200
