@@ -4,7 +4,7 @@ require 'prawn/table'
 
 class AccountsController < ApplicationController
   before_action :user_group
-
+  before_action only: [:destroy]
 
 
   # GET /accounts
@@ -43,7 +43,13 @@ class AccountsController < ApplicationController
     # end
     usemakedate= nextMonth(params[:acc_date])
     if @group=="3" then
+      puts "querygroup3"
+      puts @wonstaff
+      puts @jobstaff
       @wonstaff= params[:won_staff]
+      #業務人員
+      @jobstaff= params[:won_staff]
+
     end
     #accout add
     if params[:cust_id].empty?
@@ -105,8 +111,10 @@ def create
   puts @wonstaff
   if @group=="3" then
   @wonstaff=params[:won_staff]
+  @jobstaff=params[:won_staff]
   end
   custid = Customer.select(:cust_id).where(cust_id: params[:cust_id],won_staff: @wonstaff)
+
   if custid.size !=0 then
     @acc_count=Account.select(:cust_id).where(cust_id: params[:cust_id],
                               acc_date: params[:acc_date],
@@ -135,8 +143,8 @@ def create
                      note_aft: "",
                      no_bef:  @account.acc_no,
                      no_aft:  "",
-                     user_id: @itstaff,
-
+                     user_id:  @jobstaff,
+                     operator: @itstaff,
                      mark: "C" )
               else
               @history =History.create(cust_id: @account.cust_id,
@@ -149,8 +157,8 @@ def create
                      note_aft: "",
                      no_bef:  @account.acc_no,
                      no_aft:  "",
-
                      user_id: @wonstaff,
+                     operator: @wonstaff,
                      mark: "C" )
                    end
           end
@@ -180,6 +188,7 @@ end
       @current_page = params[:page]
     end
     if @group=="3" then
+      #將業務人員帶入
     @wonstaff=  params[:won_staff]
     puts @wonstaff
     end
@@ -212,7 +221,7 @@ end
   # POST /accounts
   # POST /accounts.json
   def user_group
-    staff = UserGroup.select("won_staff","group").where(login: authenticate_user![:login])  #authenticate_user![:login]Wu.Doris
+    staff = UserGroup.select("won_staff","group").where(login: authenticate_user![:login])  #authenticate_user![:login]"Wu.Doris"
     staff.each do |variable|
       @wonstaff =variable.won_staff
       @group =variable.group
@@ -226,8 +235,24 @@ end
 
 
   def edit
+    @menubars = Menubar.all
+    @menubar = @menubars.first
+    @menus = Menubar.order(:menu_sn)
+    if @current_page != params[:page] || @current_menu_id.blank? then
+      @current_menu_id = @menubar.menu_id
+      @current_page = params[:page]
+    end
        @account=Account.find_by(id: params[:id])
+       if @group=="3" then
+         Customer.select('DISTINCT won_staff').where(cust_id: @account.cust_id).each do |x|
+         @jobstaff= x.won_staff
+         end
+       end
        #history now data
+      puts @jobstaff
+      puts @wonstaff
+       if @group=="3" then
+           puts "edit 3"
        @history =History.create(cust_id: @account.cust_id,
                         acc_date: @account.acc_date,
                         acc_kind: @account.acc_kind,
@@ -238,8 +263,26 @@ end
                         note_aft: "",
                         no_bef:  @account.acc_no,
                         no_aft:  "",
-                        user_id: @wonstaff,
+                        user_id:  @jobstaff,
+                        operator: @itstaff,
                         mark: "E" )
+
+          else
+          @history = History.create(cust_id: @account.cust_id,
+                           acc_date: @account.acc_date,
+                           acc_kind: @account.acc_kind,
+                           type_bef: @account.cust_type,
+                           cost_bef: @account.acc_cost,
+                           cost_aft: "",
+                           note_bef: @account.acc_note,
+                           note_aft: "",
+                           no_bef:  @account.acc_no,
+                           no_aft:  "",
+                           user_id: @wonstaff,
+                           operator: @wonstaff,
+                           mark: "E" )
+
+            end
        @account.update(cust_type: params[:cust_type],acc_cost: params[:acc_cost],acc_note: params[:acc_note],acc_no: params[:acc_no] )
        #history aft change
        @history.update( type_aft: @account.cust_type,
@@ -247,9 +290,7 @@ end
                         note_aft: @account.acc_note,
                         no_aft:  @account.acc_no, )
 
-       custidsum = Customer.select(:cust_id).where(won_staff: @wonstaff)
-       @sumcost=Account.all.joins(:customer).where(customers: {cust_id: custidsum}).sum(:acc_cost)
-  end
+      end
   # PATCH/PUT /accounts/1
   # PATCH/PUT /accounts/1.json
 
@@ -258,6 +299,12 @@ end
   # DELETE /accounts/1.json
   def destroy
       account=Account.find_by(id: params[:id])
+
+      if @group=="3" then
+        Customer.select('DISTINCT won_staff').where(cust_id: account.cust_id).each do |x|
+        @jobstaff= x.won_staff
+        end
+      end
       #save History
       History.create(cust_id: account.cust_id,
                        acc_date: account.acc_date,
@@ -266,7 +313,8 @@ end
                        cost_bef: account.acc_cost,
                        note_bef: account.acc_note,
                        no_bef: account.acc_no,
-                       user_id: @wonstaff,
+                       user_id: @jobstaff,
+                       operator: @wonstaff,
                        mark: "D" )
       account.destroy
   #  respond_to do |format|
@@ -338,136 +386,8 @@ end
     # end
 
   def printp_pdf(yyyy_mm,acc_yyyy_mm,user_name)
-    if @group=="1" then
-    custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
-     # 産生「倉儲費用報表」
-    if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
-       File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
-    end
 
-     info = {
-     :Title        => "ACCOUNT GENERAL",
-     :Author       => "CROWN VAN",
-     :Subject      => "ACCOUNT GENERAL LIST",
-     :Keywords     => "",
-     :Creator      => "CROWN VAN DOCUMENT MANAGEMENT SYSTEM",
-     :Producer     => "CROWN VAN LINES CO., LTD.",
-     :CreationDate => Time.now
-     }
-
-
-     Prawn::Document.generate("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf", :page_size => "A4", :page_layout => :portrait, :print_scaling => :none, :info => info) do
-
-       acc_total = 0
-       Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).each { |row|
-         acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
-       }
-
-       keep_position = 0
-       # stroke_axis
-       font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
-         repeat(:all) do
-
-           text "海灣國際股份有限公司", :align => :center, :size => 18
-           text yyyy_mm+"倉儲費用", :align => :center, :size => 14
-           text "總金額："+acc_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse, :align => :center, :size => 14
-
-           keep_position = cursor.to_i
-           bounding_box([400, 764], :width => 120, :height => 15) do
-             transparent(0) { stroke_bounds }
-             text "列印日期："+Date.today.strftime("%Y/%m/%d")
-           end
-
-           bounding_box([400, 747], :width => 120, :height => 15) do
-             transparent(0) { stroke_bounds } # This will stroke on one page
-             text "列印人員："+user_name
-             transparent(0) { stroke_bounds } # And this will stroke on the next
-           end
-
-           move_cursor_to keep_position
-
-         end
-       end
-
-       i = 0
-       iItem = 0
-       iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).count
-
-       font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
-         data = [["項次","客戶編號","客戶名稱","帳單編號","帳單金額","帳單種類","備註"]]
-
-         Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC, cust_type ASC").each { |row|
-
-           i = i + 1
-           iItem = iItem + 1
-           data += [[iItem.to_s,
-                    "#{row['cust_id']}",
-                    "#{row['cust_name']}",
-                    "#{row['acc_kind']}-#{row['acc_no']}",
-                    "#{row['acc_cost']}".reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse,
-                    "#{row['cust_type']}",
-                    "#{row['acc_note']}" ]]
-
-           if iItem.modulo(31)==0
-             table data do |dt|
-               dt.header = true
-               dt.column_widths = [35, 50, 130, 60, 60, 60, 127]
-               dt.column(0).style(:align => :center, :size => 10)
-               dt.column(1).style(:align => :center, :size => 10)
-
-               dt.cells.columns(2).rows(1..-1).filter do |cell|
-                   auto_size = (cell.content.size/12.0).ceil()>1 ? 10 - ((cell.content.size/12.0).ceil()-1)*3 : 10
-                   cell.style(:align => :left, :size => auto_size )
-               end
-
-               dt.column(3).style(:align => :left, :size => 10)
-               dt.column(4).style(:align => :right, :size => 10)
-
-               dt.cells.columns(5).rows(1..-1).filter do |cell|
-                   auto_size = (cell.content.size/12.0).ceil()>1 ? 10 - ((cell.content.size/12.0).ceil()-1)*3 : 10
-                   cell.style(:align => :left, :size => auto_size )
-               end
-
-               dt.cells.columns(6).rows(1..-1).filter do |cell|
-                  auto_size = (cell.content.size/11.0).ceil()>1 ? 10 - ((cell.content.size/11.0).ceil()-1)*3 : 10
-                  cell.style(:align => :left, :size => auto_size )
-               end
-
-               dt.row(0).columns(0..6).size = 10
-               data = [["項次","客戶編號","客戶名稱","帳單編號","帳單金額","帳單種類","備註"]]
-               move_cursor_to keep_position
-             end
-
-             start_new_page
-           end
-
-           if iItem.modulo(31)!=0 && iRowCount==(i+1)
-             move_cursor_to keep_position
-             table data do |dt|
-               dt.header = true
-               dt.column_widths = [35, 50, 130, 60, 60, 60, 127]
-               dt.column(0).style(:align => :center, :size => 10)
-               dt.column(1).style(:align => :center, :size => 10)
-               dt.column(2).style(:align => :left, :size => 10)
-               dt.column(3).style(:align => :left, :size => 10)
-               dt.column(4).style(:align => :right, :size => 10)
-               dt.column(5).style(:align => :left, :size => 10)
-               dt.column(6).style(:align => :left, :size => 10)
-               dt.row(0).columns(0..6).size = 10
-             end
-           end
-
-         }
-
-           string = "page <page> of <total>"
-           options = { :at => [0, 0],
-           :align => :center,
-           :start_count_at => 1,
-           :color => "000000" }
-           number_pages string, options
-
-       end
-     else
+     if @group=="3" then
        if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
           File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
        end
@@ -594,120 +514,153 @@ end
               number_pages string, options
 
           end
-        end
+
+
      end
-     end
+
        return "#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf"
+     end
+     if @group=="1" then
+       custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
+       if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
+          File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
+       end
+
+        info = {
+        :Title        => "ACCOUNT GENERAL",
+        :Author       => "CROWN VAN",
+        :Subject      => "ACCOUNT GENERAL LIST",
+        :Keywords     => "",
+        :Creator      => "CROWN VAN DOCUMENT MANAGEMENT SYSTEM",
+        :Producer     => "CROWN VAN LINES CO., LTD.",
+        :CreationDate => Time.now
+        }
+
+
+        Prawn::Document.generate("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf", :page_size => "A4", :page_layout => :portrait, :print_scaling => :none, :info => info) do
+
+          acc_total = 0
+          Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).each { |row|
+            acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
+          }
+
+          keep_position = 0
+          # stroke_axis
+          font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
+            repeat(:all) do
+
+              text "海灣國際股份有限公司", :align => :center, :size => 18
+              text yyyy_mm+"倉儲費用", :align => :center, :size => 14
+              text "總金額："+acc_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse, :align => :center, :size => 14
+
+              keep_position = cursor.to_i
+              bounding_box([400, 764], :width => 120, :height => 15) do
+                transparent(0) { stroke_bounds }
+                text "列印日期："+Date.today.strftime("%Y/%m/%d")
+              end
+
+              bounding_box([400, 747], :width => 120, :height => 15) do
+                transparent(0) { stroke_bounds } # This will stroke on one page
+                text "列印人員："+user_name
+                transparent(0) { stroke_bounds } # And this will stroke on the next
+              end
+
+              move_cursor_to keep_position
+
+            end
+          end
+
+          i = 0
+          iItem = 0
+          iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).count
+
+          font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
+            data = [["項次","客戶編號","客戶名稱","帳單編號","帳單金額","帳單種類","備註"]]
+
+            Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC, cust_type ASC").each { |row|
+
+              i = i + 1
+              iItem = iItem + 1
+              data += [[iItem.to_s,
+                       "#{row['cust_id']}",
+                       "#{row['cust_name']}",
+                       "#{row['acc_kind']}-#{row['acc_no']}",
+                       "#{row['acc_cost']}".reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse,
+                       "#{row['cust_type']}",
+                       "#{row['acc_note']}" ]]
+
+              if iItem.modulo(31)==0
+                table data do |dt|
+                  dt.header = true
+                  dt.column_widths = [35, 50, 130, 60, 60, 60, 127]
+                  dt.column(0).style(:align => :center, :size => 10)
+                  dt.column(1).style(:align => :center, :size => 10)
+
+                  dt.cells.columns(2).rows(1..-1).filter do |cell|
+                      auto_size = (cell.content.size/12.0).ceil()>1 ? 10 - ((cell.content.size/12.0).ceil()-1)*3 : 10
+                      cell.style(:align => :left, :size => auto_size )
+                  end
+
+                  dt.column(3).style(:align => :left, :size => 10)
+                  dt.column(4).style(:align => :right, :size => 10)
+
+                  dt.cells.columns(5).rows(1..-1).filter do |cell|
+                      auto_size = (cell.content.size/12.0).ceil()>1 ? 10 - ((cell.content.size/12.0).ceil()-1)*3 : 10
+                      cell.style(:align => :left, :size => auto_size )
+                  end
+
+                  dt.cells.columns(6).rows(1..-1).filter do |cell|
+                     auto_size = (cell.content.size/11.0).ceil()>1 ? 10 - ((cell.content.size/11.0).ceil()-1)*3 : 10
+                     cell.style(:align => :left, :size => auto_size )
+                  end
+
+                  dt.row(0).columns(0..6).size = 10
+                  data = [["項次","客戶編號","客戶名稱","帳單編號","帳單金額","帳單種類","備註"]]
+                  move_cursor_to keep_position
+                end
+
+                start_new_page
+              end
+
+              if iItem.modulo(31)!=0 && iRowCount==(i+1)
+                move_cursor_to keep_position
+                table data do |dt|
+                  dt.header = true
+                  dt.column_widths = [35, 50, 130, 60, 60, 60, 127]
+                  dt.column(0).style(:align => :center, :size => 10)
+                  dt.column(1).style(:align => :center, :size => 10)
+                  dt.column(2).style(:align => :left, :size => 10)
+                  dt.column(3).style(:align => :left, :size => 10)
+                  dt.column(4).style(:align => :right, :size => 10)
+                  dt.column(5).style(:align => :left, :size => 10)
+                  dt.column(6).style(:align => :left, :size => 10)
+                  dt.row(0).columns(0..6).size = 10
+                end
+              end
+
+            }
+
+              string = "page <page> of <total>"
+              options = { :at => [0, 0],
+              :align => :center,
+              :start_count_at => 1,
+              :color => "000000" }
+              number_pages string, options
+
+          end
+
+
+     end
+
+       return "#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf"
+     end
+
     end
 
 
    # 産生「倉儲費用小計報表」
 def printp1_pdf(yyyy_mm,acc_yyyy_mm,user_name)
-  if @group=="1" then
-  custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
-   if File.exist?(yyyy_mm+"倉儲費用小計.pdf")
-     File.delete(yyyy_mm+"倉儲費用小計.pdf")
-   end
-
-   info = {
-   :Title        => "ACCOUNT GENERAL SUMMARY",
-   :Author       => "CROWN VAN",
-   :Subject      => "ACCOUNT GENERAL SUMMARY LIST",
-   :Keywords     => "",
-   :Creator      => "CROWN VAN DOCUMENT MANAGEMENT SYSTEM",
-   :Producer     => "CROWN VAN LINES CO., LTD.",
-   :CreationDate => Time.now
-   }
-
-   Prawn::Document.generate("#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf", :page_size => "A4", :page_layout => :portrait, :print_scaling => :none, :info => info) do
-
-     acc_total = 0
-     Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id:custid}).each { |row|
-       acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
-     }
-
-     keep_position = 0
-     font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
-       repeat(:all) do
-
-           text "海灣國際股份有限公司", :align => :center, :size => 18
-           text yyyy_mm+"倉儲費用小計", :align => :center, :size => 14
-           text "總金額："+acc_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse, :align => :center, :size => 14
-
-           keep_position = cursor.to_i
-           bounding_box([400, 764], :width => 120, :height => 15) do
-             transparent(0) { stroke_bounds }
-             text "列印日期："+Date.today.strftime("%Y/%m/%d")
-           end
-
-           bounding_box([400, 747], :width => 120, :height => 15) do
-             transparent(0) { stroke_bounds } # This will stroke on one page
-             text "列印人員："+user_name
-             transparent(0) { stroke_bounds } # And this will stroke on the next
-           end
-
-           move_cursor_to keep_position
-
-       end
-     end
-
-     i = 0
-     iItem = 0
-     iRowCount = Account.joins(:customer).group("accounts.cust_id").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).count
-
-     font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
-       data = [["項次","客戶編號","客戶名稱","小計金額"]]
-
-       Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost").group("accounts.cust_id, cust_name").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC").each { |row|
-
-         i = i + 1
-         iItem = iItem + 1
-         data += [[iItem.to_s,
-                  "#{row['cust_id']}",
-                  "#{row['cust_name']}",
-                  "#{row['acc_cost']}".reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse ]]
-
-         if iItem.modulo(31)==0
-           table data do |dt|
-             dt.header = true
-             dt.column_widths = [35, 50, 377, 60]
-             dt.column(0).style(:align => :center, :size => 10)
-             dt.column(1).style(:align => :center, :size => 10)
-             dt.column(2).style(:align => :left, :size => 10)
-             dt.column(3).style(:align => :right, :size => 10)
-             dt.row(0).columns(0..3).size = 10
-
-             data = [["項次","客戶編號","客戶名稱","小計金額"]]
-             move_cursor_to keep_position
-           end
-
-           start_new_page
-         end
-
-         if (iItem.modulo(31)!=0) && (iRowCount.size==(iItem))
-           move_cursor_to keep_position
-           table data do |dt|
-             dt.header = true
-             dt.column_widths = [35, 50, 377, 60]
-             dt.column(0).style(:align => :center, :size => 10)
-             dt.column(1).style(:align => :center, :size => 10)
-             dt.column(2).style(:align => :left, :size => 10)
-             dt.column(3).style(:align => :right, :size => 10)
-             dt.row(0).columns(0..3).size = 10
-           end
-         end
-
-       }
-
-         string = "page <page> of <total>"
-         options = { :at => [0, 0],
-         :align => :center,
-         :start_count_at => 1,
-         :color => "000000" }
-         number_pages string, options
-
-     end
-   else
+  if @group=="3" then
      if File.exist?(yyyy_mm+"倉儲費用小計.pdf")
        File.delete(yyyy_mm+"倉儲費用小計.pdf")
      end
@@ -810,10 +763,119 @@ def printp1_pdf(yyyy_mm,acc_yyyy_mm,user_name)
            number_pages string, options
 
        end
-     end
-   end
  end
   return "#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf"
+end
+if @group=="1" then
+   custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
+   if File.exist?(yyyy_mm+"倉儲費用小計.pdf")
+     File.delete(yyyy_mm+"倉儲費用小計.pdf")
+   end
+
+   info = {
+   :Title        => "ACCOUNT GENERAL SUMMARY",
+   :Author       => "CROWN VAN",
+   :Subject      => "ACCOUNT GENERAL SUMMARY LIST",
+   :Keywords     => "",
+   :Creator      => "CROWN VAN DOCUMENT MANAGEMENT SYSTEM",
+   :Producer     => "CROWN VAN LINES CO., LTD.",
+   :CreationDate => Time.now
+   }
+
+   Prawn::Document.generate("#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf", :page_size => "A4", :page_layout => :portrait, :print_scaling => :none, :info => info) do
+
+     acc_total = 0
+     Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id:custid}).each { |row|
+       acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
+     }
+
+     keep_position = 0
+     font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
+       repeat(:all) do
+
+           text "海灣國際股份有限公司", :align => :center, :size => 18
+           text yyyy_mm+"倉儲費用小計", :align => :center, :size => 14
+           text "總金額："+acc_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse, :align => :center, :size => 14
+
+           keep_position = cursor.to_i
+           bounding_box([400, 764], :width => 120, :height => 15) do
+             transparent(0) { stroke_bounds }
+             text "列印日期："+Date.today.strftime("%Y/%m/%d")
+           end
+
+           bounding_box([400, 747], :width => 120, :height => 15) do
+             transparent(0) { stroke_bounds } # This will stroke on one page
+             text "列印人員："+user_name
+             transparent(0) { stroke_bounds } # And this will stroke on the next
+           end
+
+           move_cursor_to keep_position
+
+       end
+     end
+
+     i = 0
+     iItem = 0
+     iRowCount = Account.joins(:customer).group("accounts.cust_id").where(accounts: {acc_date: acc_yyyy_mm,cust_id:custid}).count
+
+     font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
+       data = [["項次","客戶編號","客戶名稱","小計金額"]]
+
+       Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost").group("accounts.cust_id, cust_name").where(accounts: {acc_date: acc_yyyy_mm,cust_id:custid}).order("cust_id ASC").each { |row|
+
+         i = i + 1
+         iItem = iItem + 1
+         data += [[iItem.to_s,
+                  "#{row['cust_id']}",
+                  "#{row['cust_name']}",
+                  "#{row['acc_cost']}".reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse ]]
+
+         if iItem.modulo(31)==0
+           table data do |dt|
+             dt.header = true
+             dt.column_widths = [35, 50, 377, 60]
+             dt.column(0).style(:align => :center, :size => 10)
+             dt.column(1).style(:align => :center, :size => 10)
+             dt.column(2).style(:align => :left, :size => 10)
+             dt.column(3).style(:align => :right, :size => 10)
+             dt.row(0).columns(0..3).size = 10
+
+             data = [["項次","客戶編號","客戶名稱","小計金額"]]
+             move_cursor_to keep_position
+           end
+
+           start_new_page
+         end
+
+         if (iItem.modulo(31)!=0) && (iRowCount.size==(iItem))
+           move_cursor_to keep_position
+           table data do |dt|
+             dt.header = true
+             dt.column_widths = [35, 50, 377, 60]
+             dt.column(0).style(:align => :center, :size => 10)
+             dt.column(1).style(:align => :center, :size => 10)
+             dt.column(2).style(:align => :left, :size => 10)
+             dt.column(3).style(:align => :right, :size => 10)
+             dt.row(0).columns(0..3).size = 10
+           end
+         end
+
+       }
+
+         string = "page <page> of <total>"
+         options = { :at => [0, 0],
+         :align => :center,
+         :start_count_at => 1,
+         :color => "000000" }
+         number_pages string, options
+
+     end
+end
+return "#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf"
+end
+
+
+
 end
 
 def printe_xlsx(yyyy_mm,acc_yyyy_mm,user_name)
@@ -934,6 +996,7 @@ end
       :acc_note,
      :cust_name,
      :pagebar
+
     )
   end
 

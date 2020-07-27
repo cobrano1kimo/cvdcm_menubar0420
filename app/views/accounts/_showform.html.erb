@@ -182,7 +182,7 @@
         </td>
 
         　<td id ='yesOrNoE'style="display:none;">
-           <%= link_to '確定', account ,:id=>"acc_checkE", :class =>"submit_button btn btn-success btn-sm"%>
+           <%= link_to '確定', account ,:id=>"acc_checkE", :class =>"submit_button btn btn-success btn-sm", :remote =>true%>
           <button id="check_resetE" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
         　</td>
         <td id ='yesOrNoC'style="display:none;">

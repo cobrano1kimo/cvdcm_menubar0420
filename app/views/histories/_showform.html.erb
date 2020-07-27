@@ -10,9 +10,10 @@
     <tr >
       <td>項次</td>
       <td>客戶編號</td>
-      <td>&nbsp;&nbsp;類別</td>
+      <!--<td>&nbsp;&nbsp;類別</td>-->
       <td align="center" valign="center">月/年</td>
       <td align="center" valign="center">狀態註記</td>
+      <td align="center" valign="center">業務人員</td>
       <td align="center" valign="center">操作人員</td>
       <td align="center" valign="center">改前單號</td>
       <td align="center" valign="center">改後單號</td>
@@ -32,10 +33,11 @@
         <td ><%= index+1 %></td>
         <td style="display:none;"><input name="history[id]" id ="input" value=<%= history.id %>></td>
         <td> <input class="box border-0 form-control" size="3"  type="text"  id="input0" onfocus="this.blur()" value=<%=history.cust_id %>> </td>
-        <td> <input class="box border-0 form-control" size="2" type="text" id="input1" onfocus="this.blur()" value=<%=history.acc_kind %>> </td>
+          <!--<td> <input class="box border-0 form-control" size="2" type="text" id="input1" onfocus="this.blur()" value=<%=history.acc_kind %>> </td>-->
         <td> <input class="box border-0 form-control" size="3" type="text" id="input2" onfocus="this.blur()"  value=<%= rocTime(history.acc_date) %>> </td>
         <td> <input class="box border-0 form-control" size="3"  type="text"  id="input3" onfocus="this.blur()" value=<%= statMark(history.mark) %>> </td>
         <td> <input class="box border-0 form-control" size="4" type="text"   id="input4" onfocus="this.blur()" value=<%=history.user_id %>> </td>
+        <td> <input class="box border-0 form-control" size="4" type="text"   id="input4" onfocus="this.blur()" value=<%=history.operator %>> </td>
         <td> <input class="box border-0 form-control" size="3"  type="text"  id="input5" onfocus="this.blur()" value=<%=history.no_bef %>> </td>
         <td> <input class="box border-0 form-control" size="3" type="text"   id="input6" onfocus="this.blur()" value=<%=history.no_aft %>> </td>
         <td> <input class="box border-0 form-control" size="8"  type="text"　 id="input7" onfocus="this.blur()" value=<%=history.type_bef %> > </td>
