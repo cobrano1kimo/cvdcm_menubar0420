@@ -163,7 +163,11 @@ $(document).on "click", "#acc_checkC", (event) ->
   #print
 $(document).on "click", "#printE", (event) ->
     acc_date= $("#date_yy").val()+$("#date_mm").val()
-    acc_url="/printe/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+    won_staff=$("#​​nwonstaff").val()
+    if won_staff==''
+      acc_url="/printe/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+    else
+      acc_url="/printe/accounts?acc_date="+acc_date+"&;won_staff="+won_staff+"&;locale=zh_TW"
     xhttp = new XMLHttpRequest
     xhttp.onreadystatechange = ->
     xhttp.responseType = "blob"
@@ -190,7 +194,11 @@ $(document).on "click", "#printE", (event) ->
     return false
 $(document).on "click", "#printP", (event) ->
   acc_date= $("#date_yy").val()+$("#date_mm").val()
-  acc_url="/printp/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+  won_staff=$("#​​nwonstaff").val()
+  if won_staff==''
+    acc_url="/printp/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+  else
+    acc_url="/printp/accounts?acc_date="+acc_date+"&;won_staff="+won_staff+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
   xhttp.responseType = "blob"
@@ -217,7 +225,11 @@ $(document).on "click", "#printP", (event) ->
   return false
 $(document).on "click", "#printP1", (event) ->
   acc_date= $("#date_yy").val()+$("#date_mm").val()
-  acc_url="/printp1/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+  won_staff=$("#​​nwonstaff").val()
+  if won_staff==''
+    acc_url="/printp1/accounts?acc_date="+acc_date+"&;locale=zh_TW"
+  else
+    acc_url="/printp1/accounts?acc_date="+acc_date+"&;won_staff="+won_staff+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
   xhttp.responseType = "blob"
