@@ -83,6 +83,7 @@ def create
   else
       puts"ffffff"
   end
+  render :index
       #@customers=customer.new
       # p "#{custid['cust_id']}"
 end
@@ -127,7 +128,7 @@ end
   # POST /customers
   # POST /customers.json
   def user_group
-    staff = UserGroup.select("won_staff","group").where(login: authenticate_user![:login])  #authenticate_user![:login]
+    staff = UserGroup.select("won_staff","group").where(login: "Wu.Doris")  #authenticate_user![:login]
     staff.each do |variable|
       @wonstaff =variable.won_staff
       @group =variable.group
