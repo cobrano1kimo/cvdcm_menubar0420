@@ -14,7 +14,7 @@
         <% end %>
       <% if menubar.parent_menu_id.present? && menubar.parent_menu_id == menubar.menu_id[0,6] %>
         <% if menubar.program_url.present? %>
-          <a class="dropdown-item" href="<%= menubar.program_url %>"><%= menubar.menu_name.strip %></a>
+          <a class="dropdown-item" href=<%= menubar.program_url %>><%= menubar.menu_name.strip %></a>
         <% else %>
           <a class="dropdown-item" href="#"><%= menubar.menu_name.strip %></a>
         <% end %>

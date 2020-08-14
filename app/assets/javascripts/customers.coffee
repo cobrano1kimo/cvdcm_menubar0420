@@ -102,7 +102,6 @@ $(document).on "click", "#edit_cust", (event) ->
   event.preventDefault()
 
   $(this).closest('tr').find('#input1').removeAttr("onfocus").removeClass("border-0").addClass("round1")
-
   $(this).closest('tr').find("#input4").removeAttr("onfocus").removeClass("border-0").addClass("round1​")
   $('table td:nth-child(8)').hide()
   $('table td:nth-child(10)').hide()
@@ -152,10 +151,10 @@ $(document).on "click", "#cust_checkE", (event) ->
 
 
   # 觸發 '修改取消' 按鈕
-$(document).on "click", "#check_resetE", (event) ->
-  event.preventDefault()
-  location.reload();
-  return false
+# $(document).on "click", "#check_resetE", (event) ->
+#   event.preventDefault()
+#   location.reload();
+#   return false
 $(document).on "click", "#check_resetC", (event) ->
   event.preventDefault()
   location.reload();

@@ -10,19 +10,7 @@
 
 # 觸發 點擊 GridView Row 記錄，並且顯示資料於 Form 中
 $(document).on "turbolinks:load", ->
-$(document).on "click", ".table tr", (event) ->
-  event.preventDefault()
-  $('table td:nth-child(1)').removeClass 'fa fa-play'
-  $(this).find('td:nth-child(1)').addClass 'fa fa-play'
-  menu_id = $(@).find("td:nth-child(2)").text()
-  xhttp = new XMLHttpRequest
-  xhttp.onreadystatechange = ->
-   if @readyState == 4 and @status == 200
-     $(".myform").html(@responseText)
-  xhttp.open "GET", "menubars/"+menu_id+"/form", true
-  # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
-  xhttp.send()
-  return false
+
 
 
 # 觸發 '查詢' 按鈕
@@ -31,18 +19,19 @@ $(document).on "click", "#query_acc", (event) ->
   cust_id = $("#input0").val()
   acc_date= $("#date_yy").val()+$("#date_mm").val()
   won_staff=$("#​​nwonstaff").val()
-
+　
   if won_staff==""
     acc_url="/query/accounts?cust_id="+cust_id+"&;acc_date="+acc_date+"&;locale=zh_TW"
   else
     acc_url="/query/accounts?cust_id="+cust_id+"&;acc_date="+acc_date+"&;won_staff="+won_staff+"&;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
-   if @readyState == 4 and @status == 200
-     $(".show").html(@responseText)
+    if @readyState == 4 and @status == 200
+      $(".show").html(@responseText)
   xhttp.open "GET", acc_url, true
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
+
   return false
 
 
@@ -51,7 +40,58 @@ $(document).on "click", "#query_acc", (event) ->
 $(document).on "click", "#create_acc", (event) ->
   event.preventDefault()
   won_staff=$("#​​nwonstaff").val()
-
+  $(document).on "keyup", "#input0", (event) ->
+    event.preventDefault()
+    input1 = $('#input0').val()
+    if !input1.match("^[A-Za-z0-9]+$")
+      msg = '格式錯誤,請輸入英數字'
+      $('#input1tips').html msg
+      $('#input0').val('')
+    else
+      $('#input1tips').html ''
+    if input1==""
+      msg = ''
+      $('#input1tips').html ''
+    return　
+  $(document).on "keyup", "#input1", (event) ->
+    event.preventDefault()
+    input1 = $('#input1').val()
+    if !input1.match("^[A-Za-z0-9-]+$")
+      msg = '格式錯誤,請輸入英數字'
+      $('#input1tips').html msg
+      $('#input1').val('')
+    else
+      $('#input1tips').html ''
+    if input1==""
+      msg = ''
+      $('#input1tips').html ''
+    return　
+   $(document).on "keyup", "#input3", (event) ->
+     event.preventDefault()
+     input3 = $('#input3').val()
+     if !input3.match("^[0-9]*$")
+       msg = '格式錯誤,請輸入數字'
+       $('#input3tips').html msg
+       $('#input3').val('')
+     else
+       $('#input3tips').html ''
+     if input1==""
+       msg = ''
+       $('#input3tips').html ''
+     return　
+   $(document).on "keyup", "#input6", (event) ->
+     event.preventDefault()
+     input6 = $('#input6').val()
+     if !input6.match("^[0-9]*$")
+       msg = '格式錯誤,請輸入數字'
+       $('#input6tips').html msg
+       $('#input6').val('')
+     else
+       $('#input6tips').html ''
+     if input1==""
+       msg = ''
+       $('#input6tips').html ''
+     return　  
   if won_staff==''
     acc_createurl="/new/accounts"
   else
@@ -83,6 +123,60 @@ $(document).on "click", "#edit_acc", (event) ->
   $(this).closest('tr').find("#input3").removeAttr("onfocus").removeClass("border-0").addClass("round1")
   $(this).closest('tr').find("#input6").removeAttr("onfocus").removeClass("border-0").addClass("round1")
   $(this).closest('tr').find("#input7").removeAttr("onfocus").removeClass("border-0").addClass("round1")
+  $(document).on "keyup", "#input0", (event) ->
+    event.preventDefault()
+    input1 = $('#input0').val()
+    if !input1.match("^[A-Za-z0-9]+$")
+      msg = '格式錯誤,請輸入英數字'
+      $('#input1tips').html msg
+      $('#input0').val('')
+    else
+      $('#input1tips').html ''
+    if input1==""
+      msg = ''
+      $('#input1tips').html ''
+    return　
+  $(document).on "keyup", "#input1", (event) ->
+    event.preventDefault()
+    input1 = $('#input1').val()
+    if !input1.match("^[A-Za-z0-9-]+$")
+      msg = '格式錯誤,請輸入英數字'
+      $('#input1tips').html msg
+      $('#input1').val('')
+    else
+      $('#input1tips').html ''
+    if input1==""
+      msg = ''
+      $('#input1tips').html ''
+    return　
+   $(document).on "keyup", "#input3", (event) ->
+     event.preventDefault()
+     input3 = $('#input3').val()
+     if !input3.match("^[0-9]*$")
+       msg = '格式錯誤,請輸入數字'
+       $('#input3tips').html msg
+       $('#input3').val('')
+     else
+       $('#input3tips').html ''
+     if input1==""
+       msg = ''
+       $('#input3tips').html ''
+     return　
+   $(document).on "keyup", "#input6", (event) ->
+     event.preventDefault()
+     input6 = $('#input6').val()
+     if !input6.match("^[0-9]*$")
+       msg = '格式錯誤,請輸入數字'
+       $('#input6tips').html msg
+       $('#input6').val('')
+     else
+       $('#input6tips').html ''
+     if input1==""
+       msg = ''
+       $('#input6tips').html ''
+     return　
+
+
   $('table td:nth-child(11)').hide()
   $('table td:nth-child(12)').hide()
   $('table td:nth-child(15)').hide()
@@ -109,6 +203,7 @@ $(document).on "click", "#acc_checkE", (event) ->
   $('table td:nth-child(12)').show()
   $(this).closest('tr').find("#yesOrNoE").hide()
   $(this).closest('a').removeAttr("href")
+
   acc_url="/accounts/accounts?acc_cost="+acc_cost+"&amp;acc_no="+acc_no+"&amp;acc_note="+acc_note+"&amp;cust_type="+cust_type+"&amp;id="+id+"&amp;locale=zh_TW"
   xhttp = new XMLHttpRequest
   xhttp.onreadystatechange = ->
@@ -156,6 +251,7 @@ $(document).on "click", "#acc_checkC", (event) ->
   xhttp.onreadystatechange = ->
    if @readyState == 4 and @status == 200
      $(".show").html(@responseText)
+
   xhttp.open "GET", acc_url, true
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
@@ -256,6 +352,7 @@ $(document).on "click", "#printP1", (event) ->
   return false
   # 觸發 '修改取消' 按鈕
 $(document).on "click", "#check_resetE", (event) ->
+
   event.preventDefault()
   location.reload();
   return false
@@ -267,6 +364,20 @@ $(document).on "click", "#reset_button", (event) ->
   event.preventDefault()
   location.reload();
   return false
+$(document).on "keyup", "#input0", (event) ->
+  event.preventDefault()
+  input0 = $('#input0').val()
+  if !input0.match("^[A-Za-z0-9]+$")
+    msg = '格式錯誤,請輸入英數字'
+    $('#input0tips').html msg
+    $('#input0').val('')
+  else
+    $('#input0tips').html ''
+  if input0==""
+    msg = ''
+    $('#input0tips').html ''
+  return
+
 
 # 觸發 '列印條碼' 按鈕
 # $(document).on "click", ".barcode_button", (event) ->

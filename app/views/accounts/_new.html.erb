@@ -55,10 +55,10 @@
       <tr >
 
         <td style="display:none;"><input name="account[id]" id ="input" ></td>
-        <td> <input class="col box round1 form-control" size="3"  type="text"  id="input0"  > </td>
-        <td> <input class="col box round1 form-control" size="4" type="text" id="input1" > </td>
+        <td> <input class="col box round1 form-control" maxlength="5" size="4"  type="text"  id="input0"  > </td>
+        <td> <input class="col box round1 form-control" maxlength="15" size="16" type="text" id="input1" > </td>
         <td> <input class="col box border-0 form-control" size="2" type="text" id="input2"  value="WR"  > </td>
-        <td> <input class="col box round1 form-control" size="3"  type="text"  id="input3"  > </td>
+        <td> <input class="col box round1 form-control" maxlength="4"size="3"  type="text"  id="input3"  > </td>
         <td>
           <select id="date_yy" class="custom-select col-lg-15" required>
            <option value="2020">2020 </option>
@@ -93,7 +93,7 @@
 
 
         <td style="display:none;"> <input class="box border-0 form-control" size="19"  type="text"　 id="input5"  > </td>
-        <td> <input class="col box round1 form-control" size="6"  type="text" style="text-align:right"  id="input6" ></td>
+        <td> <input class="col box round1 form-control" maxlength="7" size="6"  type="text" style="text-align:right"  id="input6" ></td>
         <td> <input class="col box round1 form-control" size="20" type="text"   id="input7" ></td>
         <td style="display:none;">    </td>
         <td style="display:none;">    </td>
@@ -109,7 +109,8 @@
 
 
 
-
+　　　　　　　
   </tbody>
 
 </table>
+<% if @msgcreat!="" then %> <%=@msgcreat%> <% end %>

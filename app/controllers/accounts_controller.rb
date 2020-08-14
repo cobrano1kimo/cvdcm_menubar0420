@@ -34,10 +34,11 @@ class AccountsController < ApplicationController
     @menubars = Menubar.all
     @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
-    # if @current_page != params[:page] || @current_menu_id.blank? then
-    #   @current_menu_id = @menubar.menu_id
-    #   @current_page = params[:page]
-    # end
+    if @current_page != params[:page] || @current_menu_id.blank? then
+       @current_menu_id = @menubar.menu_id
+       @current_page = params[:page]
+    end
+
     usemakedate= nextMonth(params[:acc_date])
     if @group=="3" then
 
@@ -155,13 +156,13 @@ def create
                      mark: "C" )
                    end
           end
+          render :query
   else
+        @msgcreat="無此客戶編號"
+      render :new
 
-
-
-      puts"ffffff"
   end
-  render :index
+
       #@accounts=Account.new
       # p "#{custid['cust_id']}"
 end
