@@ -14,7 +14,7 @@
         <% end %>
       <% if menubar.parent_menu_id.present? && menubar.parent_menu_id == menubar.menu_id[0,6] %>
         <% if menubar.program_url.present? %>
-          <a class="dropdown-item" href=<%= menubar.program_url %>><%= menubar.menu_name.strip %></a>
+          <a class="dropdown-item" href=<%= menubar.program_url %>><%= menubar.menu_name %></a>
         <% else %>
           <a class="dropdown-item" href="#"　data-no-turbolink><%= menubar.menu_name.strip %></a>
         <% end %>
@@ -43,46 +43,43 @@
 <h1>INVOICE單</h1>
 
 <div class="d-flex flex-row  align-items-center">
-客戶編號：
-<input class="box form-control col-lg-1" style="ime-mode:disabled" size="9" maxlength="5" type="text"  id="input0" >
+  客戶編號：
+  <input class="box form-control col-lg-1" style="ime-mode:disabled" size="9" maxlength="5" type="text" id="input0" value="<%=@input0%>" >
 
 
 
-   <div class="d-flex flex-row justify-content-between align-items-center" >
-      年：
-     <select id="date_yy" class="custom-select col-lg-6" required>
+     <div class="d-flex flex-row justify-content-between align-items-center" >
+        年：
+       <select id="date_yy" class="custom-select col-lg-6" required>
 
-       <option value="2020">2020 </option>
-       <option value="2021">2021 </option>
-       <option value="2022">2022 </option>
-       <option value="2023">2023 </option>
-       <option value="2024">2024 </option>
-       <option value="2025">2025 </option>
-       <option value="2026">2026 </option>
-       <option value="2027">2027 </option>
-       <option value="2028">2028 </option>
-       <option value="2029">2029 </option>
-       <option value="2030">2030 </option>
+         <option value="2020" <%= "selected" if @date_yy=="2020" %> >2020</option>
+         <option value="2021" <%= "selected" if @date_yy=="2021" %> >2021</option>
+         <option value="2022" <%= "selected" if @date_yy=="2022" %> >2022</option>
+         <option value="2023" <%= "selected" if @date_yy=="2023" %> >2023</option>
+         <option value="2024" <%= "selected" if @date_yy=="2024" %> >2024</option>
+         <option value="2025" <%= "selected" if @date_yy=="2025" %> >2025</option>
+         <option value="2026" <%= "selected" if @date_yy=="2026" %> >2026</option>
+         <option value="2027" <%= "selected" if @date_yy=="2027" %> >2027</option>
+         <option value="2028" <%= "selected" if @date_yy=="2028" %> >2028</option>
+         <option value="2029" <%= "selected" if @date_yy=="2029" %> >2029</option>
+         <option value="2030" <%= "selected" if @date_yy=="2030" %> >2030</option>
 
-     </select>
-月：
-     <select id="date_mm" class="custom-select col-lg-5" required>
-
-
-       <option value="01">01</option>
-       <option value="02">02</option>
-       <option value="03">03</option>
-       <option value="04">04</option>
-       <option value="05">05</option>
-       <option value="06">06</option>
-       <option value="07">07</option>
-       <option value="08">08</option>
-       <option value="09">09</option>
-       <option value="10">10</option>
-       <option value="11">11</option>
-       <option value="12">12</option>
-     </select>
-
+       </select>
+  月：
+       <select id="date_mm" class="custom-select col-lg-5" required>
+         <option value="01" <%= "selected" if @date_mm=="01" %> >01</option>
+         <option value="02" <%= "selected" if @date_mm=="02" %> >02</option>
+         <option value="03" <%= "selected" if @date_mm=="03" %> >03</option>
+         <option value="04" <%= "selected" if @date_mm=="04" %> >04</option>
+         <option value="05" <%= "selected" if @date_mm=="05" %> >05</option>
+         <option value="06" <%= "selected" if @date_mm=="06" %> >06</option>
+         <option value="07" <%= "selected" if @date_mm=="07" %> >07</option>
+         <option value="08" <%= "selected" if @date_mm=="08" %> >08</option>
+         <option value="09" <%= "selected" if @date_mm=="09" %> >09</option>
+         <option value="10" <%= "selected" if @date_mm=="10" %> >10</option>
+         <option value="11" <%= "selected" if @date_mm=="11" %> >11</option>
+         <option value="12" <%= "selected" if @date_mm=="12" %> >12</option>
+       </select>
      <% if @group=="3" then %>
 
      <select id="​​nwonstaff" class="custom-select col-lg-6" required>
@@ -91,16 +88,16 @@
           <option value=<%=@itstaff%>></option>
        <% else %>
        <option value=<%=@operstaff%>>－－請選擇使用者－－</option>
-       <% end %>
-       <option value="秀錦">秀錦</option>
-       <option value="may">may</option>
-       <option value="Karen">Karen</option>
-       <option value="vicky">vicky</option>
-       <option value="SABRINA">SABRINA</option>
-       <option value="素芳">素芳</option>
-       <option value="Katherine">Katherine</option>
-       <option value=<%=@itstaff%>><%=@itstaff%></option>
-      </select>
+        <% end %>
+        <option value="秀錦" <%= "selected" if @won_staff=="秀錦" %> >秀錦</option>
+        <option value="may" <%= "selected" if @won_staff=="may" %> >may</option>
+        <option value="Karen" <%= "selected" if @won_staff=="Karen" %> >Karen</option>
+        <option value="vicky" <%= "selected" if @won_staff=="vicky" %> >vicky</option>
+        <option value="SABRINA" <%= "selected" if @won_staff=="SABRINA" %> >SABRINA</option>
+        <option value="素芳" <%= "selected" if @won_staff=="素芳" %> >素芳</option>
+        <option value="Katherine" <%= "selected" if @won_staff=="Katherine" %> >Katherine</option>
+        <option value=<%=@itstaff%> <%= "selected" if @won_staff==@itstaff %> ><%=@itstaff%></option>
+       </select>
       　<div class="label col-lg-4">資訊部權限</div>　
     <% end %>
 

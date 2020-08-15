@@ -87,9 +87,11 @@ class AccountsController < ApplicationController
     @page="nochange"
   else
     @page="change"
-
    end
-
+   @input0 = params[:cust_id] if params[:cust_id].present?
+   @date_yy = params[:acc_date].first(4) if params[:acc_date].present?
+   @date_mm = params[:acc_date].last(2) if params[:acc_date].present?
+   @won_staff = params[:won_staff] if params[:won_staff].present?
   end
     # p "#{custid['cust_id']}"
 
@@ -108,7 +110,7 @@ def create
   @jobstaff=params[:won_staff]
   end
   custid = Customer.select(:cust_id).where(cust_id: params[:cust_id],won_staff: @wonstaff)
-
+  puts custid
   if custid.size !=0 then
     @acc_count=Account.select(:cust_id).where(cust_id: params[:cust_id],
                               acc_date: params[:acc_date],
@@ -156,6 +158,7 @@ def create
                      mark: "C" )
                    end
           end
+          @accounts =Account.all.where(cust_id: params[:cust_id],acc_no: params[:acc_no],acc_date: params[:acc_date]).page(params[:page]).per(10)
           render :query
   else
         @msgcreat="無此客戶編號"

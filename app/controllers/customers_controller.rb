@@ -50,7 +50,8 @@ class CustomersController < ApplicationController
       params[:page]= "1"
     @page="nochange"
    end
-
+   @input0 = params[:cust_id] if params[:cust_id].present?
+   @won_staff = params[:won_staff] if params[:won_staff].present?
   end
     # p "#{custid['cust_id']}"
 
