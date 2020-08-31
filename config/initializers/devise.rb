@@ -14,7 +14,7 @@ Devise.setup do |config|
   # config.ldap_check_attributes_presence = false
   config.ldap_use_admin_to_bind = true
   config.ldap_ad_group_check = true
-  config.ldap_auth_username_builder = Proc.new() {|attribute, login, ldap| "#{login}@crownvantw.com"}
+  config.ldap_auth_username_builder = Proc.new() {|attribute, login, ldap| "#{login}@crownvantwsit.com"}
   # config.ldap_auth_username_builder = Proc.new() {|attribute, login, ldap| login}
 
 
