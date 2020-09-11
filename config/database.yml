@@ -8,8 +8,8 @@ default: &default
  adapter: sqlserver
  host: 10.9.83.32
  port: 1433
- username: henry
- password: 2Joiogxi
+ username: benson
+ password: 1qaz@WSX
  pool: 100
  timeout: 180000
 

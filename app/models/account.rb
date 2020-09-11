@@ -5,9 +5,4 @@ has_one :user_group
 belongs_to :customer, foreign_key: "cust_id"
 
 
-
-class Account < ActiveRecord::Base
- 
-end
-
 end

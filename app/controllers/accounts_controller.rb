@@ -40,6 +40,7 @@ class AccountsController < ApplicationController
     end
 
     usemakedate= nextMonth(params[:acc_date])
+    puts usemakedate
     if @group=="3" then
 
       @wonstaff= params[:won_staff]
@@ -62,7 +63,11 @@ class AccountsController < ApplicationController
        @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
        #沒資訊自動帶上個月
 
-       Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT acc_kind, acc_no,acc_date="+params[:acc_date]+",acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at FROM accounts a WHERE a.acc_date="+usemakedate+" and (select COUNT(*) from accounts where acc_date="+params[:acc_date]+")< 1")
+       #Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT acc_kind, acc_no,acc_date="+params[:acc_date]+",acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at FROM accounts a WHERE a.acc_date="+usemakedate+" and (select COUNT(*) from accounts where acc_date="+params[:acc_date]+")< 1")
+       if @rowsum==0 then
+       Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT a.acc_kind, a.acc_no,acc_date="+params[:acc_date]+",a.acc_cost,a.cust_id,a.cust_type,a.cre_date,a.acc_note,a.created_at,a.updated_at FROM accounts a inner join customers b on a.cust_id=b.cust_id and a.acc_date="+usemakedate+" and b.won_staff='"+params[:won_staff]+"'
+                             where not exists(select c.cust_id,c.cust_type, c.acc_date from accounts c where a.cust_id=c.cust_id and a.cust_type=c.cust_type and a.acc_date=c.acc_date and a.acc_date<>"+usemakedate+" and b.won_staff='"+params[:won_staff]+"')")
+        end
     else
        custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id],won_staff: @wonstaff)
        @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)

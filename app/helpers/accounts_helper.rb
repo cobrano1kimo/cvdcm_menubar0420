@@ -1172,13 +1172,17 @@ end
 
   #依查詢加上個月的資料
   def nextMonth(acc_date)
+
     if acc_date[4,5]=="01"
       acc_date= "20"+((acc_date[2,2].to_i) - 1).to_s + "12"
 
     else
+
       acc_date= acc_date[0,4].to_s+ (acc_date[4,2].to_i - 1).to_s
+  
         if acc_date.size() == 5
             acc_date=acc_date[0,4]+"0"+acc_date[4,1]
+
         end
     end
   end

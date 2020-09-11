@@ -174,14 +174,14 @@
       <tr  id=<%= index+1 %>>
         <td ><%= index+1 %></td>
         <td style="display:none;"><input name="account[id]" id ="input" value=<%= account.id %>></td>
-        <td> <input class="box border-0 form-control" size="3"  type="text"  id="input0" onfocus="this.blur()" value=<%=account.cust_id %>> </td>
-        <td> <input class="box border-0 form-control" maxlength="15" size="13" type="text" id="input1" onfocus="this.blur()" value=<%=account.cust_type %> <% if account.cust_type != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.cust_type %><% end %>>  </td>
+        <td> <input class="box border-0 form-control" size="5"  type="text"  id="input0" onfocus="this.blur()" value=<%=account.cust_id %>> </td>
+        <td> <input class="box border-0 form-control" maxlength="15" size="8" type="text" id="input1" onfocus="this.blur()" value=<%=account.cust_type %> <% if account.cust_type != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.cust_type %><% end %>>  </td>
         <td> <input class="box border-0 form-control" size="2" type="text" id="input2" onfocus="this.blur()"  value=<%=account.acc_kind %>> </td>
-        <td> <input class="box border-0 form-control" maxlength="4" size="3"  type="text"  id="input3" onfocus="this.blur()" value=<%=account.acc_no %>> </td>
-        <td> <input class="box border-0 form-control"  size="3" type="text"   id="input4" onfocus="this.blur()" value=<%= rocTime(account.acc_date) %>> </td>
-        <td> <input class="box border-0 form-control" size="25"  type="text"　 id="input5" onfocus="this.blur()" value=<%=account.customer.cust_name %> > </td>
+        <td> <input class="box border-0 form-control" maxlength="4" size="4"  type="text"  id="input3" onfocus="this.blur()" value=<%=account.acc_no %>> </td>
+        <td> <input class="box border-0 form-control"  size="4" type="text"   id="input4" onfocus="this.blur()" value=<%= rocTime(account.acc_date) %>> </td>
+        <td> <input class="box border-0 form-control" size="20"  type="text"　 id="input5" onfocus="this.blur()" value=<%=account.customer.cust_name %>  <% if account.customer.cust_name != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.customer.cust_name %><% end %>></td>
         <td> <input class="box border-0 form-control" maxlength="7" size="6"  type="text" style="text-align:right"  id="input6" onfocus="this.blur()" value=<%=account.acc_cost %> ></td>
-        <td> <input class="box border-0 form-control"  size="40" type="text"   id="input7" onfocus="this.blur()" value=<%=account.acc_note %> <% if account.acc_note != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.acc_note %><% end %> ></td>
+        <td> <input class="box border-0 form-control"  size="15" type="text"   id="input7" onfocus="this.blur()" value=<%=account.acc_note %> <% if account.acc_note != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.acc_note %><% end %> ></td>
         <td style="display:none;">
             <button id="create_acc" class="btn btn-primary" remote="true">新增</button>
         </td>
