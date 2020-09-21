@@ -74,13 +74,13 @@ elsif params[:page].to_i >= 0
   params[:page]= "1"
 @page="nochange"
 end
-@input0 = params[:cust_id] if params[:cust_id].present?
+@hiscustID = params[:cust_id] if params[:cust_id].present?
 @date_yy = params[:acc_date].first(4) if params[:acc_date].present?
 @date_mm = params[:acc_date].last(2) if params[:acc_date].present?
 @input2 = params[:user_id] if params[:user_id].present?
 @input1 = params[:mark] if params[:mark].present?
-@input3 = params[:star_date] if params[:star_date].present?
-@input4 = params[:end_date] if params[:end_date].present?
+@hisdateS = params[:star_date] if params[:star_date].present?
+@hisdateE = params[:end_date] if params[:end_date].present?
 # @won_staff = params[:won_staff] if params[:won_staff].present?
 # cust_id = $("#input0").val()
 # acc_date= $("#date_yy").val()+$("#date_mm").val()

@@ -3,12 +3,12 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).on "click", "#query_history", (event) ->
   event.preventDefault()
-  cust_id = $("#input0").val()
+  cust_id = $("#hiscustID").val()
   acc_date= $("#date_yy").val()+$("#date_mm").val()
   mark = $("#input1").val()
   user_id= $("#input2").val()
-  star_date = $("#input3").val()
-  end_date = $("#input4").val()
+  star_date = $("#hisdateS").val()
+  end_date = $("#hisdateE").val()
 
 
   his_url="/query/histories?cust_id="+cust_id+"&;acc_date="+acc_date+
@@ -22,39 +22,39 @@ $(document).on "click", "#query_history", (event) ->
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
   return false
-$(document).on "keyup", "#input0", (event) ->
+$(document).on "keyup", "#hiscustID", (event) ->
   event.preventDefault()
-  input0 = $('#input0').val()
-  if !input0.match("^[A-Za-z0-9]+$")
+  hiscustID = $('#hiscustID').val()
+  if !hiscustID.match("^[A-Za-z0-9]+$")
     msg = '格式錯誤,請輸入英數字'
     $('#input0tips').html msg
-    $('#input0').val('')
+    $('#hiscustID').val('')
+  else
+    $('#input0tips').html ''
+  if hiscustID==""
+    msg = ''
+    $('#input0tips').html ''
+  return
+$(document).on "keyup", "#hisdateS", (event) ->
+  event.preventDefault()
+  hisdateS = $('#hisdateS').val()
+  if !hisdateS.match("^[0-9]*$")
+    msg = '格式錯誤,請輸入英數字'
+    $('#input0tips').html msg
+    $('#hisdateS').val('')
   else
     $('#input0tips').html ''
   if input0==""
     msg = ''
     $('#input0tips').html ''
   return
-$(document).on "keyup", "#input3", (event) ->
+$(document).on "keyup", "#hisdateE", (event) ->
   event.preventDefault()
-  input3 = $('#input3').val()
-  if !input3.match("^[0-9]*$")
+  hisdateE = $('#hisdateE').val()
+  if !hisdateE.match("^[0-9]*$")
     msg = '格式錯誤,請輸入英數字'
     $('#input0tips').html msg
-    $('#input3').val('')
-  else
-    $('#input0tips').html ''
-  if input0==""
-    msg = ''
-    $('#input0tips').html ''
-  return
-$(document).on "keyup", "#input4", (event) ->
-  event.preventDefault()
-  input4 = $('#input4').val()
-  if !input4.match("^[0-9]*$")
-    msg = '格式錯誤,請輸入英數字'
-    $('#input0tips').html msg
-    $('#input4').val('')
+    $('#hisdateE').val('')
   else
     $('#input0tips').html ''
   if input0==""

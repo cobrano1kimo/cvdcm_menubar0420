@@ -1179,12 +1179,15 @@ end
     else
 
       acc_date= acc_date[0,4].to_s+ (acc_date[4,2].to_i - 1).to_s
-  
+
         if acc_date.size() == 5
             acc_date=acc_date[0,4]+"0"+acc_date[4,1]
 
         end
+      
+
     end
+
   end
 
 end

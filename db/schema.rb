@@ -20,6 +20,32 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.varchar "note_mix", limit: 275
   end
 
+  create_table "WKandKwInvoice_20200907_BOX", id: false, force: :cascade do |t|
+    t.varchar "acc_kind", limit: 254
+    t.varchar "acc_no", limit: 254
+    t.varchar "acc_date", limit: 254
+    t.varchar "acc_cost", limit: 254
+    t.varchar "cust_id", limit: 254
+    t.varchar "cust_type", limit: 254
+    t.varchar "cre_date", limit: 254
+    t.varchar "acc_note", limit: 254
+    t.varchar "created_at", limit: 254
+    t.varchar "updated_at", limit: 254
+  end
+
+  create_table "WTemp20200907_KandKInovice", force: :cascade do |t|
+    t.string "acc_kind"
+    t.string "acc_no"
+    t.string "acc_date"
+    t.integer "acc_cost"
+    t.string "cust_id", limit: 5
+    t.string "cust_type"
+    t.datetime "cre_date"
+    t.string "acc_note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "accounts", force: :cascade do |t|
     t.string "acc_kind"
     t.string "acc_no"
@@ -33,15 +59,7 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "articles", id: false, force: :cascade do |t|
-    t.bigint "id", null: false
-    t.string "title"
-    t.text "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "customers", primary_key: "cust_id", id: :string, limit: 5, default: "", force: :cascade do |t|
+  create_table "customers", primary_key: "cust_id", id: :string, limit: 5, default: nil, force: :cascade do |t|
     t.string "cust_name"
     t.string "cust_nick"
     t.string "cust_stat"
@@ -97,6 +115,14 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.string "note_aft"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.varchar "operator", limit: 400
+  end
+
+  create_table "kk_customer", id: false, force: :cascade do |t|
+    t.varchar "cust_id", limit: 50
+    t.varchar "cust_name", limit: 50
+    t.varchar "cust_note", limit: 50
+    t.varchar "won_staff", limit: 50
   end
 
   create_table "large_classifications", id: false, force: :cascade do |t|
@@ -191,10 +217,10 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", id: :bigint, default: nil, force: :cascade do |t|
+  create_table "users", id: :integer, force: :cascade do |t|
     t.string "login", null: false
     t.datetime "remember_created_at"
-    t.integer "sign_in_count", null: false
+    t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
@@ -203,5 +229,4 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "accounts", "customers", column: "cust_id", primary_key: "cust_id", name: "FK__accounts__cust_i__6B24EA82"
 end
