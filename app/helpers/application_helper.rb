@@ -19,11 +19,11 @@ module ApplicationHelper
   #show cust_stat
   def statShow(stats)
     if stats.nil? || stats.empty?
-      stats ="合約中"
+      stats ="無"
     elsif stats =="Y"
+      stats ="合約中"
+    elsif stats =="N"
       stats ="己解約"
-    elsif stats =="P"
-      stats ="己結算"
     end
   end
 

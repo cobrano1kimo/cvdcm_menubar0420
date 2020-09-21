@@ -112,9 +112,9 @@
 
           <td><select id="input2" onfocus="this.blur()" class="custom-select col-lg-14" required>
           <option id='op0'value=<%=customer.cust_stat %>> <%=statShow(customer.cust_stat)%></option>
-          <option id="op1" style="display:none;" onfocus="this.blur()" value="">合約中</option>
-          <option id="op2" style="display:none;" onfocus="this.blur()" value="P">己結算</option>
-          <option id="op3"style="display:none;" onfocus="this.blur()" value="Y" >己解約</option>
+
+          <option id="op1" style="display:none;" onfocus="this.blur()" value="Y">合約中</option>
+          <option id="op3"style="display:none;" onfocus="this.blur()" value="N" >己解約</option>
 
         </select>  </td>
         <td> <input class="box border-0 form-control" size="6"  type="text"  id="input3" onfocus="this.blur()" value=<%=customer.won_staff %>> </td>
