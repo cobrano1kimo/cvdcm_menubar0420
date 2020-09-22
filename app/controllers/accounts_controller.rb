@@ -7,14 +7,15 @@ class AccountsController < ApplicationController
   # GET /accounts
   # GET /accounts.json
   def index
-    @stats="index"
+
+    @stats=""
     @pagestat=="N"
-    custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
-    @sumcost=Account.all.joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost)
+    #custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
+    #@sumcost=Account.all.joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost)
     @accounts=Account.new
     # p "#{custid['cust_id']}"
-    @accounts=Account.all.joins(:customer).where(customers: {cust_id: custid}).page(params[:page]).per(10)
-    @rowsum= @accounts.count()
+    @accounts= Account.all.where(acc_date: @stats).page(params[:page]).per(10)
+    #@rowsum= @accounts.count()
     @menubars = Menubar.all
     @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
@@ -51,20 +52,23 @@ class AccountsController < ApplicationController
     #accout add
     if params[:cust_id].empty?
 
-       custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
-       @accounts=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
-
-       if  params[:page]==""
-         @page="nochange"
-
-
+        if @group=="3" then
+           #如果是IT人員查詢秀全部
+          if @itstaff == @wonstaff then
+            custid = Customer.select(:cust_id)
+          else
+            custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
+          end
+        else
+            #個人使用
+          custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
        end
+       @accounts=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
        @rowsum=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
        @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
-       #沒資訊自動帶上個月
 
        #Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT acc_kind, acc_no,acc_date="+params[:acc_date]+",acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at FROM accounts a WHERE a.acc_date="+usemakedate+" and (select COUNT(*) from accounts where acc_date="+params[:acc_date]+")< 1")
-
+     #沒資訊自動帶上個月
      if @rowsum==0 then
                        Account.find_by_sql("EXEC sp_executesql N'INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT a.acc_kind, acc_no= @5,acc_date= @0,acc_cost= @6,a.cust_id,a.cust_type,a.cre_date,a.acc_note,a.created_at,a.updated_at FROM accounts a inner join customers b on a.cust_id=b.cust_id and a.acc_date= @1 and b.won_staff= @2
                           where not exists(select c.cust_id,c.cust_type, c.acc_date from accounts c where a.cust_id=c.cust_id and a.cust_type=c.cust_type and a.acc_date=c.acc_date and a.acc_date<> @3 and b.won_staff= @4)', N'@0 nvarchar(4000),@1 nvarchar(4000),@2 nvarchar(4000),@3 nvarchar(4000),@4 nvarchar(4000),@5 nvarchar(4000),@6 int',@0 = N'"+params[:acc_date]+"', @1 = N'"+usemakedate+"',@2 = N'"+@wonstaff+"',@3 = N'"+usemakedate+"',@4 = N'"+@wonstaff+"'
@@ -72,14 +76,17 @@ class AccountsController < ApplicationController
      end
 
     else
-       custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id],won_staff: @wonstaff)
-       @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
-       firstpage2 = @accounts.current_page
-
-       if firstpage2 != 1 and params[:page]==""
-         params[:page]= 1
-           @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
-       end
+      if @group=="3" then
+         #如果是IT人員查詢秀全部
+        if @itstaff == @wonstaff then
+           custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id])
+        else
+           custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id],won_staff: @wonstaff)
+        end
+      else
+          #個人使用
+         custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id],won_staff: @wonstaff)
+     end
        @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
        @rowsum=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
        @sumcost=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
@@ -87,15 +94,7 @@ class AccountsController < ApplicationController
     end
 
 
-   if params[:page].to_i == 1
-    @page="change"
 
-  elsif params[:page].to_i == 0
-
-    @page="nochange"
-  else
-    @page="change"
-   end
    @input0 = params[:cust_id] if params[:cust_id].present?
    @date_yy = params[:acc_date].first(4) if params[:acc_date].present?
    @date_mm = params[:acc_date].last(2) if params[:acc_date].present?

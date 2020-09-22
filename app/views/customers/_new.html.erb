@@ -53,12 +53,26 @@
         <td> <input class="col box round1 form-control" size="5" type="text" id="input1" > </td>
         <td><select id="input2" class="custom-select col-lg-12" required>
 
-        <option id="op1"  value="">合約中</option>
-        <option id="op2"  value="P">己結算</option>
-        <option id="op3"  value="Y" >己解約</option>
+        <option id="op1"  value="Y">合約中</option>
+
+        <option id="op3"  value="N" >己解約</option>
 
       </select>  </td>
+      <% if @group=="3" then %>
+            <td> <select id="input3" class="custom-select col-lg-12" required>
+              <option value="秀錦" <%= "selected" if @won_staff=="秀錦" %> >秀錦</option>
+              <option value="may" <%= "selected" if @won_staff=="may" %> >may</option>
+              <option value="Karen" <%= "selected" if @won_staff=="Karen" %> >Karen</option>
+              <option value="vicky" <%= "selected" if @won_staff=="vicky" %> >vicky</option>
+              <option value="SABRINA" <%= "selected" if @won_staff=="SABRINA" %> >SABRINA</option>
+              <option value="素芳" <%= "selected" if @won_staff=="素芳" %> >素芳</option>
+              <option value="Katherine" <%= "selected" if @won_staff=="Katherine" %> >Katherine</option>
+
+          </select></td>
+      <% else %>
         <td> <input class="col box border-0 form-control" onfocus="this.blur()" size="3"  type="text"  id="input3" value=<%=@wonstaff%> > </td>
+      <%end%>
+
         <td> <input class="col box round1 form-control" size="19"  type="text"　 id="input4"  > </td>
 
         <td id ='yesOrNoC'>
@@ -77,3 +91,4 @@
   </tbody>
 
 </table>
+  <% if @msgcreat!="" then %> <%=@msgcreat%> <% end %>

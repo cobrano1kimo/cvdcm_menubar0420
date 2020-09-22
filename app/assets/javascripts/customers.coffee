@@ -91,8 +91,10 @@ $(document).on "click", "#cust_checkC", (event) ->
 # 觸發 '刪除' 按鈕
 $(document).on "click", "#delete_cust", (event) ->
   event.preventDefault()
-  if confirm '確定刪除該資料嗎'
+  if confirm('確定刪除該資料嗎')==true
     $(this).closest('tr').fadeOut()
+  
+
                          # 觸發 a link 的 click (rails link_to)
   return false
 

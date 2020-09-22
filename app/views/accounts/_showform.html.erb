@@ -52,7 +52,7 @@
 
      <div class="d-flex flex-row justify-content-between align-items-center" >
         年：
-       <select id="date_yy" style= "width:300px;"  class="custom-select" required>
+       <select id="date_yy" style= "width:200px;"  class="custom-select" required>
 
          <option value="2020" <%= "selected" if @date_yy=="2020" %> >2020</option>
          <option value="2021" <%= "selected" if @date_yy=="2021" %> >2021</option>
@@ -68,7 +68,7 @@
 
        </select>
   月：
-       <select id="date_mm" class="custom-select col-lg-5" required>
+       <select id="date_mm" style= "width:100px;" class="custom-select" required>
          <option value="01" <%= "selected" if @date_mm=="01" %> >01</option>
          <option value="02" <%= "selected" if @date_mm=="02" %> >02</option>
          <option value="03" <%= "selected" if @date_mm=="03" %> >03</option>
@@ -84,7 +84,7 @@
        </select>
      <% if @group=="3" then %>
 
-     <select id="​​nwonstaff" class="custom-select col-lg-6" required>
+     <select id="​​nwonstaff" style= "width:300px;"class="custom-select" required>
        <% if @operstaff=="" then %>
 
           <option value=<%=@itstaff%>></option>

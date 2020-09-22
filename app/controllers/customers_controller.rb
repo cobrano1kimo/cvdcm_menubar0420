@@ -1,6 +1,6 @@
 class CustomersController < ApplicationController
   before_action :user_group
-  before_action :set_customer, only: [ :edit, :destroy]
+  before_action :set_customer
 
 
   # GET /customers
@@ -8,7 +8,11 @@ class CustomersController < ApplicationController
   def index
     @stats="index"
     @pagestat=="N"
-    @customers = Customer.all.where(won_staff: @wonstaff).page(params[:page]).per(10)
+    if @group=="3" then
+      @customers = Customer.all.page(params[:page]).per(10)
+    else
+      @customers = Customer.all.where(won_staff: @wonstaff).page(params[:page]).per(10)
+    end
     @rowsum= @customers.count()
     @menubars = Menubar.all
     @menubar = @menubars.first
@@ -36,11 +40,18 @@ class CustomersController < ApplicationController
 
     #accout add
     if params[:cust_id].empty?
-      puts "empty"
+       if @group=="3" then
+        @customers=Customer.all.page(params[:page]).per(10)
+       else
        @customers=Customer.all.where(won_staff: @wonstaff).page(params[:page]).per(10)
+       end
+
     else
+       if @group=="3" then
+         @customers=Customer.all.where(cust_id: params[:cust_id]).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
+       else
        @customers=Customer.all.where(cust_id: params[:cust_id],won_staff: @wonstaff).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
-      puts "noempty"
+       end
     end
 
     puts params[:page].to_i
@@ -68,6 +79,7 @@ def create
 
   custid = Customer.select(:cust_id).where(cust_id: params[:cust_id],won_staff: @wonstaff)
   if custid.size ==0 then
+    p "size=0"
   @cust_count=Customer.select(:cust_id).where(cust_id: params[:cust_id],
                             cust_name: params[:cust_name],
                             cust_stat: params[:cust_stat],
@@ -75,16 +87,27 @@ def create
                             cust_note: params[:cust_note])
 
        if @cust_count.size == 0 then
+
             @customer=Customer.create(cust_id: params[:cust_id],
                                       cust_name: params[:cust_name],
                                       cust_stat: params[:cust_stat],
                                       won_staff: params[:won_staff],
                                       cust_note: params[:cust_note])
-          end
+
+
+        end
+
   else
-      puts"ffffff"
+    begin
+
+    ensure
+      @msgcreat="客戶編號存在"
+      render :new
+   end
+
   end
-  render :index
+
+    render :index
       #@customers=customer.new
       # p "#{custid['cust_id']}"
 end
@@ -133,8 +156,8 @@ end
     staff.each do |variable|
       @wonstaff =variable.won_staff
       @group =variable.group
-
-  end
+      @itstaff =variable.won_staff
+    end
 
 
     # puts  u.login+u.won_staff+u.group

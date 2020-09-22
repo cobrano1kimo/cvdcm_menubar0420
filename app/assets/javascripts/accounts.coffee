@@ -91,7 +91,7 @@ $(document).on "click", "#create_acc", (event) ->
      if input1==""
        msg = ''
        $('#input6tips').html ''
-     return　  
+     return　
   if won_staff==''
     acc_createurl="/new/accounts"
   else
