@@ -2,6 +2,7 @@ module AccountsHelper
 
   #EXCEL含小計
   def printe_xlsx(yyyy_mm,acc_yyyy_mm,user_name)
+
   if @group=="1" then
   custid = Customer.select(:cust_id).where(won_staff: user_name)
   if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
@@ -71,7 +72,7 @@ module AccountsHelper
   worksheet1.write(item, 2, "客戶名稱", format_string_background)
   worksheet1.write(item, 3, "帳單編號", format_string_background)
   worksheet1.write(item, 4, "帳單金額", format_string_background)
-  worksheet1.write(item, 5, "帳單名稱", format_string_background)
+  worksheet1.write(item, 5, "客戶類別名稱", format_string_background)
   worksheet1.write(item, 6, "其他說明", format_string_background)
 
   worksheet1.freeze_panes(item+1, 0)    # Freeze the item row
@@ -81,7 +82,10 @@ module AccountsHelper
 
   acc_total = 0
 
-  Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC, cust_type ASC").each { |row|
+  Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note")
+                          .where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid})
+                          .where.not(accounts: {acc_cost: 0})
+                          .order("cust_id ASC, cust_type ASC").each { |row|
 
     item = item + 1
     item_count =  item_count + 1
@@ -156,7 +160,11 @@ module AccountsHelper
   #
   acc_total = 0
 
-  Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost").group("accounts.cust_id, cust_name").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC").each { |row|
+  Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost")
+                          .group("accounts.cust_id, cust_name")
+                          .where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid})
+                          .where.not(accounts: {acc_cost: 0})
+                          .order("cust_id ASC").each { |row|
 
     item = item + 1
     item_count =  item_count + 1
@@ -175,7 +183,8 @@ module AccountsHelper
 
   workbook.close
 
- else
+elsif @group.to_i >= 3
+
    custid = Customer.select(:cust_id).where(won_staff: user_name) #使用業務人員名稱找客戶
    #如果用自己帳戶
   if custid.size == 0 then
@@ -247,7 +256,7 @@ module AccountsHelper
    worksheet1.write(item, 2, "客戶名稱", format_string_background)
    worksheet1.write(item, 3, "帳單編號", format_string_background)
    worksheet1.write(item, 4, "帳單金額", format_string_background)
-   worksheet1.write(item, 5, "帳單名稱", format_string_background)
+   worksheet1.write(item, 5, "客戶類別名稱", format_string_background)
    worksheet1.write(item, 6, "其他說明", format_string_background)
 
    worksheet1.freeze_panes(item+1, 0)    # Freeze the item row
@@ -257,7 +266,10 @@ module AccountsHelper
 
    acc_total = 0
 
-   Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm}).order("cust_id ASC, cust_type ASC").each { |row|
+   Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note")
+                           .where(accounts: {acc_date: acc_yyyy_mm})
+                           .where.not(accounts: {acc_cost: 0})
+                           .order("cust_id ASC, cust_type ASC").each { |row|
 
      item = item + 1
      item_count =  item_count + 1
@@ -332,7 +344,11 @@ module AccountsHelper
    #
    acc_total = 0
 
-   Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost").group("accounts.cust_id, cust_name").where(accounts: {acc_date: acc_yyyy_mm}).order("cust_id ASC").each { |row|
+   Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost")
+          .group("accounts.cust_id, cust_name")
+          .where(accounts: {acc_date: acc_yyyy_mm})
+          .where.not(accounts: {acc_cost: 0})
+          .order("cust_id ASC").each { |row|
 
      item = item + 1
      item_count =  item_count + 1
@@ -350,6 +366,7 @@ module AccountsHelper
    worksheet1.activate
 
    workbook.close
+   #可印總表的業務人員　GROUP＝４
  else
 
    if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
@@ -396,7 +413,7 @@ module AccountsHelper
     worksheet1.set_column('C:C', 18)   # 客戶名稱
     worksheet1.set_column('D:D', 8)    # 帳單編號
     worksheet1.set_column('E:E', 12)   # 帳單金額
-    worksheet1.set_column('F:F', 13)   # 帳單名稱
+    worksheet1.set_column('F:F', 13)   # 客戶類別名稱
     worksheet1.set_column('G:G', 15)   # 其他說明
 
 
@@ -419,7 +436,7 @@ module AccountsHelper
     worksheet1.write(item, 2, "客戶名稱", format_string_background)
     worksheet1.write(item, 3, "帳單編號", format_string_background)
     worksheet1.write(item, 4, "帳單金額", format_string_background)
-    worksheet1.write(item, 5, "帳單名稱", format_string_background)
+    worksheet1.write(item, 5, "客戶類別名稱", format_string_background)
     worksheet1.write(item, 6, "其他說明", format_string_background)
 
     worksheet1.freeze_panes(item+1, 0)    # Freeze the item row
@@ -429,7 +446,10 @@ module AccountsHelper
 
     acc_total = 0
 
-    Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC, cust_type ASC").each { |row|
+    Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note")
+                            .where(accounts: {acc_date: acc_yyyy_mm})
+                            .where.not(accounts: {acc_cost: 0})
+                            .order("cust_id ASC, cust_type ASC").each { |row|
 
       item = item + 1
       item_count =  item_count + 1
@@ -504,7 +524,11 @@ module AccountsHelper
     #
     acc_total = 0
 
-    Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost").group("accounts.cust_id, cust_name").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC").each { |row|
+    Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost")
+                            .group("accounts.cust_id, cust_name")
+                            .where(accounts: {acc_date: acc_yyyy_mm})
+                            .where.not(accounts: {acc_cost: 0})
+                            .order("cust_id ASC").each { |row|
 
       item = item + 1
       item_count =  item_count + 1
@@ -529,7 +553,7 @@ end
 
    #PDF小計
   def printp1_pdf(yyyy_mm,acc_yyyy_mm,user_name)
-  if @group=="3" then
+  if @group.to_i>=3 then
     custid = Customer.select(:cust_id).where(won_staff: user_name)
      if File.exist?(yyyy_mm+"倉儲費用小計.pdf")
        File.delete(yyyy_mm+"倉儲費用小計.pdf")
@@ -553,7 +577,7 @@ end
          acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
        }
        else
-         Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).each { |row|
+         Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
            acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
          }
        end
@@ -585,12 +609,17 @@ end
        i = 0
        iItem = 0
     if custid.size == 0 then
-      iRowCount = Account.joins(:customer).group("accounts.cust_id").where(accounts: {acc_date: acc_yyyy_mm}).count
+      iRowCount = Account.joins(:customer)
+                         .group("accounts.cust_id")
+                         .where(accounts: {acc_date: acc_yyyy_mm}).count
 
        font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
          data = [["項次","客戶編號","客戶名稱","小計金額"]]
 
-         Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost").group("accounts.cust_id, cust_name").where(accounts: {acc_date: acc_yyyy_mm}).order("cust_id ASC").each { |row|
+         Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost")
+                                 .group("accounts.cust_id, cust_name")
+                                 .where(accounts: {acc_date: acc_yyyy_mm})
+                                 .order("cust_id ASC").each { |row|
 
            i = i + 1
            iItem = iItem + 1
@@ -642,7 +671,7 @@ end
 
      else
 
-       iRowCount = Account.joins(:customer).group("accounts.cust_id").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).count
+       iRowCount = Account.joins(:customer).group("accounts.cust_id").where(accounts: {acc_date: acc_yyyy_mm}).count
 
         font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
           data = [["項次","客戶編號","客戶名稱","小計金額"]]
@@ -816,7 +845,7 @@ end
    #PDF
   def printp_pdf(yyyy_mm,acc_yyyy_mm,user_name)
 
-     if @group=="3" then
+     if @group.to_i >=3 then
        custid = Customer.select(:cust_id).where(won_staff: user_name)
        if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
           File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
@@ -841,7 +870,7 @@ end
             acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
           }
         else
-          Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).each { |row|
+          Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
             acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
           }
         end
@@ -951,12 +980,12 @@ end
 
           end
       else
-        iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).count
+        iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm}).count
 
         font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
           data = [["項次","客戶編號","客戶名稱","帳單編號","帳單金額","帳單種類","備註"]]
 
-          Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).order("cust_id ASC, cust_type ASC").each { |row|
+          Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm}).order("cust_id ASC, cust_type ASC").each { |row|
 
             i = i + 1
             iItem = iItem + 1
@@ -1184,7 +1213,7 @@ end
             acc_date=acc_date[0,4]+"0"+acc_date[4,1]
 
         end
-      
+
 
     end
 
