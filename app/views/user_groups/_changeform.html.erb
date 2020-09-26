@@ -1,0 +1,82 @@
+<h3>月報表管理系統</h3>
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <!-- Dropdown -->
+
+    <% last_parent_menu_id = '' %>
+    <% last_menu_id = '' %>
+    <% @menus.each do |menubar| %>
+        <% if last_menu_id.present? && menubar.menu_id[0,6] != last_menu_id[0,6] %>
+          </div>
+        </li>
+        <% end %>
+      <% if menubar.parent_menu_id.present? && menubar.parent_menu_id == menubar.menu_id[0,6] %>
+        <% if menubar.program_url.present? %>
+          <a class="dropdown-item" href="<%= menubar.program_url %>"><%= menubar.menu_name.strip %></a>
+        <% else %>
+          <a class="dropdown-item" href="#"><%= menubar.menu_name.strip %></a>
+        <% end %>
+      <% else %>
+      <% if menubar.parent_menu_id.blank? && menubar.menu_id.present? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#" id="navbardrop" data-toggle="dropdown">
+            <%= menubar.menu_name.strip %>
+          </a>
+          <div class="dropdown-menu">
+      <% end %>
+      <% end %>
+      <% last_parent_menu_id = menubar.parent_menu_id %>
+      <% last_menu_id = menubar.menu_id  %>
+    <% end %>
+          </div>
+        </li>
+  </ul>
+
+  <ul class="navbar-nav">
+    <%= link_to "登出", destroy_user_session_path, method: :delete, :class => "btn btn-info btn-sm" %>
+  </ul>
+</nav>
+
+<h1>列印權限維護</h1>
+
+<table class="table">
+
+  <thead >
+
+    <tr>
+      <td>項次</td>
+      <td>&nbsp;&nbsp;帳號</td>
+      <td>&nbsp;業務人員 </td>
+      <td>可全印</td>
+ 　　
+
+    </tr>
+  </thead>
+    <%= paginate @user_groups, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>
+  <tbody id="bodyrow">
+　
+    <% @user_groups.each_with_index do |usergroup,index| %>
+      <tr id=<%= index+1 %>>
+        <td ><%= index+1 %></td>
+        <td style="display:none;"><input id ="input<%=index+1%>"></td>
+        <td><input class="box border-0 form-control" size="12"  type="text" onfocus="this.blur()"  id="uglogin"  value=<%=usergroup.login %>> </td>
+        <td><input class="box border-0 form-control" size="14" type="text" onfocus="this.blur()" id="ugstaf" value=<%=usergroup.won_staff %>> </td>
+
+        <td>
+        &nbsp;&nbsp;  &nbsp;&nbsp;<input class="form-check-input" type="checkbox" id="uggroup"  <% if usergroup.group == "4" then %>checked> <%end%>
+
+
+
+
+
+         </td>
+
+      </tr>
+
+    <% end %>
+
+  </tbody>
+
+</table>

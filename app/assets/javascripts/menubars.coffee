@@ -7,7 +7,7 @@
 
 # 觸發 點擊 GridView Row 記錄，並且顯示資料於 Form 中
 $(document).on "turbolinks:load", ->
-$(document).on "click", ".table tr", (event) ->
+$(document).on "click", "#table tr", (event) ->
   event.preventDefault()
   $('table td:nth-child(1)').removeClass 'fa fa-play'
   $(this).find('td:nth-child(1)').addClass 'fa fa-play'
@@ -20,6 +20,8 @@ $(document).on "click", ".table tr", (event) ->
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
   return false
+
+
 
 
 # 觸發 '新增' 按鈕

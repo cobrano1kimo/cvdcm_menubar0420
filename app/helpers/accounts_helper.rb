@@ -183,12 +183,11 @@ module AccountsHelper
 
   workbook.close
 
-elsif @group.to_i >= 3
+elsif @group.to_i >= 3 #有權限印全部的人
 
    custid = Customer.select(:cust_id).where(won_staff: user_name) #使用業務人員名稱找客戶
-   #如果用自己帳戶
-  if custid.size == 0 then
-
+   #資訊部權限及印總報表業務
+  if custid.size == 0 || @group == "4" then
   if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
     File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
   end
@@ -366,9 +365,9 @@ elsif @group.to_i >= 3
    worksheet1.activate
 
    workbook.close
-   #可印總表的業務人員　GROUP＝４
- else
 
+ else
+    #各業務只印自己的
    if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
      File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.xlsx")
    end
@@ -447,7 +446,7 @@ elsif @group.to_i >= 3
     acc_total = 0
 
     Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note")
-                            .where(accounts: {acc_date: acc_yyyy_mm})
+                            .where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid})
                             .where.not(accounts: {acc_cost: 0})
                             .order("cust_id ASC, cust_type ASC").each { |row|
 
@@ -526,7 +525,7 @@ elsif @group.to_i >= 3
 
     Account.joins(:customer).select("accounts.cust_id, cust_name, sum(acc_cost) as acc_cost")
                             .group("accounts.cust_id, cust_name")
-                            .where(accounts: {acc_date: acc_yyyy_mm})
+                            .where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid})
                             .where.not(accounts: {acc_cost: 0})
                             .order("cust_id ASC").each { |row|
 
@@ -553,7 +552,9 @@ end
 
    #PDF小計
   def printp1_pdf(yyyy_mm,acc_yyyy_mm,user_name)
+
   if @group.to_i>=3 then
+
     custid = Customer.select(:cust_id).where(won_staff: user_name)
      if File.exist?(yyyy_mm+"倉儲費用小計.pdf")
        File.delete(yyyy_mm+"倉儲費用小計.pdf")
@@ -571,15 +572,26 @@ end
 
      Prawn::Document.generate("#{Rails.root}/public/#{yyyy_mm+"倉儲費用小計"}.pdf", :page_size => "A4", :page_layout => :portrait, :print_scaling => :none, :info => info) do
 
+       staff = UserGroup.select("group").where(won_staff: user_name) #取出UI所選的權限
+        staff.each do |variable|
+          @usernamegroup =variable.group
+        end
+
        acc_total = 0
-       if custid.size == 0 then
+       if custid.size == 0  then #資訊部進來並選自己
+
        Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
          acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
        }
-       else
-         Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
-           acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
-         }
+     elsif @usernamegroup=="4"  then #資訊部進來選VICKY
+
+       Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
+         acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
+       }
+     else
+       Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).each { |row|
+         acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
+       }
        end
        keep_position = 0
        font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
@@ -608,7 +620,7 @@ end
 
        i = 0
        iItem = 0
-    if custid.size == 0 then
+    if custid.size == 0 || @usernamegroup == "4" then
       iRowCount = Account.joins(:customer)
                          .group("accounts.cust_id")
                          .where(accounts: {acc_date: acc_yyyy_mm}).count
@@ -670,8 +682,8 @@ end
        end
 
      else
-
-       iRowCount = Account.joins(:customer).group("accounts.cust_id").where(accounts: {acc_date: acc_yyyy_mm}).count
+         #自己的小計
+       iRowCount = Account.joins(:customer).group("accounts.cust_id").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).count
 
         font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
           data = [["項次","客戶編號","客戶名稱","小計金額"]]
@@ -863,14 +875,22 @@ end
 
 
         Prawn::Document.generate("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf", :page_size => "A4", :page_layout => :portrait, :print_scaling => :none, :info => info) do
+          staff = UserGroup.select("group").where(won_staff: user_name) #取出UI所選的權限
+           staff.each do |variable|
+             @usernamegroup =variable.group
+           end
 
           acc_total = 0
         if custid.size==0 then
           Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
             acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
           }
+        elsif @usernamegroup=="4"  then #資訊部進來選VICKY
+            Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
+              acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
+            }
         else
-          Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
+          Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).each { |row|
             acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
           }
         end
@@ -902,7 +922,7 @@ end
 
           i = 0
           iItem = 0
-          if custid.size == 0 then
+          if custid.size == 0 || @usernamegroup=="4"then
           iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm}).count
 
           font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
@@ -980,7 +1000,7 @@ end
 
           end
       else
-        iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm}).count
+        iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm,cust_id:custid}).count
 
         font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
           data = [["項次","客戶編號","客戶名稱","帳單編號","帳單金額","帳單種類","備註"]]

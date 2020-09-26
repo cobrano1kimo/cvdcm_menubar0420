@@ -10,19 +10,7 @@
 
 
 $(document).on "turbolinks:load", ->
-$(document).on "click", ".table tr", (event) ->
-  event.preventDefault()
-  $('table td:nth-child(1)').removeClass 'fa fa-play'
-  $(this).find('td:nth-child(1)').addClass 'fa fa-play'
-  menu_id = $(@).find("td:nth-child(2)").text()
-  xhttp = new XMLHttpRequest
-  xhttp.onreadystatechange = ->
-   if @readyState == 4 and @status == 200
-     $(".myform").html(@responseText)
-  xhttp.open "GET", "menubars/"+menu_id+"/form", true
-  # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
-  xhttp.send()
-  return false
+
 
 # 觸發 '查詢' 按鈕
 $(document).on "click", "#query_cust", (event) ->
@@ -93,7 +81,7 @@ $(document).on "click", "#delete_cust", (event) ->
   event.preventDefault()
   if confirm('確定刪除該資料嗎')==true
     $(this).closest('tr').fadeOut()
-  
+
 
                          # 觸發 a link 的 click (rails link_to)
   return false

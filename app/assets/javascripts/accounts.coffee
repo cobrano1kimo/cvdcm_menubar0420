@@ -31,7 +31,6 @@ $(document).on "click", "#query_acc", (event) ->
   xhttp.open "GET", acc_url, true
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()
-
   return false
 
 

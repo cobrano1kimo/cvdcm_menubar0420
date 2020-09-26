@@ -88,6 +88,11 @@ Rails.application.routes.draw do
     get 'histories', :to => "histories#query",as:"gquery_history"
     post 'histories', :to =>"histories#query",as:"pquery_history"
   end
+  scope :controller => "user_groups", :path => "/query" do
+
+    get 'user_groups', :to => "user_groups#query",as:"gquery_user_groups"
+    post 'user_groups', :to =>"user_groups#query",as:"pquery_user_groups"
+  end
 
 
   # scope :controller => "accounts", :path => "/download" do
