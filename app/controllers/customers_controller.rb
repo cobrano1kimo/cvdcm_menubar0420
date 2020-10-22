@@ -54,13 +54,7 @@ class CustomersController < ApplicationController
        end
     end
 
-    puts params[:page].to_i
-   if params[:page].to_i > 0
-    @page="change"
-   elsif params[:page].to_i >= 0
-      params[:page]= "1"
-    @page="nochange"
-   end
+
    @input0 = params[:cust_id] if params[:cust_id].present?
    @won_staff = params[:won_staff] if params[:won_staff].present?
   end
@@ -166,9 +160,22 @@ end
 
 
   def edit
+    @menubars = Menubar.all
+    @menubar = @menubars.first
+    @menus = Menubar.order(:menu_sn)
+    if @current_page != params[:page] || @current_menu_id.blank? then
+      @current_menu_id = @menubar.menu_id
+      @current_page = params[:page]
+    end
+
        @customer=Customer.find_by(cust_id: params[:cust_id])
        #history now data
-       @customer.update(cust_name: params[:cust_name],cust_stat: params[:cust_stat],cust_note: params[:cust_note])
+       @customer.update(cust_name: params[:cust_name],cust_stat: params[:cust_stat],cust_payment: params[:cust_payment],
+         cust_note: params[:cust_note],cust_payday: params[:cust_payday],
+          paymonth01: params[:paymonth01],paymonth02: params[:paymonth02], paymonth03: params[:paymonth03],
+          paymonth04: params[:paymonth04],paymonth05: params[:paymonth05],paymonth06: params[:paymonth06],
+          paymonth07: params[:paymonth07],paymonth08: params[:paymonth08],paymonth09: params[:paymonth09],
+          paymonth10: params[:paymonth10],paymonth11: params[:paymonth11],paymonth12: params[:paymonth12])
        #history aft change
 
 

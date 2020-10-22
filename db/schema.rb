@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200522021311) do
+ActiveRecord::Schema.define(version: 20201019012626) do
 
   create_table "CompanyTax", primary_key: "tax_id", id: :integer, force: :cascade do |t|
     t.char "cust_id", limit: 5
@@ -18,6 +18,15 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.varchar "tax_name", limit: 50
     t.varchar "tax_note", limit: 225
     t.varchar "note_mix", limit: 275
+  end
+
+  create_table "WCM_20200918_BOX", id: false, force: :cascade do |t|
+    t.varchar "cm00", limit: 254
+    t.varchar "CM01", limit: 254
+    t.varchar "cm24", limit: 254
+    t.varchar "cm04", limit: 254
+    t.varchar "CM28", limit: 254
+    t.varchar "cm31", limit: 254
   end
 
   create_table "WKandKwInvoice_20200907_BOX", id: false, force: :cascade do |t|
@@ -46,6 +55,45 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.datetime "updated_at"
   end
 
+  create_table "Wdoris_20200918_BOX", id: false, force: :cascade do |t|
+    t.varchar "acc_kind", limit: 254
+    t.varchar "acc_no", limit: 254
+    t.varchar "acc_date", limit: 254
+    t.varchar "acc_cost", limit: 254
+    t.varchar "cust_id", limit: 254
+    t.varchar "cust_type", limit: 254
+    t.varchar "cre_date", limit: 254
+    t.varchar "acc_note", limit: 254
+    t.varchar "created_at", limit: 254
+    t.varchar "updated_at", limit: 254
+  end
+
+  create_table "Weilien_20200915_BOX", id: false, force: :cascade do |t|
+    t.varchar "acc_kind", limit: 254
+    t.varchar "acc_no", limit: 254
+    t.varchar "acc_date", limit: 254
+    t.varchar "acc_cost", limit: 254
+    t.varchar "cust_id", limit: 254
+    t.varchar "cust_type", limit: 254
+    t.varchar "cre_date", limit: 254
+    t.varchar "acc_note", limit: 254
+    t.varchar "created_at", limit: 254
+    t.varchar "updated_at", limit: 254
+  end
+
+  create_table "Wsabrina_20200923_BOX", id: false, force: :cascade do |t|
+    t.varchar "acc_kind", limit: 254
+    t.varchar "acc_no", limit: 254
+    t.varchar "acc_date", limit: 254
+    t.varchar "acc_cost", limit: 254
+    t.varchar "cust_id", limit: 254
+    t.varchar "cust_type", limit: 254
+    t.varchar "cre_date", limit: 254
+    t.varchar "acc_note", limit: 254
+    t.varchar "created_at", limit: 254
+    t.varchar "updated_at", limit: 254
+  end
+
   create_table "accounts", force: :cascade do |t|
     t.string "acc_kind"
     t.string "acc_no"
@@ -57,6 +105,8 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.string "acc_note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "clo_mark", limit: 1
+    t.datetime "clo_date"
   end
 
   create_table "customers", primary_key: "cust_id", id: :string, limit: 5, default: nil, force: :cascade do |t|
@@ -67,6 +117,20 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.string "cust_note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cust_payment", limit: 2
+    t.string "cust_payday", limit: 2
+    t.string "paymonth01", limit: 2
+    t.string "paymonth02", limit: 2
+    t.string "paymonth03", limit: 2
+    t.string "paymonth04", limit: 2
+    t.string "paymonth05", limit: 2
+    t.string "paymonth06", limit: 2
+    t.string "paymonth07", limit: 2
+    t.string "paymonth08", limit: 2
+    t.string "paymonth09", limit: 2
+    t.string "paymonth10", limit: 2
+    t.string "paymonth11", limit: 2
+    t.string "paymonth12", limit: 2
   end
 
   create_table "excel", id: false, force: :cascade do |t|
@@ -209,6 +273,14 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sysdiagrams", primary_key: "diagram_id", id: :integer, force: :cascade do |t|
+    t.string "name", limit: 128, null: false
+    t.integer "principal_id", null: false
+    t.integer "version"
+    t.binary "definition"
+    t.index ["principal_id", "name"], name: "UK_principal_name", unique: true
+  end
+
   create_table "user_groups", force: :cascade do |t|
     t.string "login"
     t.string "group"
@@ -229,4 +301,5 @@ ActiveRecord::Schema.define(version: 20200522021311) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "accounts", "customers", column: "cust_id", primary_key: "cust_id", name: "fk_customer_id"
 end

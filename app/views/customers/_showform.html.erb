@@ -60,7 +60,7 @@
 
 <p id="notice"><%= notice %></p>
 
-<table id="table" class="table table-hover">
+<table id="table" class="table">
 
 
   <thead >
@@ -89,9 +89,24 @@
       <td >客 戶 編 號</td>
       <td >&nbsp;&nbsp;客  戶  名  稱 </td>
       <td align="center" valign="center">狀態</td>
+      <td >付款條件</td>
+      <td>01月</td>
+        <td >02月</td>
+          <td>03月</td>
+            <td>04月</td>
+              <td>05月</td>
+                <td>06月</td>
+                  <td>07月</td>
+                    <td>08月</td>
+                      <td>09月</td>
+                        <td>10月</td>
+                          <td>11月</td>
+                            <td>12月</td>
+      <td align="center" valign="center">結帳日</td>
       <td >&nbsp;&nbsp;業務人員</td>
 
-      <td align="center" valign="center">備註</td>
+      <td >備註</td>
+
  <td>處理  </td>
         <td>     </td>
 
@@ -107,18 +122,47 @@
         <td style="display:none;"><input id ="input"></td>
 
         <td><input class="box border-0 form-control" size="6"  type="text"  id="input0" onfocus="this.blur()" value=<%=customer.cust_id %>> </td>
-        <td><input class="box border-0 form-control" size="14" type="text" id="input1" onfocus="this.blur()" value=<%=customer.cust_name %>> </td>
+        <td><input class="box border-0 form-control" size="13" type="text" id="input1" onfocus="this.blur()" value="<%=customer.cust_name %>"  <% if customer.cust_name != "" then %> data-toggle="tooltip" data-html="true" title=<%= customer.cust_name %><% end %>> </td>
 
-          <td><select id="input2" onfocus="this.blur()" class="custom-select col-lg-14" required>
+          <td><select id="input2" onfocus="this.blur()" style="width:90px" class="custom-select" required>
           <option id='op0'value=<%=customer.cust_stat %>> <%=statShow(customer.cust_stat)%></option>
 
           <option id="op1" style="display:none;" onfocus="this.blur()" value="Y">合約中</option>
           <option id="op3"style="display:none;" onfocus="this.blur()" value="N" >己解約</option>
 
         </select>  </td>
+
+            <td><select id="payselect"  onfocus="this.blur()" style="width:100px" class="custom-select" required>
+            <option id='ps0'value=<%=customer.cust_payment %>> <%=paymentShow(customer.cust_payment)%></option>
+
+            <option id="ps1" style="display:none;" onfocus="this.blur()" value="1">月結</option>
+            <option id="ps2"style="display:none;" onfocus="this.blur()" value="2" >半月結</option>
+              <option id="ps3" style="display:none;" onfocus="this.blur()" value="3">季結</option>
+                <option id="ps4" style="display:none;" onfocus="this.blur()" value="4">半年結</option>
+                  <option id="ps5" style="display:none;" onfocus="this.blur()" value="5">年結</option>
+                    <option id="ps6" style="display:none;" onfocus="this.blur()" value="6">已結清</option>
+                      <option id="ps7" style="display:none;" onfocus="this.blur()" value="7">倒店</option>
+                        <option id="ps8" style="display:none;" onfocus="this.blur()" value="8">4個月結</option>
+          </select>  </td>
+
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm1"  <% if customer.paymonth01 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm2"  <% if customer.paymonth02 == "2" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm3"  <% if customer.paymonth03 == "3" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm4"  <% if customer.paymonth04 == "4" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled"type="checkbox" id="pm5"  <% if customer.paymonth05 == "5" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm6"  <% if customer.paymonth06 == "6" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm7"  <% if customer.paymonth07 == "7" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm8"  <% if customer.paymonth08 == "8" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm9"  <% if customer.paymonth09 == "9" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm10"  <% if customer.paymonth10 == "10" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm11"  <% if customer.paymonth11 == "11" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm12"  <% if customer.paymonth12 == "12" then %>checked> <%end%></td>
+
+        <td> <input class="box border-0 form-control" size="2"  type="text"  id="payday_input" onfocus="this.blur()" value=<%=customer.cust_payday %>> </td>
         <td> <input class="box border-0 form-control" size="6"  type="text"  id="input3" onfocus="this.blur()" value=<%=customer.won_staff %>> </td>
 
-        <td> <input class="box border-0 form-control"  size="19" type="text" id="input4" onfocus="this.blur()" value=<%= customer.cust_note %>> </td>
+        <td> <input class="box border-0 form-control"  size="19" type="text" id="input4" onfocus="this.blur()" value="<%= customer.cust_note %>"  <% if customer.cust_note != "" then %> data-toggle="tooltip" data-html="true" title=<%= customer.cust_note %><% end %>> </td>
+
 
 
         <td>

@@ -857,7 +857,7 @@ end
    #PDF
   def printp_pdf(yyyy_mm,acc_yyyy_mm,user_name)
 
-     if @group.to_i >=3 then
+     if @group.to_i >= 3
        custid = Customer.select(:cust_id).where(won_staff: user_name)
        if File.exist?("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
           File.delete("#{Rails.root}/public/#{yyyy_mm+"倉儲費用"}.pdf")
@@ -889,7 +889,8 @@ end
             Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm}).each { |row|
               acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
             }
-        else
+        elsif @usernamegroup=="1" then
+
           Account.joins(:customer).select("sum(acc_cost) as acc_cost").where(accounts: {acc_date: acc_yyyy_mm,cust_id: custid}).each { |row|
             acc_total = acc_total + row['acc_cost'] if !row['acc_cost'].nil?
           }
@@ -922,6 +923,7 @@ end
 
           i = 0
           iItem = 0
+
           if custid.size == 0 || @usernamegroup=="4"then
           iRowCount = Account.joins(:customer).where(accounts: {acc_date: acc_yyyy_mm}).count
 
@@ -1005,7 +1007,7 @@ end
         font("#{Prawn::DATADIR}/fonts/wt024.ttf") do
           data = [["項次","客戶編號","客戶名稱","帳單編號","帳單金額","帳單種類","備註"]]
 
-          Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm}).order("cust_id ASC, cust_type ASC").each { |row|
+          Account.joins(:customer).select("accounts.cust_id, cust_name, cust_type, acc_kind, acc_no, acc_cost, acc_note").where(accounts: {acc_date: acc_yyyy_mm , cust_id:custid}).order("cust_id ASC, cust_type ASC").each { |row|
 
             i = i + 1
             iItem = iItem + 1
