@@ -11,8 +11,6 @@
 # 觸發 點擊 GridView Row 記錄，並且顯示資料於 Form 中
 $(document).on "turbolinks:load", ->
 
-
-
 # 觸發 '查詢' 按鈕
 $(document).on "click", "#query_acc", (event) ->
   event.preventDefault()
@@ -110,18 +108,21 @@ $(document).on "click", "#delete_acc", (event) ->
   event.preventDefault()
   if confirm '確定刪除該資料嗎'
     $(this).closest('tr').fadeOut()
-                         # 觸發 a link 的 click (rails link_to)
+                       # 觸發 a link 的 click (rails link_to)
   return false
 
 
 # 觸發 '修改' 按鈕
 $(document).on "click", "#edit_acc", (event) ->
   event.preventDefault()
-
   $(this).closest('tr').find('#input1').removeAttr("onfocus").removeClass("border-0").addClass("round1")
   $(this).closest('tr').find("#input3").removeAttr("onfocus").removeClass("border-0").addClass("round1")
   $(this).closest('tr').find("#input6").removeAttr("onfocus").removeClass("border-0").addClass("round1")
   $(this).closest('tr').find("#input7").removeAttr("onfocus").removeClass("border-0").addClass("round1")
+  $(this).closest('tr').find("#colse_acc").hide()
+  $(this).closest('tr').find("#delete_acc").hide()
+  $(this).closest('tr').find("#edit_acc").hide()
+  $(this).closest('tr').find("#yesOrNoE").show()
   $(document).on "keyup", "#input0", (event) ->
     event.preventDefault()
     input1 = $('#input0').val()
@@ -174,13 +175,6 @@ $(document).on "click", "#edit_acc", (event) ->
        msg = ''
        $('#input6tips').html ''
      return　
-
-
-  $('table td:nth-child(11)').hide()
-  $('table td:nth-child(12)').hide()
-  $('table td:nth-child(15)').hide()
-  $(this).closest('tr').find("#yesOrNoE").show()
-
   return false
 
 # 觸發 '修改確定' 按鈕
@@ -197,9 +191,9 @@ $(document).on "click", "#acc_checkE", (event) ->
   $(this).closest('tr').find("#input3").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
   $(this).closest('tr').find("#input6").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
   $(this).closest('tr').find("#input7").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-
-  $('table td:nth-child(15)').show()
-  $('table td:nth-child(12)').show()
+  $(this).closest('tr').find("#colse_acc").show()
+  $(this).closest('tr').find("#delete_acc").show()
+  $(this).closest('tr').find("#edit_acc").show()
   $(this).closest('tr').find("#yesOrNoE").hide()
   $(this).closest('a').removeAttr("href")
 
@@ -226,21 +220,6 @@ $(document).on "click", "#acc_checkC", (event) ->
   acc_month=$(this).closest('tr').find('#date_mm').val()#acc_date 之月
   acc_date=acc_year+acc_month　#轉換成資料庫格式YYYYMM
   won_staff=$("#wonstaff").text()
-
-　　#畫面控制邊框
-  #$(this).closest('tr').find('#input1').attr("onfocus","this.blur()").removeClass("border-4").addClass("border-0")
-  #$(this).closest('tr').find("#input3").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  #$(this).closest('tr').find("#input6").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  #$(this).closest('tr').find("#input7").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-  #$(this).closest('tr').find("#input0").removeClass("border-4").addClass("border-0").attr("onfocus","this.blur()")
-　　#按鈕控制 顥示
-  #$('table td:nth-child(11)').show()
-  #$('table td:nth-child(15)').show()
-  #$('table td:nth-child(12)').show()
-  #$td = $(this).parents("tr").children("td")
-  #index=($td.eq(0).text())
-  #$(this).closest('tr').find("#yesOrNoC").hide()
-  #開啓REUQEST指向ACTION
   $(this).closest('a').removeAttr("href")
   if won_staff==''
    acc_url="/create/accounts?id="+id+"&;acc_cost="+acc_cost+"&;acc_no="+acc_no+"&;acc_note="+acc_note+"&;cust_type="+cust_type+"&;acc_kind="+acc_kind+"&;acc_date="+acc_date+"&;cust_id="+cust_id+"&;locale=zh_TW"
@@ -250,7 +229,6 @@ $(document).on "click", "#acc_checkC", (event) ->
   xhttp.onreadystatechange = ->
    if @readyState == 4 and @status == 200
      $(".show").html(@responseText)
-
   xhttp.open "GET", acc_url, true
   # xhttp.setRequestHeader 'X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')
   xhttp.send()

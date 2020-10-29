@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201019012626) do
+ActiveRecord::Schema.define(version: 20201024064516) do
 
   create_table "CompanyTax", primary_key: "tax_id", id: :integer, force: :cascade do |t|
     t.char "cust_id", limit: 5
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 20201019012626) do
     t.datetime "updated_at", null: false
     t.string "clo_mark", limit: 1
     t.datetime "clo_date"
+    t.string "paymark", limit: 1
   end
 
   create_table "customers", primary_key: "cust_id", id: :string, limit: 5, default: nil, force: :cascade do |t|

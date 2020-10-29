@@ -111,7 +111,7 @@
  <div style="padding:13px;">
 
  <button id="query_acc" type="button" class="btn btn-primary" ><%= (I18n.t :query, scope: [ :buttons ]) %></button>
- 
+
 <!--这是一个注释，注释在浏览器中不会显示
  <button id="reset_button" type="button" class="btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
 -->
@@ -166,10 +166,11 @@
       <td align="center" valign="center">客戶名稱</td>
       <td align="center" valign="center">費用</td>
       <td align="center" valign="center">備註</td>
-
+      <td align="center" valign="center">關帳日期</td>
         <td>處理      </td>
-           <td> </td>
-          <td>    </td>
+        <td> </td>
+        <td>    </td>
+
     </tr>
   </thead>
   <tbody id="bodyrow">　
@@ -184,26 +185,41 @@
         <td> <input class="box border-0 form-control" size="20"  type="text" id="input5" onfocus="this.blur()" value="<%=account.customer.cust_name %>" <% if account.customer.cust_name  != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.customer.cust_name  %><% end %>> </td>
         <td> <input class="box border-0 form-control" maxlength="7" size="6"  type="text" style="text-align:right"  id="input6" onfocus="this.blur()" value="<%=account.acc_cost %>" ></td>
         <td> <input class="box border-0 form-control"  size="15" type="text" id="input7" onfocus="this.blur()" value="<%=account.acc_note %>" <% if account.acc_note != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.acc_note %><% end %> ></td>
-        <td style="display:none;">
-            <button id="create_acc" class="btn btn-primary" remote="true">新增</button>
-        </td>
-        <td>
-            <button id="edit_acc" class="btn btn-primary" remote="true">修改</button>
+        <td> <input class="box border-0 form-control" size="12" type="text"  id="clo_date" onfocus="this.blur()" value= <%=account.clo_date.strftime("%F") if account.clo_date.present?%>></td>
+
+        <td >
+            <button  id="edit_acc" class="btn btn-primary" remote="true" style=<%="display:none;" if account.clo_date.present? || account.paymark=="N"%>>修改</button>
         </td>
 
-     <td id ='yesOrNoE' style="display:none;">
+       <td id="colse_lable" style=<%="display:none;" if !account.clo_date.present?%>>
+            <h5 ><span class="badge badge-pill badge-success">已關帳</span></h5>
+            <h5 ><button id="open_acc" class="submit_button btn btn-danger btn-sm" style=<%="display:none;" if !@group=="3"%>>解開帳</button></h5>
+        </td>
+        <td id="nopay_lable" style=<%="display:none;" if account.paymark =="Y" %>>
+           <h5> <span class="badge badge-pill badge-secondary"  data-toggle="tooltip" data-html="true" title=<%= paymentShow(account.customer.cust_payment) %>>不出帳</span></h5>
+       </td>
+          <td id ='yesOrNoE' style="display:none;">
            <%= link_to '確定', account ,:id=>"acc_checkE", :class =>"submit_button btn btn-success btn-sm", :remote =>true%>
           <button id="check_resetE" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
         　</td>
-       <td id ='yesOrNoC' style="display:none;">
+      <td id ='yesOrNoC' style="display:none;">
             <%= link_to '確定', account ,:id=>"acc_checkC", :class =>"submit_button btn btn-success btn-sm"%>
-          <%#= link_to '確定', account ,:id=>"acc_checkC", :class =>"submit_button btn btn-success btn-sm"%>
          <button id="check_resetC" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
        　</td>
-       <td>
-      <%= link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary"%>
+       <td >
+         <%= if account.clo_date.present? || account.paymark=="N" then
+       link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary",:style => "display:none;"
+      else
+         link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary"
+       end %>
+
       </td>
-    </tr>
+      <td >
+          <button  id="colse_acc" class="btn btn-primary"style=<%="display:none;" if account.clo_date.present?|| account.paymark=="N"%> >關帳</button>
+      </td>
+
+
+      </tr>
     <% end %>
     </tbody>
 </table>

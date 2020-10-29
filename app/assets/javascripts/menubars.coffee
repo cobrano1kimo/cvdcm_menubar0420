@@ -7,6 +7,7 @@
 
 # 觸發 點擊 GridView Row 記錄，並且顯示資料於 Form 中
 $(document).on "turbolinks:load", ->
+$(document).off "click", "#table tr",  
 $(document).on "click", "#table tr", (event) ->
   event.preventDefault()
   $('table td:nth-child(1)').removeClass 'fa fa-play'

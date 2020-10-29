@@ -47,7 +47,7 @@
 <div class="d-flex flex-row  align-items-center">
 客戶編號：
 <input class="box form-control col-lg-1" size="9" maxlength="5" type="text"  id="inputquery" value=<%=@input0%> >
-<div class="label col-lg-4">資訊部權限</div>
+<!-- <div class="label col-lg-4">資訊部權限</div>-->
  </div>
 　　
  <div>
@@ -146,17 +146,17 @@
           </select>  </td>
 
             <td><input class="form-check" disabled="disabled" type="checkbox" id="pm1"  <% if customer.paymonth01 == "1" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm2"  <% if customer.paymonth02 == "2" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm3"  <% if customer.paymonth03 == "3" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm4"  <% if customer.paymonth04 == "4" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled"type="checkbox" id="pm5"  <% if customer.paymonth05 == "5" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm6"  <% if customer.paymonth06 == "6" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm7"  <% if customer.paymonth07 == "7" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm8"  <% if customer.paymonth08 == "8" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm9"  <% if customer.paymonth09 == "9" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm10"  <% if customer.paymonth10 == "10" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm11"  <% if customer.paymonth11 == "11" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm12"  <% if customer.paymonth12 == "12" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm2"  <% if customer.paymonth02 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm3"  <% if customer.paymonth03 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm4"  <% if customer.paymonth04 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled"type="checkbox" id="pm5"  <% if customer.paymonth05 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm6"  <% if customer.paymonth06 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm7"  <% if customer.paymonth07 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm8"  <% if customer.paymonth08 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm9"  <% if customer.paymonth09 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm10"  <% if customer.paymonth10 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm11"  <% if customer.paymonth11 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm12"  <% if customer.paymonth12 == "1" then %>checked> <%end%></td>
 
         <td> <input class="box border-0 form-control" size="2"  type="text"  id="payday_input" onfocus="this.blur()" value=<%=customer.cust_payday %>> </td>
         <td> <input class="box border-0 form-control" size="6"  type="text"  id="input3" onfocus="this.blur()" value=<%=customer.won_staff %>> </td>

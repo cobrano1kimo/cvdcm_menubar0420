@@ -1,4 +1,3 @@
-
 # 觸發 '下載PDF' 的確認按鈕
 $(document).on "click", "#download_pdf_acc", (event) ->
   event.preventDefault()
@@ -9,17 +8,17 @@ $(document).on "click", "#download_pdf_acc", (event) ->
   xhr.overrideMimeType("application/pdf; charset=utf-8")
   xhr.onload = ->
    if @readyState == 4 and @status == 200
-       blob = xhr.response
-       a = document.createElement('a')
-       a.style = 'display: none'
-       document.body.appendChild a
-       url = window.URL.createObjectURL(blob)
-       a.href = url
-       contentDispo = decodeURIComponent(escape(@getResponseHeader('Content-Disposition')))
-       fileName = (contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1]).replace(/"/g,'')
-       a.download = fileName
-       a.click()
-       window.URL.revokeObjectURL url
+     blob = xhr.response
+     a = document.createElement('a')
+     a.style = 'display: none'
+     document.body.appendChild a
+     url = window.URL.createObjectURL(blob)
+     a.href = url
+     contentDispo = decodeURIComponent(escape(@getResponseHeader('Content-Disposition')))
+     fileName = (contentDispo.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1]).replace(/"/g,'')
+     a.download = fileName
+     a.click()
+     window.URL.revokeObjectURL url
 
   xhr.open "POST", acc_download_pdf_url, true
   xhr.responseText = 'application/pdf'

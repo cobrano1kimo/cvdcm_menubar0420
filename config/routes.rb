@@ -13,7 +13,16 @@ Rails.application.routes.draw do
     get 'accounts', :to => "accounts#edit", as: "invoices"
     post 'accounts', :to =>"accounts#edit" , as: "acinvoices"
   end
+  scope :controller => "accounts", :path => "/colse" do
 
+    get 'accounts', :to => "accounts#colse_edit", as: "invoicesclo"
+    post 'accounts', :to =>"accounts#colse_edit" , as: "acinvoicesclo"
+  end
+  scope :controller => "accounts", :path => "/open" do
+
+    get 'accounts', :to => "accounts#open_edit", as: "invoicesope"
+    post 'accounts', :to =>"accounts#open_edit" , as: "acinvoicesope"
+  end
   scope :controller => "accounts", :path => "/new" do
 
     get 'accounts', :to => "accounts#new", as: "ninvoices"

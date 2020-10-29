@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   include AccountsHelper
   before_action :user_group
-  before_action only: [:destroy]
+  before_action only: [:destroy,:colse_edit]
 
 
   # GET /accounts
@@ -16,6 +16,9 @@ class AccountsController < ApplicationController
     # p "#{custid['cust_id']}"
     @accounts= Account.all.where(acc_date: @stats).page(params[:page]).per(10)
     #@rowsum= @accounts.count()
+
+
+
     @menubars = Menubar.all
     @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
@@ -39,11 +42,11 @@ class AccountsController < ApplicationController
        @current_menu_id = @menubar.menu_id
        @current_page = params[:page]
     end
-
+     #下個月月份參數
     usemakedate= nextMonth(params[:acc_date])
 
-    if @group=="3" then
 
+    if @group=="3" then
       @wonstaff= params[:won_staff]
       #業務人員
       @jobstaff= params[:won_staff]
@@ -56,6 +59,7 @@ class AccountsController < ApplicationController
            #如果是IT人員查詢秀全部
           if @itstaff == @wonstaff then
             custid = Customer.select(:cust_id)
+
           else
             custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
           end
@@ -63,7 +67,34 @@ class AccountsController < ApplicationController
             #個人使用
           custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
        end
+
+        #account 含　付款月份明細
+      @account_test= Account.find_by_sql("EXEC sp_executesql N'SELECT  [accounts].*,[customers].[paymonth01],[customers].[paymonth02],
+                              [customers].[paymonth03],[customers].[paymonth04],[customers].[paymonth05]
+                             ,[customers].[paymonth06],[customers].[paymonth07],[customers].[paymonth08],[customers].[paymonth09]
+                            ,[customers].[paymonth10],[customers].[paymonth11],[customers].[paymonth12]
+                            FROM [accounts] INNER JOIN [customers] ON [customers].[cust_id] =
+                           [accounts].[cust_id] WHERE [accounts].[acc_date] = @0 AND [customers].[cust_id] IN
+                            (SELECT [customers].[cust_id] FROM [customers] WHERE 1 = @1)',
+                            N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'202008', @1 =1")
+     #puts 40100111111111111
+      @custid_paymounts= Account.find_by_sql("EXEC sp_executesql N'SELECT  a.cust_id+b.paymonth01+b.paymonth02+b.paymonth03+b.paymonth04+b.paymonth05
+                                                 +b.paymonth06+b.paymonth07+b.paymonth08+b.paymonth09+b.paymonth10+
+                                                 b.paymonth11+b.paymonth12 as paymontharry
+                                                FROM accounts a INNER JOIN customers b ON b.cust_id =
+                                               a.cust_id WHERE a.acc_date = @0 AND b.cust_id IN
+                                                (SELECT b.cust_id FROM customers b WHERE 1 = @1)',
+                                              N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'"+params[:acc_date]+"', @1 = 1" )
+
        @accounts=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
+       @account_test=change_Paymark(@account_test) #是否出不出帳邏輯
+         @account_test.each do |p|
+           @accounts.each do |a|
+             if p.cust_id==a.cust_id && p.cust_type==a.cust_type
+                a.paymark=p.paymark
+             end
+           end
+         end
        @rowsum=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
        @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
 
@@ -87,7 +118,9 @@ class AccountsController < ApplicationController
           #個人使用
          custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id],won_staff: @wonstaff)
      end
+
        @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,cust_type: :asc,acc_no: :asc,created_at: :desc).page(params[:page]).per(10)
+
        @rowsum=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
        @sumcost=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
 
@@ -294,6 +327,31 @@ end
                         no_aft:  @account.acc_no, )
 
       end
+  def colse_edit
+     @menubars = Menubar.all
+     @menubar = @menubars.first
+     @menus = Menubar.order(:menu_sn)
+     if @current_page != params[:page] || @current_menu_id.blank? then
+      @current_menu_id = @menubar.menu_id
+      @current_page = params[:page]
+     end
+     @account=Account.find_by(id: params[:id])
+     @account.update(clo_date: Time.now,clo_mark: "Y")
+
+  end
+  def open_edit
+     @menubars = Menubar.all
+     @menubar = @menubars.first
+     @menus = Menubar.order(:menu_sn)
+     if @current_page != params[:page] || @current_menu_id.blank? then
+      @current_menu_id = @menubar.menu_id
+      @current_page = params[:page]
+     end
+     @account=Account.find_by(id: params[:id])
+     @account.update(clo_date: "NULL",clo_mark: "N")
+
+  end
+
   # PATCH/PUT /accounts/1
   # PATCH/PUT /accounts/1.json
 

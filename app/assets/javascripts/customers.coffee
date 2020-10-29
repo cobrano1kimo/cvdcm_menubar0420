@@ -12,6 +12,7 @@
 $(document).on "turbolinks:load", ->
 
 # 觸發 '查詢' 按鈕
+
 $(document).on "click", "#query_cust", (event) ->
   event.preventDefault()
   cust_id = $("#inputquery").val()
@@ -89,7 +90,7 @@ $(document).on "click", "#delete_cust", (event) ->
 $(document).on "keyup", "#payday_input", (event) ->
   event.preventDefault()
   payday_input = $('#payday_input').val()
-  
+
   if !payday_input.match("^((0?[1-9])|((1|2)[0-9])|30|31)$")
     msg = '格式錯誤,請輸入數字'
 
@@ -214,6 +215,19 @@ $(document).on "click", "#edit_cust", (event) ->
                      $(this).closest('tr').find('#pm10').prop("checked",false) and
                      $(this).closest('tr').find('#pm11').prop("checked",false) and
                      $(this).closest('tr').find('#pm12').prop("checked",false)
+
+       when "7" then $(this).closest('tr').find('#pm1').prop("checked",false) and
+                     $(this).closest('tr').find('#pm2').prop("checked",false) and
+                     $(this).closest('tr').find('#pm3').prop("checked",false) and
+                     $(this).closest('tr').find('#pm4').prop("checked",false) and
+                     $(this).closest('tr').find('#pm5').prop("checked",false) and
+                     $(this).closest('tr').find('#pm6').prop("checked",false) and
+                     $(this).closest('tr').find('#pm7').prop("checked",false) and
+                     $(this).closest('tr').find('#pm8').prop("checked",false) and
+                     $(this).closest('tr').find('#pm9').prop("checked",false) and
+                     $(this).closest('tr').find('#pm10').prop("checked",false) and
+                     $(this).closest('tr').find('#pm11').prop("checked",false) and
+                     $(this).closest('tr').find('#pm12').prop("checked",false)
     　#４個月結
        when "8" then $(this).closest('tr').find('#pm1').prop("checked",false) and
                      $(this).closest('tr').find('#pm2').prop("checked",false) and
@@ -227,7 +241,7 @@ $(document).on "click", "#edit_cust", (event) ->
                      $(this).closest('tr').find('#pm10').prop("checked",false) and
                      $(this).closest('tr').find('#pm11').prop("checked",false) and
                      $(this).closest('tr').find('#pm12').prop("checked",true)
-  return false
+
 
 # 觸發 '修改確定' 按鈕
 
@@ -238,47 +252,47 @@ $(document).on "click", "#cust_checkE", (event) ->
   else
     paymonth01="0"
   if $(this).closest('tr').find('#pm2').prop("checked")
-    paymonth02="2"
+    paymonth02="1"
   else
     paymonth02="0"
   if $(this).closest('tr').find('#pm3').prop("checked")
-    paymonth03="3"
+    paymonth03="1"
   else
     paymonth03="0"
   if $(this).closest('tr').find('#pm4').prop("checked")
-    paymonth04="4"
+    paymonth04="1"
   else
     paymonth04="0"
   if $(this).closest('tr').find('#pm5').prop("checked")
-    paymonth05="5"
+    paymonth05="1"
   else
     paymonth05="0"
   if $(this).closest('tr').find('#pm6').prop("checked")
-    paymonth06="6"
+    paymonth06="1"
   else
     paymonth06="0"
   if $(this).closest('tr').find('#pm7').prop("checked")
-    paymonth07="7"
+    paymonth07="1"
   else
     paymonth07="0"
   if $(this).closest('tr').find('#pm8').prop("checked")
-    paymonth08="8"
+    paymonth08="1"
   else
     paymonth08="0"
   if $(this).closest('tr').find('#pm9').prop("checked")
-    paymonth09="9"
+    paymonth09="1"
   else
     paymonth09="0"
   if $(this).closest('tr').find('#pm10').prop("checked")
-    paymonth10="10"
+    paymonth10="1"
   else
     paymonth10="0"
   if $(this).closest('tr').find('#pm11').prop("checked")
-    paymonth11="11"
+    paymonth11="1"
   else
     paymonth11="0"
   if $(this).closest('tr').find('#pm12').prop("checked")
-    paymonth12="12"
+    paymonth12="1"
   else
     paymonth12="0"
 

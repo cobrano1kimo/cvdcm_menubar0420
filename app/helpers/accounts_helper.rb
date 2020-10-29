@@ -1221,7 +1221,7 @@ end
 
   end
 
-  #依查詢加上個月的資料
+  #依查詢日期加上個月的資料
   def nextMonth(acc_date)
 
     if acc_date[4,5]=="01"
@@ -1240,5 +1240,113 @@ end
     end
 
   end
+   #將查詢月份去比業這個月是否出帳
+  def change_Paymark(account)
+    account.each do |p|
+      if  p.acc_date[4,5]=='01'
+         if p.paymonth01 =="1"
+              p.paymark="Y"
+         elsif p.paymonth01 =="0"
+              p.paymark="N"
+         end
+      end
+      if  p.acc_date[4,5]=='02'
+         if p.paymonth02 =="1"
+              p.paymark="Y"
+         elsif p.paymonth02 =="0"
+               p.paymark="N"
+         end
+      end
+      if  p.acc_date[4,5]=='03'
+         if p.paymonth03 =="1"
+              p.paymark="Y"
+        elsif p.paymonth03 =="0"
+             p.paymark="N"
+         end
+      end
+      if  p.acc_date[4,5]=='04'
+         if p.paymonth04 =="1"
+              p.paymark="Y"
+         elsif p.paymonth04 =="0"
+               p.paymark="N"
+         end
+      end
+      if  p.acc_date[4,5]=='05'
+         if p.paymonth05 =="1"
+              p.paymark="Y"
+         elsif p.paymonth05 =="0"
+               p.paymark="N"
+         end
+      end
+      if  p.acc_date[4,5]=='06'
+         if p.paymonth06 =="1"
+              p.paymark="Y"
+         elsif p.paymonth06 =="0"
+               p.paymark="N"
+         end
+      end
+      if  p.acc_date[4,5]=='07'
+         if p.paymonth07 =="1"
+              p.paymark="Y"
+          elsif p.paymonth07 =="0"
+                p.paymark="N"
+         end
+      end
+       if  p.acc_date[4,5]=='08'
+          if p.paymonth08 =="1"
+               p.paymark="Y"
+          elsif p.paymonth08 =="0"
+                p.paymark="N"
+          end
+       end
+       if  p.acc_date[4,5]=='09'
+          if p.paymonth09 =="1"
+               p.paymark="Y"
+          elsif p.paymonth09 =="0"
+                p.paymark="N"
+          end
+       end
+       if  p.acc_date[4,5]=='10'
+          if p.paymonth10 =="1"
+               p.paymark="Y"
+          elsif p.paymonth10 =="0"
+                p.paymark="N"
+          end
+       end
+       if  p.acc_date[4,5]=='11'
+          if p.paymonth11 =="1"
+               p.paymark="Y"
+          elsif p.paymonth11 =="0"
+                p.paymark="N"
+          end
+       end
+       if  p.acc_date[4,5]=='12'
+          if p.paymonth12 =="1"
+               p.paymark="Y"
+          elsif p.paymonth12 =="0"
+                  p.paymark="N"
+          end
+       end
+    end
+    return account
+  end
+  def pay_Everymonth(account)
+    #puts 40100111111111111
+     @custid_paymounts= Account.find_by_sql("EXEC sp_executesql N'SELECT  a.cust_id+b.paymonth01+b.paymonth02+b.paymonth03+b.paymonth04+b.paymonth05
+                                             +b.paymonth06+b.paymonth07+b.paymonth08+b.paymonth09+b.paymonth10+
+                                             b.paymonth11+b.paymonth12 as paymontharry
+                                             FROM accounts a INNER JOIN customers b ON b.cust_id =
+                                              a.cust_id WHERE a.acc_date = @0 AND b.cust_id IN
+                                               (SELECT b.cust_id FROM customers b WHERE 1 = @1)',
+                                             N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'"+params[:acc_date]+"', @1 = 1" )
+      @custid_paymounts.each do |p|
+         account.each do |a|
+           if  p.paymontharry[0,4]==a.cust_id
+                 p x.paymontharry
+           end
+         end
 
+      end
+  return "x"
+  end
 end
