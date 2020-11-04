@@ -7,7 +7,7 @@ Rails.application.configure do
   config.cache_classes = false
 
   # Do not eager load code on boot.
-  config.eager_load = false
+  config.eager_load= true
 
   # Show full error reports.
   config.consider_all_requests_local = true
@@ -32,12 +32,12 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: "http://localhost:3000" }
   config.action_mailer.smtp_settings = {
-    :address => "smtp.gmail.com",
-    :port => "587",
-    :domain => "gmail.com",
-    :authentication => "plain",
-    :user_name => "example@gmail.com",
-    :password => "123456",
+    :address => "www.hibox.hinet.net",
+    :port => "25",
+    :domain => "stmp:msa.hinet.net",
+    :authentication => :login,
+    :user_name => "storage_report@crownvan.com",
+    :password => "s!t@r#a(g*e&",
     :enable_starttls_auto => true
  }
   # Print deprecation notices to the Rails logger.

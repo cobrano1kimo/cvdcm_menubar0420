@@ -1238,7 +1238,6 @@ end
 
 
     end
-
   end
    #將查詢月份去比業這個月是否出帳
   def change_Paymark(account)
@@ -1330,6 +1329,7 @@ end
     end
     return account
   end
+  #TEST 中
   def pay_Everymonth(account)
     #puts 40100111111111111
      @custid_paymounts= Account.find_by_sql("EXEC sp_executesql N'SELECT  a.cust_id+b.paymonth01+b.paymonth02+b.paymonth03+b.paymonth04+b.paymonth05
@@ -1349,4 +1349,5 @@ end
       end
   return "x"
   end
+
 end

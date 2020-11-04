@@ -82,7 +82,8 @@ gem 'devise'
 # 使用 devise_ldap_authenticatable 認證套件
 gem 'devise_ldap_authenticatable'
 
-
+#排程
+gem 'rufus-scheduler'
 # 使用 bootstrap4 的 kaminari 分頁套件
 gem 'bootstrap4-kaminari-views'
 #gem 'kaminari-bootstrap', '~> 3.0', '>= 3.0.1'
