@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :closements
   resources :histories
   resources :user_groups
   resources :customers, only: [:index,:destroy]
@@ -102,7 +103,11 @@ Rails.application.routes.draw do
     get 'user_groups', :to => "user_groups#query",as:"gquery_user_groups"
     post 'user_groups', :to =>"user_groups#query",as:"pquery_user_groups"
   end
+  scope :controller => "closements", :path => "/query" do
 
+    get 'closements', :to => "closements#query",as:"gclosements_groups"
+    post 'closements', :to =>"closements#query",as:"pclosements_groups"
+  end
 
   # scope :controller => "accounts", :path => "/download" do
   #   post 'accounts', :to =>"accounts#download_pdf",as: "dpacinvoices"

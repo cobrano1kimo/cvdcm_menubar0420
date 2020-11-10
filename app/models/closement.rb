@@ -1,0 +1,2 @@
+class Closement < ApplicationRecord
+end

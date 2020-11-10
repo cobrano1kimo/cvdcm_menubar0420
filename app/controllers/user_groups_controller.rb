@@ -1,4 +1,5 @@
 class UserGroupsController < ApplicationController
+  before_action :user_group
   before_action :set_user_group, only: [:show, :edit, :update, :destroy]
 
   # GET /user_groups
@@ -20,7 +21,13 @@ class UserGroupsController < ApplicationController
     @user_groups=UserGroup.all
 
   end
-
+  def user_group
+    staff = UserGroup.select("won_staff","group").where(login: authenticate_user![:login])  #authenticate_user![:login]
+    staff.each do |variable|
+      @wonstaff =variable.won_staff
+      @group =variable.group
+    end
+  end
   # POST /user_groups
   # POST /user_groups.json
 
