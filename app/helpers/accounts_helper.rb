@@ -1239,7 +1239,7 @@ end
 
     end
   end
-   #將查詢月份去比業這個月是否出帳
+   #將查詢月份去比對這個月是否出帳
   def change_Paymark(account)
     account.each do |p|
       if  p.acc_date[4,5]=='01'
@@ -1330,24 +1330,24 @@ end
     return account
   end
   #TEST 中
-  def pay_Everymonth(account)
-    #puts 40100111111111111
-     @custid_paymounts= Account.find_by_sql("EXEC sp_executesql N'SELECT  a.cust_id+b.paymonth01+b.paymonth02+b.paymonth03+b.paymonth04+b.paymonth05
-                                             +b.paymonth06+b.paymonth07+b.paymonth08+b.paymonth09+b.paymonth10+
-                                             b.paymonth11+b.paymonth12 as paymontharry
-                                             FROM accounts a INNER JOIN customers b ON b.cust_id =
-                                              a.cust_id WHERE a.acc_date = @0 AND b.cust_id IN
-                                               (SELECT b.cust_id FROM customers b WHERE 1 = @1)',
-                                             N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'"+params[:acc_date]+"', @1 = 1" )
-      @custid_paymounts.each do |p|
-         account.each do |a|
-           if  p.paymontharry[0,4]==a.cust_id
-                 p x.paymontharry
-           end
-         end
-
-      end
-  return "x"
-  end
+  # def pay_Everymonth(account)
+  #   #puts 40100111111111111
+  #    @custid_paymounts= Account.find_by_sql("EXEC sp_executesql N'SELECT  a.cust_id+b.paymonth01+b.paymonth02+b.paymonth03+b.paymonth04+b.paymonth05
+  #                                            +b.paymonth06+b.paymonth07+b.paymonth08+b.paymonth09+b.paymonth10+
+  #                                            b.paymonth11+b.paymonth12 as paymontharry
+  #                                            FROM accounts a INNER JOIN customers b ON b.cust_id =
+  #                                             a.cust_id WHERE a.acc_date = @0 AND b.cust_id IN
+  #                                              (SELECT b.cust_id FROM customers b WHERE 1 = @1)',
+  #                                            N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'"+params[:acc_date]+"', @1 = 1" )
+  #     @custid_paymounts.each do |p|
+  #        account.each do |a|
+  #          if  p.paymontharry[0,4]==a.cust_id
+  #                p x.paymontharry
+  #          end
+  #        end
+  #
+  #     end
+  # return "x"
+  # end
 
 end

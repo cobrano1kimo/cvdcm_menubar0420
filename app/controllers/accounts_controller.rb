@@ -30,7 +30,6 @@ class AccountsController < ApplicationController
   # GET /accounts/1.json
   def query
     @stats= "query"
-
     #@accounts=Account.new
     # p "#{custid['cust_id']}"
     @menubars = Menubar.all

@@ -1,15 +1,16 @@
-class MailSendStaffJob < ApplicationJob
+class MailSendStaffJob < ActiveJob::Base
 
 
   p "MailSendStaffJob"
 
-  queue_as :low_priority
+  queue_as :default
 
-  def perform(*guests,cronmode)
+  def perform
 
            scheduler = Rufus::Scheduler.new
-         scheduler.cron(cronmode) do
-               UserMailer.welcome_email().deliver_now
-       end
+        scheduler.cron '30 08,16 * * *' do |x|
+            UserMailer.welcome_email().deliver_now
+         end
+
     end
   end

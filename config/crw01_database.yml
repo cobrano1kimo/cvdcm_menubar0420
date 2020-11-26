@@ -1,0 +1,9 @@
+development:
+ adapter: sqlserver
+ database: CRW01
+ host: 10.9.82.23
+ port: 1433
+ username: benson
+ password: 1qaz@WSX
+ pool: 100
+ timeout: 28000

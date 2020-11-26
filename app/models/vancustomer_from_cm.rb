@@ -1,0 +1,2 @@
+class VancustomerFromCm< ApplicationRecord
+end

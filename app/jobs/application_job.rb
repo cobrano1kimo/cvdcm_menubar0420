@@ -1,6 +1,5 @@
 class ApplicationJob < ActiveJob::Base
   p "applcationjob start"
-
-    # MailSendStaffJob.perform_later 30,'0 23,3,6,9 * * *'
-
+     MailSendStaffJob.perform_later
+     SycCrw01CmToGrossCust.perform_later
 end

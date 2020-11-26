@@ -16,9 +16,11 @@ module CvdcmMenubar
     # -- all .rb files in that directory are automatically loaded.
 
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    config.time_zone = 'Asia/Taipei'
+    config.active_record.default_timezone= :local
     config.i18n.default_locale = :zh_TW
     config.i18n.fallbacks = [I18n.default_locale]
-    
+
     # https://stackoverflow.com/questions/30383395/rails-4-jquery-javascript-and-coffee-scripts-not-working
     config.assets.enabled = true
     config.assets.initialize_on_precompile = true

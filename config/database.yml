@@ -11,11 +11,12 @@ default: &default
  username: benson
  password: 1qaz@WSX
  pool: 100
- timeout: 180000
+ timeout: 28000
 
 development:
   <<: *default
   database: Gross_Sales
+
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

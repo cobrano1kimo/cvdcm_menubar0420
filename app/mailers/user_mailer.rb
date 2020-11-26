@@ -3,8 +3,8 @@ class UserMailer < ApplicationMailer
   #業務人員的mail address
   @mails = Account.find_by_sql("EXEC sp_executesql N'SELECT * from user_groups where[group]<> @0', N'@0 nvarchar(4000)', @0 = N'3'")
   default from: 'storage_report@crownvan.com'
-  staff_email= @mails[0].email+','+@mails[1].email+','+@mails[2].email+','+@mails[3].email+','+@mails[4].email+','+@mails[5].email+','+@mails[6].email
-  it_email= "IT_Department@crownvan.com"
+  @staff_email= @mails[0].email+','+@mails[1].email+','+@mails[2].email+','+@mails[3].email+','+@mails[4].email+','+@mails[5].email+','+@mails[6].email
+  @it_email= "IT_Department@crownvan.com"
   #mail_send_date=Time.now.to_s[0,4]+Time.now.to_s[5,2]
   def welcome_email()
     #寄信系統月份
@@ -22,7 +22,7 @@ class UserMailer < ApplicationMailer
 #抓今天日期01..31
      time_close_date=Time.now.strftime("%d")
       @time_close_date=time_close_date.to_i
-      db_close_days=Closement.find_by_sql("select close_day from closements")
+      db_close_days=Closement.select(:close_day)
            db_close_days.each do |x|
              @db_close_day=x.close_day
            end
@@ -164,7 +164,7 @@ class UserMailer < ApplicationMailer
         mail(to: @mail, subject: 'TEST TEST倉儲月報表之未出帳明細表 請勿回覆')
     elsif (@db_close_day - @time_close_date) < 0 && @account_mail.size != 0
         @day_message='這個月結帳日為'+db_close_day_s+'號​,已超過結帳日期'+(@time_close_date - @db_close_day).to_s+'天'
-       mail(to: @mail, subject: 'TEST TEST倉儲月報表之未出帳明細表 請勿回覆')
+       mail(to: @mail, subject: 'TEST自動 倉儲月報表之未出帳明細表 請勿回覆 TEST')
     end
 
 
