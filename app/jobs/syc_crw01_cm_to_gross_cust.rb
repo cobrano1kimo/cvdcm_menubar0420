@@ -2,7 +2,7 @@ class SycCrw01CmToGrossCust < ActiveJob::Base
   queue_as :low_priority
   def perform
         scheduler = Rufus::Scheduler.new
-        scheduler.cron '*/3 * * * *' do |x|
+        scheduler.cron '*/15 * * * *' do |x|
          VancustomerFromCm.delete_all
          @Vans = VanCustomer.find_by_sql("select * from cm")
             @Vans.each do |v|
@@ -16,14 +16,13 @@ class SycCrw01CmToGrossCust < ActiveJob::Base
             CM33: v.CM33,CM34: v.CM34,CRE_DTIME: v.CRE_DTIME,UPD_USERID: v.UPD_USERID,
           CRE_USERID: v.CRE_USERID,UPD_DTIME: v.UPD_DTIME,CM35: v.CM35,CM36: v.CM36,CM37: v.CM37)
           end
-          #將CM之同步資料更換成CUSTOMER資料邏輯
+          #將CM之customer_tmp同步資料更換成CUSTOMER資料邏輯
         CustomerTmp.sp_UpdateCustTmps
-        customer =Customer.all
         customer_tmp= CustomerTmp.all
         customer_tmp.each do |c|
               if Customer.exists?(cust_id: c.cust_id)
                 p c.cust_id+"-"+ "exists"
-                customer.where(cust_id: c.cust_id).update(cust_name: c.cust_name,cust_stat: c.cust_stat,
+                Customer.where(cust_id: c.cust_id).update(cust_name: c.cust_name,cust_stat: c.cust_stat,
                 won_staff: c.won_staff,cust_payment: c.cust_payment,cust_note: c.cust_note)
               else
                 #如果是葉子新客戶依付款條件塞出帳註記
@@ -148,7 +147,7 @@ class SycCrw01CmToGrossCust < ActiveJob::Base
                    c.paymonth12="1"
                 end
               end
-                customer.create(cust_id: c.cust_id,cust_name: c.cust_name,cust_stat: c.cust_stat,
+                Customer.create(cust_id: c.cust_id,cust_name: c.cust_name,cust_stat: c.cust_stat,
                 won_staff: c.won_staff,cust_payment: c.cust_payment,cust_note: c.cust_note,
                 paymonth01: c.paymonth01,paymonth02: c.paymonth02, paymonth03: c.paymonth03,
                 paymonth04: c.paymonth04,paymonth05: c.paymonth05,paymonth06: c.paymonth06,
