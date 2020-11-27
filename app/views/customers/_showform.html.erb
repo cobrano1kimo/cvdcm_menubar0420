@@ -52,10 +52,9 @@
 　　
  <div>
  <button id="query_cust" type="button" class="btn btn-primary" ><%= (I18n.t :query, scope: [ :buttons ]) %></button>
-<!--
- <button id="reset_button" type="button" class="btn btn-danger"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
+<!-- 同步後拿掉手動
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="create_cust" class="btn btn-primary" >新增</button>
 -->
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="create_cust" class="btn btn-primary" >新增</button>
  </div>
 
 <p id="notice"><%= notice %></p>
@@ -149,7 +148,7 @@
             <td><input class="form-check" disabled="disabled" type="checkbox" id="pm2"  <% if customer.paymonth02 == "1" then %>checked> <%end%></td>
             <td><input class="form-check" disabled="disabled" type="checkbox" id="pm3"  <% if customer.paymonth03 == "1" then %>checked> <%end%></td>
             <td><input class="form-check" disabled="disabled" type="checkbox" id="pm4"  <% if customer.paymonth04 == "1" then %>checked> <%end%></td>
-            <td><input class="form-check" disabled="disabled"type="checkbox" id="pm5"  <% if customer.paymonth05 == "1" then %>checked> <%end%></td>
+            <td><input class="form-check" disabled="disabled" type="checkbox" id="pm5"  <% if customer.paymonth05 == "1" then %>checked> <%end%></td>
             <td><input class="form-check" disabled="disabled" type="checkbox" id="pm6"  <% if customer.paymonth06 == "1" then %>checked> <%end%></td>
             <td><input class="form-check" disabled="disabled" type="checkbox" id="pm7"  <% if customer.paymonth07 == "1" then %>checked> <%end%></td>
             <td><input class="form-check" disabled="disabled" type="checkbox" id="pm8"  <% if customer.paymonth08 == "1" then %>checked> <%end%></td>
@@ -161,7 +160,7 @@
         <td> <input class="box border-0 form-control" size="2"  type="text"  id="payday_input" onfocus="this.blur()" value=<%=customer.cust_payday %>> </td>
         <td> <input class="box border-0 form-control" size="6"  type="text"  id="input3" onfocus="this.blur()" value=<%=customer.won_staff %>> </td>
 
-        <td> <input class="box border-0 form-control"  size="19" type="text" id="input4" onfocus="this.blur()" value="<%= customer.cust_note %>"  <% if customer.cust_note != "" then %> data-toggle="tooltip" data-html="true" title=<%= customer.cust_note %><% end %>> </td>
+        <td> <input class="box border-0 form-control"  size="19" type="text" id="input4" onfocus="this.blur()" value="<%= customer.cust_note %>"  <% if customer.cust_note.present? then %> data-toggle="tooltip" data-html="true" title=<%= customer.cust_note.gsub(/\s+/,"") %><% end %>> </td>
 
 
 
@@ -173,11 +172,11 @@
            <%= link_to '確定', customer ,:id=>"cust_checkE", :class =>"submit_button btn btn-success btn-sm"%>
           <button id="check_resetE" class="reset_button btn btn-danger btn-sm"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
         　</td>
-
+　<!-- 同步後拿掉手動
        <td>
       <%= link_to '刪除', customer, method: :delete, :remote =>true ,:id=>"delete_cust",:class =>"btn btn-primary"%>
       </td>
-
+-->
       </tr>
 
     <% end %>
