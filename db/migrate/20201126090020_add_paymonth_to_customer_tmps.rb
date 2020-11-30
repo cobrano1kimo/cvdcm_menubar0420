@@ -1,6 +1,5 @@
 class AddPaymonthToCustomerTmps < ActiveRecord::Migration[5.1]
   def change
-
     add_column(:customer_tmps,:paymonth01, :string,:limit => 2)
       add_column(:customer_tmps,:paymonth02, :string,:limit => 2)
         add_column(:customer_tmps,:paymonth03, :string,:limit => 2)
