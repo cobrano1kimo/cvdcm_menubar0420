@@ -1,6 +1,8 @@
 <!-- 顯示主選單項目 -->
-<div class="container-fluid">
-  <div class="row content">
-    <%= render "common/menu" %>
-  </div>
-</div>
+
+
+    <% if @group!="3" then %>
+    <%= render "common/menu1" %>
+    <% else %>
+      <%= render "common/menu" %>
+    <% end %>

@@ -1,13 +1,13 @@
-<div class="row menu">
-<%= render "common/menu" %>
-</div>
+
+  <% if @group!="3" then %>
+  <%= render "common/menu1" %>
+  <% else %>
+    <%= render "common/menu" %>
+  <% end %>
 
 <div class="query">
-
-<% if @group=="3"%>
-<%= render "queryform" %>
-<% end %>
+<%=  render "queryform"  %>
 </div>
-
 <div class="show">
+
 </div>
