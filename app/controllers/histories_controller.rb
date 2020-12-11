@@ -6,13 +6,13 @@ class HistoriesController < ApplicationController
   # GET /histories.json
   def index
     @histories = History.all.page(params[:page]).per(10)
-    @menubars = Menubar.all
-    @menubar = @menubars.first
+    # @menubars = Menubar.all
+    # @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
-    if @current_page != params[:page] || @current_menu_id.blank? then
-      @current_menu_id = @menubar.menu_id
-      @current_page = params[:page]
-    end
+    # if @current_page != params[:page] || @current_menu_id.blank? then
+    #   @current_menu_id = @menubar.menu_id
+    #   @current_page = params[:page]
+    # end
 
   end
 
@@ -20,16 +20,14 @@ class HistoriesController < ApplicationController
   # GET /histories/1.json
   def query
 
-    @menubars = Menubar.all
-    @menubar = @menubars.first
+    # @menubars = Menubar.all
+    # @menubar = @menubars.first
     @menus = Menubar.order(:menu_sn)
-    if @current_page != params[:page] || @current_menu_id.blank? then
-      @current_menu_id = @menubar.menu_id
-      @current_page = params[:page]
-    end
 
-
-
+    # if @current_page != params[:page] || @current_menu_id.blank? then
+    #   @current_menu_id = @menubar.menu_id
+    #   @current_page = params[:page]
+    # end
     hissql = "SELECT * FROM histories WHERE 1=1 "
      if    !params[:cust_id].empty?
               hissql = hissql + "and cust_id='"+params[:cust_id]+ "' "
@@ -67,13 +65,7 @@ class HistoriesController < ApplicationController
       @histories=History.all.where("cust_id= ? and acc_date = ?", params[:cust_id],params[:acc_date]).order(created_at: :desc).page(params[:page]).per(10)
     end
 =end
-puts params[:page].to_i
-if params[:page].to_i > 0
-@page="change"
-elsif params[:page].to_i >= 0
-  params[:page]= "1"
-@page="nochange"
-end
+
 @hiscustID = params[:cust_id] if params[:cust_id].present?
 @date_yy = params[:acc_date].first(4) if params[:acc_date].present?
 @date_mm = params[:acc_date].last(2) if params[:acc_date].present?

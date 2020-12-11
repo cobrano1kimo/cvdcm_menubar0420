@@ -2,7 +2,7 @@ class SycCrw01CmToGrossCust < ActiveJob::Base
   queue_as :low_priority
   def perform
         scheduler = Rufus::Scheduler.new
-        scheduler.cron '*/15 * * * *' do |x|
+        scheduler.cron '30 07,12 * * *' do |x|
          VancustomerFromCm.delete_all
          @Vans = VanCustomer.find_by_sql("select * from cm")
             @Vans.each do |v|
