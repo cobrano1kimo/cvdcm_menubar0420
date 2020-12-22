@@ -4,11 +4,12 @@
 @input1 = params[:mark] if params[:mark].present?
 @input3 = params[:star_date] if params[:star_date].present?
 @input4 = params[:end_date] if params[:end_date].present? -->
-<h1>歷史資料查詢</h1>
+
+<div class="d-flex flex-row"><h3>歷史資料查詢</h3>
+<%= render "common/fontsize" %></div>
 <div class="d-flex flex-row  align-items-center">
 客戶編號：
 <input class="box form-control col-lg-1" size="6"  type="text"  id="hiscustID" maxlength="5" value=<%=@hiscustID %>>
-
 開單年月：
 <div class="d-flex flex-row justify-content-between align-items-center" >
    年&nbsp&nbsp
@@ -74,8 +75,10 @@
 
  </div>
   <br>
- <div>
+ <div class="d-flex flex-row ">
  <button id="query_history" type="button" class="btn btn-primary" ><%= (I18n.t :query, scope: [ :buttons ]) %></button>
+
+
 <!--
  <button id="reset_button" type="button" class="btn btn-primary"><%= (I18n.t :reset, scope: [ :buttons ]) %></button>
 -->

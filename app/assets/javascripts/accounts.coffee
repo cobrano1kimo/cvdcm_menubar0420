@@ -329,9 +329,8 @@ $(document).on "click", "#printP1", (event) ->
   return false
   # 觸發 '修改取消' 按鈕
 $(document).on "click", "#check_resetE", (event) ->
-
   event.preventDefault()
-  location.reload();
+  location.reload()
   return false
 $(document).on "click", "#check_resetC", (event) ->
   event.preventDefault()

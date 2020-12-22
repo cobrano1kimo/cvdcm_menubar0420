@@ -5,8 +5,9 @@
 <% end %>
 
 
+<div class="d-flex flex-row"><h3>INVOICE單</h3>
+<%= render "common/fontsize" %></div>
 
-<h1>INVOICE單</h1>
 
 <div class="d-flex flex-row  align-items-center">
   客戶編號：
@@ -157,7 +158,7 @@
 
        <td id="colse_lable" style=<%="display:none;" if !account.clo_date.present?%>>
             <h5 ><span class="badge badge-pill badge-success">已關帳</span></h5>
-            <h5 ><button id="open_acc" class="submit_button btn btn-danger btn-sm" style=<%="display:none;" if !@group=="3"%>>解開帳</button></h5>
+            <h5 ><button id="open_acc" class="submit_button btn btn-danger btn-sm" style=<%="display:none;" if @group!="3"%>>解開帳</button></h5>
         </td>
         <td id="nopay_lable" style=<%="display:none;" if account.paymark =="Y" %>>
            <h5> <span class="badge badge-pill badge-secondary"  data-toggle="tooltip" data-html="true" title=<%= paymentShow(account.customer.cust_payment) %>>不出帳</span></h5>

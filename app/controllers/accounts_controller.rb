@@ -41,6 +41,7 @@ class AccountsController < ApplicationController
     end
      #下個月月份參數
     usemakedate= nextMonth(params[:acc_date])
+    p params[:acc_date]
     p "running MailSendStaffJob"
 
     if @group=="3" then
@@ -110,8 +111,26 @@ class AccountsController < ApplicationController
          custid = Customer.select(:cust_id).where(cust_id:  params[:cust_id],won_staff: @wonstaff)
      end
 
-       @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,cust_type: :asc,acc_no: :asc,created_at: :desc).page(params[:page]).per(10)
+       #account 含　付款月份明細
+     @account_test= Account.find_by_sql("EXEC sp_executesql N'SELECT  [accounts].*,[customers].[paymonth01],[customers].[paymonth02],
+                             [customers].[paymonth03],[customers].[paymonth04],[customers].[paymonth05]
+                            ,[customers].[paymonth06],[customers].[paymonth07],[customers].[paymonth08],[customers].[paymonth09]
+                           ,[customers].[paymonth10],[customers].[paymonth11],[customers].[paymonth12],[customers].[won_staff]
+                           FROM [accounts] INNER JOIN [customers] ON [customers].[cust_id] = [accounts].[cust_id] WHERE [accounts].[acc_date] = @0 AND [customers].[cust_id] IN
+                           (SELECT [customers].[cust_id] FROM [customers] WHERE 1 = @1)',
+                           N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'"+params[:acc_date]+"', @1 =1")
 
+      #@accounts=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).order(cust_id: :asc,created_at: :desc).page(params[:page]).per(10)
+      @accounts=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).order(cust_id: :asc,cust_type: :asc,acc_no: :asc,created_at: :desc).page(params[:page]).per(10)
+      @account_test=change_Paymark(@account_test) #是否出不出帳邏輯
+        @account_test.each do |p|
+          @accounts.each do |a|
+            if p.cust_id == a.cust_id && p.cust_type == a.cust_type
+               a.paymark = p.paymark
+               a.acc_staff = p.won_staff
+            end
+          end
+        end
        @rowsum=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
        @sumcost=Account.all.where(cust_id: params[:cust_id],acc_date: params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
 
