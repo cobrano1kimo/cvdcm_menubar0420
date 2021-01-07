@@ -123,52 +123,56 @@ $(document).on "click", "#edit_acc", (event) ->
   $(this).closest('tr').find("#delete_acc").hide()
   $(this).closest('tr').find("#edit_acc").hide()
   $(this).closest('tr').find("#yesOrNoE").show()
+
   $(document).on "keyup", "#input0", (event) ->
     event.preventDefault()
-    input1 = $('#input0').val()
+    input1 = $(this).closest('tr').find('#input0').val()
     if !input1.match("^[A-Za-z0-9]+$")
       msg = '格式錯誤,請輸入英數字'
       $('#input1tips').html msg
-      $('#input0').val('')
+      $(this).closest('tr').find('#input0').val('')
     else
       $('#input1tips').html ''
     if input1==""
       msg = ''
       $('#input1tips').html ''
     return　
+
   $(document).on "keyup", "#input1", (event) ->
     event.preventDefault()
-    input1 = $('#input1').val()
+    input1 = $(this).closest('tr').find('#input1').val()
     if !input1.match("^[A-Za-z0-9-]+$")
       msg = '格式錯誤,請輸入英數字'
       $('#input1tips').html msg
-      $('#input1').val('')
+      $(this).closest('tr').find('#input1').val('')
     else
       $('#input1tips').html ''
     if input1==""
       msg = ''
       $('#input1tips').html ''
     return　
+
    $(document).on "keyup", "#input3", (event) ->
      event.preventDefault()
-     input3 = $('#input3').val()
+     input3 = $(this).closest('tr').find('#input3').val()
      if !input3.match("^[0-9]*$")
        msg = '格式錯誤,請輸入數字'
        $('#input3tips').html msg
-       $('#input3').val('')
+       $(this).closest('tr').find('#input3').val('')
      else
        $('#input3tips').html ''
      if input1==""
        msg = ''
        $('#input3tips').html ''
      return　
+
    $(document).on "keyup", "#input6", (event) ->
      event.preventDefault()
-     input6 = $('#input6').val()
+     input6 = $(this).closest('tr').find('#input6').val()
      if !input6.match("^[0-9]*$")
        msg = '格式錯誤,請輸入數字'
        $('#input6tips').html msg
-       $('#input6').val('')
+       $(this).closest('tr').find('#input6').val('')
      else
        $('#input6tips').html ''
      if input1==""
