@@ -104,7 +104,7 @@ $(document).on "click", "#edit_cust", (event) ->
 
   # $(this).closest('tr').find('#input1').removeAttr("onfocus").removeClass("border-0").addClass("round1")
   # $(this).closest('tr').find("#input4").removeAttr("onfocus").removeClass("border-0").addClass("round1​")
-  $(this).closest('tr').find('#payday_input').removeAttr("onfocus").removeClass("border-0").addClass("round1")
+  #$(this).closest('tr').find('#payday_input').removeAttr("onfocus").removeClass("border-0").addClass("round1")
   $('table td:nth-child(22)').hide()
   # $('table td:nth-child(24)').hide()
   $(this).closest('tr').find("#yesOrNoE").show()

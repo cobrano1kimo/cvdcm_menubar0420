@@ -41,16 +41,24 @@ class UserMailer < ApplicationMailer
 
 #撈出未出帳明細
 
-    @account_mail= Account.find_by_sql("EXEC sp_executesql N'SELECT [accounts].*,[customers].[paymonth01],[customers].[paymonth02],
+#    @account_mail= Account.find_by_sql("EXEC sp_executesql N'SELECT [accounts].*,[customers].[paymonth01],[customers].[paymonth02],
+#                         [customers].[paymonth03],[customers].[paymonth04],[customers].[paymonth05]
+#                        ,[customers].[paymonth06],[customers].[paymonth07],[customers].[paymonth08],[customers].[paymonth09]
+#                        ,[customers].[paymonth10],[customers].[paymonth11],[customers].[paymonth12]
+#                        ,[customers].[won_staff],(select close_day from closements ) as close_day,[customers].[cust_name]
+#                        FROM [accounts] INNER JOIN [customers] ON [customers].[cust_id] =
+#                       [accounts].[cust_id] WHERE [accounts].[acc_date] = @0 AND [customers].[cust_id] IN
+#                        (SELECT [customers].[cust_id] FROM [customers] WHERE 1 = @1) order by cust_id',
+#                        N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'"+@mail_send_date+"', @1 =1")
+@account_mail= Account.find_by_sql("EXEC sp_executesql N'SELECT [accounts].*,[customers].[paymonth01],[customers].[paymonth02],
                          [customers].[paymonth03],[customers].[paymonth04],[customers].[paymonth05]
                         ,[customers].[paymonth06],[customers].[paymonth07],[customers].[paymonth08],[customers].[paymonth09]
                         ,[customers].[paymonth10],[customers].[paymonth11],[customers].[paymonth12]
                         ,[customers].[won_staff],(select close_day from closements ) as close_day,[customers].[cust_name]
                         FROM [accounts] INNER JOIN [customers] ON [customers].[cust_id] =
-                       [accounts].[cust_id] WHERE [accounts].[acc_date] = @0 AND [customers].[cust_id] IN
+                       [accounts].[cust_id] WHERE  [customers].[cust_id] IN
                         (SELECT [customers].[cust_id] FROM [customers] WHERE 1 = @1) order by cust_id',
-                        N'@0 nvarchar(4000), @1 nvarchar(4000)', @0 = N'"+@mail_send_date+"', @1 =1")
-
+                        N'@1 nvarchar(4000)', @1 =1")
 #change paymark if 1 then Y else N
       @account_mail.each do |p|
       if  p.acc_date[4,5]=='01'
@@ -139,7 +147,7 @@ class UserMailer < ApplicationMailer
           end
        end
        if p.clo_mark.blank?
-          p.clo_mark="Y"
+          p.clo_mark="N"
        end
        if p.paymark.blank?
           p.paymark="N"
@@ -154,17 +162,25 @@ class UserMailer < ApplicationMailer
     @mail = "Benson@crownvan.com"
  p @db_close_day
  p @time_close_date
+ p @account_mail.size
 #寄信條件
     if (@db_close_day - @time_close_date) > 3
     elsif (@db_close_day - @time_close_date) <= 3 && (@db_close_day - @time_close_date) > 0 && @account_mail.size != 0
       @day_message='距這個月結帳日'+db_close_day_s+'號還剩'+(@db_close_day - @time_close_date).to_s+'天'
-         mail(to: @mail, subject: 'TEST TEST倉儲月報表之未出帳明細表 請勿回覆')
+         mail(
+           to: @mail,
+           subject: 'TEST TESTTEST倉儲月報表之未出帳明細表 請勿回覆'
+         )
     elsif (@db_close_day - @time_close_date) == 0 && @account_mail.size != 0
       @day_message='今日為這個月結帳日'+db_close_day_s+'號​​,已到結帳日期'
-        mail(to: @mail, subject: 'TEST TEST倉儲月報表之未出帳明細表 請勿回覆')
+        mail(
+          to: @mail,
+          subject: 'TEST TESTTEST倉儲月報表之未出帳明細表 請勿回覆')
     elsif (@db_close_day - @time_close_date) < 0 && @account_mail.size != 0
         @day_message='這個月結帳日為'+db_close_day_s+'號​,已超過結帳日期'+(@time_close_date - @db_close_day).to_s+'天'
-       mail(to: @mail, subject: 'TEST自動 倉儲月報表之未出帳明細表 請勿回覆 TEST')
+       mail(
+         to: @mail,
+         subject: 'TESTTEST自動 倉儲月報表之未出帳明細表 請勿回覆 TESTTEST')
     end
 
 

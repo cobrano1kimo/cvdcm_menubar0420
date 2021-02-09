@@ -65,6 +65,8 @@ class AccountsController < ApplicationController
             #個人使用
           custid = Customer.select(:cust_id).where(won_staff: @wonstaff)
        end
+       @rowsum=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
+       @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
 
         #account 含　付款月份明細
       @account_test= Account.find_by_sql("EXEC sp_executesql N'SELECT  [accounts].*,[customers].[paymonth01],[customers].[paymonth02],
@@ -87,15 +89,15 @@ class AccountsController < ApplicationController
            end
          end
 
-       @rowsum=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id:  custid}).count()
-       @sumcost=Account.all.where(acc_date:  params[:acc_date]).joins(:customer).where(customers: {cust_id: custid}).sum(:acc_cost).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+
 
        #Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT acc_kind, acc_no,acc_date="+params[:acc_date]+",acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at FROM accounts a WHERE a.acc_date="+usemakedate+" and (select COUNT(*) from accounts where acc_date="+params[:acc_date]+")< 1")
      #沒資訊自動帶上個月
-     if @rowsum==0 then
-                       Account.find_by_sql("EXEC sp_executesql N'INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT a.acc_kind, acc_no= @5,acc_date= @0,acc_cost= @6,a.cust_id,a.cust_type,a.cre_date,a.acc_note,a.created_at,a.updated_at FROM accounts a inner join customers b on a.cust_id=b.cust_id and a.acc_date= @1 and b.won_staff= @2
+     if @rowsum==0 
+                     Account.find_by_sql("EXEC sp_executesql N'INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT a.acc_kind, acc_no= @5,acc_date= @0,acc_cost= @6,a.cust_id,a.cust_type,a.cre_date,a.acc_note,a.created_at,a.updated_at FROM accounts a inner join customers b on a.cust_id=b.cust_id and a.acc_date= @1 and b.won_staff= @2
                           where not exists(select c.cust_id,c.cust_type, c.acc_date from accounts c where a.cust_id=c.cust_id and a.cust_type=c.cust_type and a.acc_date=c.acc_date and a.acc_date<> @3 and b.won_staff= @4)', N'@0 nvarchar(4000),@1 nvarchar(4000),@2 nvarchar(4000),@3 nvarchar(4000),@4 nvarchar(4000),@5 nvarchar(4000),@6 int',@0 = N'"+params[:acc_date]+"', @1 = N'"+usemakedate+"',@2 = N'"+@wonstaff+"',@3 = N'"+usemakedate+"',@4 = N'"+@wonstaff+"'
                           ,@5 = N'',@6 = N'0'")
+
      end
 
     else

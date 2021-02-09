@@ -66,7 +66,7 @@
                         <td>10月</td>
                           <td>11月</td>
                             <td>12月</td>
-      <td align="center" valign="center">結帳日</td>
+      <td align="center" valign="center" onfocus="this.blur()">結帳日</td>
       <td >&nbsp;&nbsp;業務人員</td>
 
       <td >備註</td>
@@ -127,10 +127,10 @@
 
         <td> <input class="box border-0 form-control"  size="19" type="text" id="input4" onfocus="this.blur()" value="<%= customer.cust_note %>"  <% if customer.cust_note.present? then %> data-toggle="tooltip" data-html="true" title=<%= customer.cust_note.gsub(/\s+/,"") %><% end %>> </td>
 
-
-
-        <td>
-            <button id="edit_cust" class="btn btn-primary" remote="true">修改</button>
+        <td >
+        <%if customer.cust_payment.present? then %>
+            <button <% if customer.cust_payment.strip == "6" ||customer.cust_payment.strip == "1" then %> style="display:none;" <%end%> id="edit_cust" class="btn btn-primary" remote="true">修改</button>
+         <%end%>
         </td>
 
         　<td id ='yesOrNoE'style="display:none;">

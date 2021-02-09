@@ -41,7 +41,7 @@
         <td> <input class="box border-0 form-control" size="5"  style="text-align:right"  id="input10" onfocus="this.blur()" value=<%=history.cost_aft %> ></td>
         <td> <input class="box border-0 form-control" size="13"  type="text"   id="input11" onfocus="this.blur()" value=<%=history.note_bef %> ></td>
         <td> <input class="box border-0 form-control" size="13" type="text"   id="input12" onfocus="this.blur()" value=<%=history.note_aft %> ></td>
-        <td> <input class="box border-0 form-control" size="12" type="text"  id="input13" onfocus="this.blur()" value= <%=history.created_at.strftime("%F-%T") %>></td>
+        <td> <input class="box border-0 form-control" size="12" type="text"  id="input13" onfocus="this.blur()" value= <%=history.created_at.strftime("%F-%T") %> <% if history.created_at.strftime("%F-%T").present? then %> data-toggle="tooltip" data-html="true" title=<%= history.created_at.strftime("%F-%T") %><% end %>></td>
 
       </tr>
 

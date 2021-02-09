@@ -3,6 +3,7 @@ class SycCrw01CmToGrossCust < ActiveJob::Base
   def perform
         scheduler = Rufus::Scheduler.new
         scheduler.cron '30 07,12 * * *' do |x|
+        #scheduler.cron '*/3 * * * *' do |x|
          VancustomerFromCm.delete_all
          @Vans = VanCustomer.find_by_sql("select * from cm")
             @Vans.each do |v|
@@ -20,10 +21,134 @@ class SycCrw01CmToGrossCust < ActiveJob::Base
         CustomerTmp.sp_UpdateCustTmps
         customer_tmp= CustomerTmp.all
         customer_tmp.each do |c|
-              if Customer.exists?(cust_id: c.cust_id)
+            if Customer.exists?(cust_id: c.cust_id)
                 p c.cust_id+"-"+ "exists"
+              if c.cust_payment.nil? || c.cust_payment.empty?
+                c.paymonth01="1"
+                c.paymonth02="1"
+                c.paymonth03="1"
+                c.paymonth04="1"
+                c.paymonth05="1"
+                c.paymonth06="1"
+                c.paymonth07="1"
+                c.paymonth08="1"
+                c.paymonth09="1"
+                c.paymonth10="1"
+                c.paymonth11="1"
+                c.paymonth12="1"
+                else
+              case c.cust_payment.strip
+                when "1"
+                   c.paymonth01="1"
+                   c.paymonth02="1"
+                   c.paymonth03="1"
+                   c.paymonth04="1"
+                   c.paymonth05="1"
+                   c.paymonth06="1"
+                   c.paymonth07="1"
+                   c.paymonth08="1"
+                   c.paymonth09="1"
+                   c.paymonth10="1"
+                   c.paymonth11="1"
+                   c.paymonth12="1"
+                 when "2"
+                   c.paymonth01="0"
+                   c.paymonth02="1"
+                   c.paymonth03="0"
+                   c.paymonth04="1"
+                   c.paymonth05="0"
+                   c.paymonth06="1"
+                   c.paymonth07="0"
+                   c.paymonth08="1"
+                   c.paymonth09="0"
+                   c.paymonth10="1"
+                   c.paymonth11="0"
+                   c.paymonth12="1"
+                 when "3"
+                   c.paymonth01="0"
+                   c.paymonth02="0"
+                   c.paymonth03="1"
+                   c.paymonth04="0"
+                   c.paymonth05="0"
+                   c.paymonth06="1"
+                   c.paymonth07="0"
+                   c.paymonth08="0"
+                   c.paymonth09="1"
+                   c.paymonth10="0"
+                   c.paymonth11="0"
+                   c.paymonth12="1"
+                 when "4"
+                   c.paymonth01="0"
+                   c.paymonth02="0"
+                   c.paymonth03="0"
+                   c.paymonth04="0"
+                   c.paymonth05="0"
+                   c.paymonth06="1"
+                   c.paymonth07="0"
+                   c.paymonth08="0"
+                   c.paymonth09="0"
+                   c.paymonth10="0"
+                   c.paymonth11="0"
+                   c.paymonth12="1"
+                 when "5"
+                   c.paymonth01="0"
+                   c.paymonth02="0"
+                   c.paymonth03="0"
+                   c.paymonth04="0"
+                   c.paymonth05="0"
+                   c.paymonth06="0"
+                   c.paymonth07="0"
+                   c.paymonth08="0"
+                   c.paymonth09="0"
+                   c.paymonth10="0"
+                   c.paymonth11="0"
+                   c.paymonth12="1"
+                 when "8"
+                   c.paymonth01="0"
+                   c.paymonth02="0"
+                   c.paymonth03="0"
+                   c.paymonth04="1"
+                   c.paymonth05="0"
+                   c.paymonth06="0"
+                   c.paymonth07="0"
+                   c.paymonth08="1"
+                   c.paymonth09="0"
+                   c.paymonth10="0"
+                   c.paymonth11="0"
+                   c.paymonth12="1"
+                 when "6","7"
+                   c.paymonth01="0"
+                   c.paymonth02="0"
+                   c.paymonth03="0"
+                   c.paymonth04="0"
+                   c.paymonth05="0"
+                   c.paymonth06="0"
+                   c.paymonth07="0"
+                   c.paymonth08="0"
+                   c.paymonth09="0"
+                   c.paymonth10="0"
+                   c.paymonth11="0"
+                   c.paymonth12="0"
+                 else
+                   c.paymonth01="1"
+                   c.paymonth02="1"
+                   c.paymonth03="1"
+                   c.paymonth04="1"
+                   c.paymonth05="1"
+                   c.paymonth06="1"
+                   c.paymonth07="1"
+                   c.paymonth08="1"
+                   c.paymonth09="1"
+                   c.paymonth10="1"
+                   c.paymonth11="1"
+                   c.paymonth12="1"
+                end
+              end
                 Customer.where(cust_id: c.cust_id).update(cust_name: c.cust_name,cust_stat: c.cust_stat,
-                won_staff: c.won_staff,cust_payment: c.cust_payment,cust_note: c.cust_note)
+                won_staff: c.won_staff,cust_payment: c.cust_payment,cust_note: c.cust_note,  paymonth01: c.paymonth01,paymonth02: c.paymonth02, paymonth03: c.paymonth03,
+                  paymonth04: c.paymonth04,paymonth05: c.paymonth05,paymonth06: c.paymonth06,
+                  paymonth07: c.paymonth07,paymonth08: c.paymonth08,paymonth09: c.paymonth09,
+                  paymonth10: c.paymonth10,paymonth11: c.paymonth11,paymonth12: c.paymonth12)
               else
                 #如果是葉子新客戶依付款條件塞出帳註記
               if c.cust_payment.nil? || c.cust_payment.empty?
