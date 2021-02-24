@@ -5,8 +5,8 @@ $(document).on "turbolinks:load", ->
   if confirm "請確定是否要解開帳"
    $(this).closest('tr').find('#edit_acc').show()
    $(this).closest('tr').find("#delete_acc").show()
-   $(this).closest('tr').find("#colse_acc").show()
-   $(this).closest('tr').find("#colse_lable").hide()
+   $(this).closest('tr').find("#close_acc").show()
+   $(this).closest('tr').find("#close_lable").hide()
    #為了畫面效果塞關帳日期
    $(this).closest('tr').find("#clo_date").val("")
    acc_id=$(this).closest('tr').find('#input').val()

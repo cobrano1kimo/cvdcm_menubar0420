@@ -94,7 +94,8 @@
   <%= paginate @accounts, theme: 'twitter-bootstrap-4', pagination_class: "pagination-sm" %>
 
   </div>
-   <font size="5">使用者：<%= @wonstaff %>　總金額：$ <%=@sumcost%> 總筆數： <%=@rowsum%></font>
+  <input style='display:none;' id ="close_wonstaff" value = <%= @wonstaff %>>
+   <tr><td><font size="5">使用者：<%= @wonstaff %>　總金額：$ <%=@sumcost%> 總筆數： <%=@rowsum%></font></td><td style = width:400px;> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td> <td>    <button  id="close_all" class="btn btn-primary"style=<%="display:none;" if @accounts.size == 0%> >一鍵關帳</button></td></tr>
 <table id="table" class="table table-hover">
   <thead >
     <style>
@@ -147,16 +148,16 @@
         <td> <input class="box border-0 form-control" size="2" type="text" id="input2" onfocus="this.blur()"  value="<%=account.acc_kind %>"> </td>
         <td> <input class="box border-0 form-control" maxlength="4" size="4"  type="text" id="input3" onfocus="this.blur()" value="<%=account.acc_no %>"> </td>
         <td> <input class="box border-0 form-control"  size="4" type="text"  id="input4" onfocus="this.blur()" value="<%= rocTime(account.acc_date) %>"> </td>
-        <td> <input class="box border-0 form-control" size="20"  type="text" id="input5" onfocus="this.blur()" value="<%=account.customer.cust_name %>" <% if account.customer.cust_name  != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.customer.cust_name  %><% end %>> </td>
+        <td> <input style="text-align:right;" class="box border-0 form-control" size="20"  type="text" id="input5" onfocus="this.blur()" value="<%=account.customer.cust_name %>" <% if account.customer.cust_name  != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.customer.cust_name  %><% end %>> </td>
         <td> <input class="box border-0 form-control" maxlength="12" size="11"  type="text" style="text-align:right"  id="input6" onfocus="this.blur()" value="<%=account.acc_cost %>" ></td>
-        <td> <input class="box border-0 form-control"  size="15" type="text" id="input7" onfocus="this.blur()" value="<%=account.acc_note %>" <% if account.acc_note != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.acc_note %><% end %> ></td>
-        <td> <input class="box border-0 form-control" size="12" type="text"  id="clo_date" onfocus="this.blur()" value= <%=account.clo_date.strftime("%F") if account.clo_date.present?%>></td>
+        <td> <input style="text-align:right;" class="box border-0 form-control"  size="15" type="text" id="input7" onfocus="this.blur()" value="<%=account.acc_note %>" <% if account.acc_note != "" then %> data-toggle="tooltip" data-html="true" title=<%= account.acc_note %><% end %> ></td>
+        <td> <input style="text-align:right;" class="box border-0 form-control" size="12" type="text"  id="clo_date" onfocus="this.blur()" value= <%=account.clo_date.strftime("%F") if account.clo_date.present?%>></td>
 
         <td >
             <button  id="edit_acc" class="btn btn-primary" remote="true" style=<%="display:none;" if account.clo_date.present? || account.paymark=="N"%>>修改</button>
         </td>
 
-       <td id="colse_lable" style=<%="display:none;" if !account.clo_date.present?%>>
+       <td id="close_lable" style=<%="display:none;" if !account.clo_date.present?%>>
             <h5 ><span class="badge badge-pill badge-success">已關帳</span></h5>
             <h5 ><button id="open_acc" class="submit_button btn btn-danger btn-sm" style=<%="display:none;" if @group!="3"%>>解開帳</button></h5>
         </td>
@@ -173,14 +174,14 @@
        　</td>
        <td >
          <%= if account.clo_date.present? || account.paymark=="N" then
-       link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary",:style => "display:none;"
-      else
+         link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary",:style => "display:none;"
+       else
          link_to '刪除', account, method: :delete, :remote =>true ,:id=>"delete_acc",:class =>"btn btn-primary"
        end %>
 
       </td>
       <td >
-          <button  id="colse_acc" class="btn btn-primary"style=<%="display:none;" if account.clo_date.present?|| account.paymark=="N"%> >關帳</button>
+          <button id="close_acc" class="btn btn-primary" style=<%="display:none;" if account.clo_date.present? || account.paymark=="N"%> >關帳</button>
       </td>
 
 

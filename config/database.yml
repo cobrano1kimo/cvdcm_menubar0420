@@ -8,14 +8,13 @@ default: &default
  adapter: sqlserver
  host: 10.9.83.32
  port: 1433
- username: sa
- password: QJ#U._a8#cl$
+ username: benson_ap
+ password: 1qaz@WSX
  pool: 100
- timeout: 28000
-
+ timeout: 3000000
 development:
   <<: *default
-  database: Gross_Sales
+  database: Gross_Sales_backup
 
 
 # Warning: The database defined as "test" will be erased and

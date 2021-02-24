@@ -170,8 +170,7 @@ end
 
        @customer=Customer.find_by(cust_id: params[:cust_id])
        #history now data
-       @customer.update(cust_name: params[:cust_name],cust_stat: params[:cust_stat],cust_payment: params[:cust_payment],
-         cust_note: params[:cust_note],cust_payday: params[:cust_payday],
+       @customer.update(cust_name: params[:cust_name],cust_payday: params[:cust_payday],
           paymonth01: params[:paymonth01],paymonth02: params[:paymonth02], paymonth03: params[:paymonth03],
           paymonth04: params[:paymonth04],paymonth05: params[:paymonth05],paymonth06: params[:paymonth06],
           paymonth07: params[:paymonth07],paymonth08: params[:paymonth08],paymonth09: params[:paymonth09],

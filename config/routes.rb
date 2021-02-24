@@ -14,10 +14,15 @@ Rails.application.routes.draw do
     get 'accounts', :to => "accounts#edit", as: "invoices"
     post 'accounts', :to =>"accounts#edit" , as: "acinvoices"
   end
-  scope :controller => "accounts", :path => "/colse" do
+  scope :controller => "accounts", :path => "/close" do
 
-    get 'accounts', :to => "accounts#colse_edit", as: "invoicesclo"
-    post 'accounts', :to =>"accounts#colse_edit" , as: "acinvoicesclo"
+    get 'accounts', :to => "accounts#close_edit", as: "invoicesclo"
+    post 'accounts', :to =>"accounts#close_edit" , as: "acinvoicesclo"
+  end
+  scope :controller => "accounts", :path => "/closeall" do
+
+    get 'accounts', :to => "accounts#close_all", as: "invoicescloa"
+    post 'accounts', :to =>"accounts#close_all" , as: "acinvoicescloa"
   end
   scope :controller => "accounts", :path => "/open" do
 

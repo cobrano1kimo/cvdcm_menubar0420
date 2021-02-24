@@ -1,10 +1,10 @@
 class UserMailer < ApplicationMailer
   p "UserMailer"
   #業務人員的mail address
-  @mails = Account.find_by_sql("EXEC sp_executesql N'SELECT * from user_groups where[group]<> @0', N'@0 nvarchar(4000)', @0 = N'3'")
+  #@mails = Account.find_by_sql("EXEC sp_executesql N'SELECT * from user_groups where[group]<> @0', N'@0 nvarchar(4000)', @0 = N'3'")
   default from: 'storage_report@crownvan.com'
-  @staff_email= @mails[0].email+','+@mails[1].email+','+@mails[2].email+','+@mails[3].email+','+@mails[4].email+','+@mails[5].email+','+@mails[6].email
-  @it_email= "IT_Department@crownvan.com"
+  #$staff_email= @mails[0].email+';'+@mails[1].email+';'+@mails[2].email+';'+@mails[3].email+';'+@mails[4].email+';'+@mails[5].email+';'+@mails[6].email
+
   #mail_send_date=Time.now.to_s[0,4]+Time.now.to_s[5,2]
   def welcome_email()
     #寄信系統月份
@@ -57,8 +57,7 @@ class UserMailer < ApplicationMailer
                         ,[customers].[won_staff],(select close_day from closements ) as close_day,[customers].[cust_name]
                         FROM [accounts] INNER JOIN [customers] ON [customers].[cust_id] =
                        [accounts].[cust_id] WHERE  [customers].[cust_id] IN
-                        (SELECT [customers].[cust_id] FROM [customers] WHERE 1 = @1) order by cust_id',
-                        N'@1 nvarchar(4000)', @1 =1")
+                        (SELECT [customers].[cust_id] FROM [customers] WHERE won_staff is not null) order by cust_id'")
 #change paymark if 1 then Y else N
       @account_mail.each do |p|
       if  p.acc_date[4,5]=='01'
@@ -160,6 +159,8 @@ class UserMailer < ApplicationMailer
       x.mail_show_mark !='YN'
      end
     @mail = "Benson@crownvan.com"
+    @it_email= 'IT_Department@crownvan.com'
+    #@staff_email="Karen@crownvan.com;Sabrina@crownvan.com;Doris@crownvan.com;May@crownvan.com;Eileen@crownvan.com;Vicky@crownvan.com;Katherine@crownvan.com"
  p @db_close_day
  p @time_close_date
  p @account_mail.size
@@ -169,17 +170,20 @@ class UserMailer < ApplicationMailer
       @day_message='距這個月結帳日'+db_close_day_s+'號還剩'+(@db_close_day - @time_close_date).to_s+'天'
          mail(
            to: @mail,
+           #cc: @it_email,
            subject: 'TEST TESTTEST倉儲月報表之未出帳明細表 請勿回覆'
          )
     elsif (@db_close_day - @time_close_date) == 0 && @account_mail.size != 0
       @day_message='今日為這個月結帳日'+db_close_day_s+'號​​,已到結帳日期'
         mail(
-          to: @mail,
+          to: 'storage@crownvan.com',
+          cc: @it_email,
           subject: 'TEST TESTTEST倉儲月報表之未出帳明細表 請勿回覆')
     elsif (@db_close_day - @time_close_date) < 0 && @account_mail.size != 0
         @day_message='這個月結帳日為'+db_close_day_s+'號​,已超過結帳日期'+(@time_close_date - @db_close_day).to_s+'天'
        mail(
-         to: @mail,
+         to: 'storage@crownvan.com',
+         cc: @it_email,
          subject: 'TESTTEST自動 倉儲月報表之未出帳明細表 請勿回覆 TESTTEST')
     end
 

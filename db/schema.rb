@@ -20,28 +20,6 @@ ActiveRecord::Schema.define(version: 20201126090020) do
     t.varchar "note_mix", limit: 275
   end
 
-  create_table "WCM_20200918_BOX", id: false, force: :cascade do |t|
-    t.varchar "cm00", limit: 254
-    t.varchar "CM01", limit: 254
-    t.varchar "cm24", limit: 254
-    t.varchar "cm04", limit: 254
-    t.varchar "CM28", limit: 254
-    t.varchar "cm31", limit: 254
-  end
-
-  create_table "WKandKwInvoice_20200907_BOX", id: false, force: :cascade do |t|
-    t.varchar "acc_kind", limit: 254
-    t.varchar "acc_no", limit: 254
-    t.varchar "acc_date", limit: 254
-    t.varchar "acc_cost", limit: 254
-    t.varchar "cust_id", limit: 254
-    t.varchar "cust_type", limit: 254
-    t.varchar "cre_date", limit: 254
-    t.varchar "acc_note", limit: 254
-    t.varchar "created_at", limit: 254
-    t.varchar "updated_at", limit: 254
-  end
-
   create_table "WTemp20200907_KandKInovice", force: :cascade do |t|
     t.string "acc_kind"
     t.string "acc_no"
@@ -55,7 +33,7 @@ ActiveRecord::Schema.define(version: 20201126090020) do
     t.datetime "updated_at"
   end
 
-  create_table "Wdoris_20200918_BOX", id: false, force: :cascade do |t|
+  create_table "Wdoise_20201012_BOX", id: false, force: :cascade do |t|
     t.varchar "acc_kind", limit: 254
     t.varchar "acc_no", limit: 254
     t.varchar "acc_date", limit: 254
@@ -69,6 +47,19 @@ ActiveRecord::Schema.define(version: 20201126090020) do
   end
 
   create_table "Weilien_20200915_BOX", id: false, force: :cascade do |t|
+    t.varchar "acc_kind", limit: 254
+    t.varchar "acc_no", limit: 254
+    t.varchar "acc_date", limit: 254
+    t.varchar "acc_cost", limit: 254
+    t.varchar "cust_id", limit: 254
+    t.varchar "cust_type", limit: 254
+    t.varchar "cre_date", limit: 254
+    t.varchar "acc_note", limit: 254
+    t.varchar "created_at", limit: 254
+    t.varchar "updated_at", limit: 254
+  end
+
+  create_table "Wkaren09_20201019_BOX", id: false, force: :cascade do |t|
     t.varchar "acc_kind", limit: 254
     t.varchar "acc_no", limit: 254
     t.varchar "acc_date", limit: 254
@@ -155,36 +146,6 @@ ActiveRecord::Schema.define(version: 20201126090020) do
     t.string "paymonth10", limit: 2
     t.string "paymonth11", limit: 2
     t.string "paymonth12", limit: 2
-  end
-
-  create_table "excel", id: false, force: :cascade do |t|
-    t.varchar "cust_id", limit: 50
-    t.varchar "cust_type", limit: 50
-    t.varchar "acc_kind", limit: 50
-    t.varchar "job_no", limit: 50
-    t.varchar "acc_date", limit: 50
-    t.varchar "cust_name", limit: 50
-    t.varchar "acc_cost", limit: 50
-    t.varchar "cust_taxid", limit: 50
-    t.varchar "tax_name", limit: 50
-    t.varchar "cust_stat", limit: 50
-    t.varchar "note_all", limit: 50
-    t.varchar "won_staff", limit: 50
-  end
-
-  create_table "excel_data", id: false, force: :cascade do |t|
-    t.varchar "cust_id", limit: 50
-    t.varchar "cust_type", limit: 50
-    t.varchar "acc_kind", limit: 50
-    t.varchar "job_no", limit: 50
-    t.varchar "acc_date", limit: 50
-    t.varchar "cust_name", limit: 50
-    t.varchar "acc_cost", limit: 50
-    t.varchar "cust_taxid", limit: 50
-    t.varchar "tax_name", limit: 120
-    t.varchar "cust_stat", limit: 50
-    t.varchar "note_all", limit: 50
-    t.varchar "won_staff", limit: 50
   end
 
   create_table "histories", force: :cascade do |t|
@@ -295,14 +256,6 @@ ActiveRecord::Schema.define(version: 20201126090020) do
     t.string "updated_staff", limit: 20
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "sysdiagrams", primary_key: "diagram_id", id: :integer, force: :cascade do |t|
-    t.string "name", limit: 128, null: false
-    t.integer "principal_id", null: false
-    t.integer "version"
-    t.binary "definition"
-    t.index ["principal_id", "name"], name: "UK_principal_name", unique: true
   end
 
   create_table "user_groups", force: :cascade do |t|

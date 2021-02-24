@@ -28,7 +28,8 @@
 	  text-align: left;
   }
   .auto-style2 {
-  text-align: center;
+   text-align: left;
+     color: red;
 }
 
 
@@ -42,7 +43,7 @@
     <tr ><th class="auto-style1" style="height: 21px" >Dear ALL:</th>
     </tr>
     <tr>
-      <th class="auto-style1">&nbsp;<br>&nbsp;&nbsp; <%=@day_message%></th>
+      <th class="auto-style2">&nbsp;<br>&nbsp;&nbsp; <%=@day_message%></th>
     </tr>
     <tr>
       <th class="auto-style1">&nbsp;<br>&nbsp;&nbsp; 倉儲月報表本月共計<%=@account_mail.size()%>筆尚未關帳，請儘快處理，明細如下：</th>
@@ -53,7 +54,7 @@
 
     <div class="table_out">
   <table class="table1">
-      <tr><th colspan="7"><%= @mail_send_date[0,4]+"年"+@mail_send_date[4,2]+"月" %>未關帳明細表</th></tr>
+      <tr><th colspan="5"><%= @mail_send_date[0,4]+"年"+@mail_send_date[4,2]+"月" %>未關帳明細表</th></tr>
       <tr>
 
         <th >客戶編號</th>
@@ -61,8 +62,8 @@
         <th >客戶名稱</th>
           <th >出帳年月</th>
             <th >業務人員</th>
-　　　　　　  <th >是否出帳</th>
-    　　<th >是否關帳</th>
+　　　<!--　　  <th >是否出帳</th>
+    　　<th >是否關帳</th> -->
       </tr>
   <% @account_mail.each_with_index do |account,index| %>
   <tr>
@@ -73,9 +74,9 @@
   <td width="28%" ><%= account.customer.cust_name %></td>
   <td width="14%" ><%= account.acc_date %></td>
   <td width="14%" ><%= account.won_staff %></td>
-  <td width="5%" class="auto-style2"><%= account.paymark %></td>
+  <!--  <td width="5%" class="auto-style2"><%= account.paymark %></td>
   <td width="5%" class="auto-style2"><%= account.clo_mark %></td>
-
+-->
   </tr>
 <% end %>
   </table>

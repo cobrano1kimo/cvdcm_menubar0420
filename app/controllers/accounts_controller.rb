@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   include AccountsHelper
   before_action :user_group
-  before_action only: [:destroy,:colse_edit]
+  before_action only: [:destroy,:close_edit]
 
 
   # GET /accounts
@@ -93,7 +93,7 @@ class AccountsController < ApplicationController
 
        #Account.find_by_sql("INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT acc_kind, acc_no,acc_date="+params[:acc_date]+",acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at FROM accounts a WHERE a.acc_date="+usemakedate+" and (select COUNT(*) from accounts where acc_date="+params[:acc_date]+")< 1")
      #沒資訊自動帶上個月
-     if @rowsum==0 
+     if @rowsum==0
                      Account.find_by_sql("EXEC sp_executesql N'INSERT INTO accounts(acc_kind, acc_no,acc_date,acc_cost,cust_id,cust_type,cre_date,acc_note,created_at,updated_at) SELECT a.acc_kind, acc_no= @5,acc_date= @0,acc_cost= @6,a.cust_id,a.cust_type,a.cre_date,a.acc_note,a.created_at,a.updated_at FROM accounts a inner join customers b on a.cust_id=b.cust_id and a.acc_date= @1 and b.won_staff= @2
                           where not exists(select c.cust_id,c.cust_type, c.acc_date from accounts c where a.cust_id=c.cust_id and a.cust_type=c.cust_type and a.acc_date=c.acc_date and a.acc_date<> @3 and b.won_staff= @4)', N'@0 nvarchar(4000),@1 nvarchar(4000),@2 nvarchar(4000),@3 nvarchar(4000),@4 nvarchar(4000),@5 nvarchar(4000),@6 int',@0 = N'"+params[:acc_date]+"', @1 = N'"+usemakedate+"',@2 = N'"+@wonstaff+"',@3 = N'"+usemakedate+"',@4 = N'"+@wonstaff+"'
                           ,@5 = N'',@6 = N'0'")
@@ -339,7 +339,7 @@ end
                         no_aft:  @account.acc_no, )
 
       end
-  def colse_edit
+  def close_edit
      @menubars = Menubar.all
      @menubar = @menubars.first
      @menus = Menubar.order(:menu_sn)
@@ -351,6 +351,7 @@ end
      @account.update(clo_date: Time.now,clo_mark: "Y")
 
   end
+
   def open_edit
      @menubars = Menubar.all
      @menubar = @menubars.first
@@ -363,7 +364,29 @@ end
      @account.update(clo_date: "NULL",clo_mark: "N")
 
   end
+  def close_all
+     @menubars = Menubar.all
+     @menubar = @menubars.first
+     @menus = Menubar.order(:menu_sn)
+     if @current_page != params[:page] || @current_menu_id.blank? then
+      @current_menu_id = @menubar.menu_id
+      @current_page = params[:page]
+     end
+     #--bengin 畫面上的關檔
+     arr=params[:id][0].split(",")
+     @account=Account.where("id in (?)",arr)
+     #@account.update(clo_date: Time.now,clo_mark: "Y")
+     #one key close all
+     Account.find_by_sql("EXEC sp_executesql
+     N'UPDATE accounts SET clo_mark= @0,clo_date = CONVERT(varchar, GETDATE(), 121) from accounts a
+           INNER JOIN (SELECT cust_id,"+ params[:paymonth]+" FROM  customers  WHERE won_staff= @2) AS b ON
+                 a.cust_id=b.cust_id AND a.acc_date = @3 AND "+params[:paymonth]+" = @4',
+		  N'@0 nvarchar(1),@2 nvarchar(4000),@3 nvarchar(4000),@4 nvarchar(2)',
+       @0 = N'Y',@2 =N'"+params[:clo_wonstaff]+"',@3 = N'"+params[:acc_date]+"',@4 = 1")
 
+     #--end
+
+  end
   # PATCH/PUT /accounts/1
   # PATCH/PUT /accounts/1.json
 
